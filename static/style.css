@@ -1,0 +1,12 @@
+body{
+    font-family: "Helvetica Neue", sans-serif;
+}
+.boundBox{
+    border:3px solid #00ff00;
+    position:absolute;
+    box-sizing: border-box;
+}
+.boundBox span{
+    background: #00ff00;
+}
+

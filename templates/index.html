@@ -1,0 +1,23 @@
+<html>
+
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>{{ searchedObject }}</h1>
+
+{% for artwork in artworksForWeb %}
+    <div style="position: relative; width: 50%; margin:5em">
+        <img src="{{ artwork['artworkImage']}}" style="width: 100%">
+        {% for object in artwork['artworkDescription']['_source']['objects'] %}
+            <div class="boundBox" style="left:{{ object['boundBox'][1]*100 }}%; top: {{ object['boundBox'][0]*100 }}%; width:{{ object['boundBox'][3]*100 - object['boundBox'][1]*100}}%; height: {{ object['boundBox'][2]*100 - object['boundBox'][0]*100}}%;">
+                <span>{{ object['object'] }}: {{ 100*object['score']}}%</span>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endfor %}
+
+</body>
+</html>

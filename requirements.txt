@@ -1,0 +1,6 @@
+tf-hub-nightly==0.9.0.dev202007310005
+tfds-nightly==3.2.1.dev202007300105
+tensorflow==2.3.0
+matplotlib==3.3.0
+
+
