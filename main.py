@@ -4,6 +4,7 @@
 import requests
 from requests.auth import HTTPBasicAuth
 import json
+import config
 
 # CONNECTION TO ELASTIC SEARCH
 
@@ -11,7 +12,7 @@ def callElastic(query):
     payload = ""
     rawData = requests.get(
         'https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks/_search',
-        auth=HTTPBasicAuth('elastic', 'obQ2c0cGQ4okkNlBO37mfLEN'), params=payload, json=query)
+        auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
     rawData.encoding = 'utf-8'
     dataDict = json.loads(rawData.text)
     return (dataDict)
@@ -88,6 +89,7 @@ def getArtworksByObject(searchedObject):
 # Flask
 
 from flask import Flask
+
 app = Flask(__name__)
 
 from flask import render_template
