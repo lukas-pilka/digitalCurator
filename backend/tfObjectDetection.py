@@ -18,9 +18,10 @@ def tfObjectDetection(imageFile):
 
     # Download and resize image
 
-    def download_and_resize_image(loadedImage, new_width=256, new_height=256, display=False):
+    def download_and_resize_image(loadedImage):
         _, filename = tempfile.mkstemp(suffix=".jpg")
         pil_image = loadedImage
+        new_width, new_height = pil_image.size
         pil_image = ImageOps.fit(pil_image, (new_width, new_height), Image.ANTIALIAS)
         pil_image_rgb = pil_image.convert("RGB")
         pil_image_rgb.save(filename, format="JPEG", quality=90)
@@ -60,7 +61,15 @@ def tfObjectDetection(imageFile):
 
     # Perform inference
     print('Exploring image objects with Tensor Flow version ' + str(tf.__version__))
-    image_path = download_and_resize_image(imageFile, 640, 480)
+    image_path = download_and_resize_image(imageFile)
     boundBoxes = run_detector(detector, image_path)
     return boundBoxes
+
+'''
+from PIL import Image
+print(tfObjectDetection(Image.open('temp/WU-SVK-GMB-C-411.jpg')))
+print(tfObjectDetection(Image.open('temp/WU-SVK-GMB-C-4260.jpg')))
+print(tfObjectDetection(Image.open('temp/WU-CZE-4RG-O0090.jpg')))
+print(tfObjectDetection(Image.open('temp/WU-CZE-4RG-K1320.jpg')))
+'''
 

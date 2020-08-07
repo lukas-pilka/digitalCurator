@@ -1,9 +1,13 @@
+from app import app
+from flask import render_template
 
 # IMPORTS
 
 import requests
 from requests.auth import HTTPBasicAuth
 import json
+import config
+
 
 # CONNECTION TO ELASTIC SEARCH
 
@@ -11,7 +15,7 @@ def callElastic(query):
     payload = ""
     rawData = requests.get(
         'https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks/_search',
-        auth=HTTPBasicAuth('elastic', 'obQ2c0cGQ4okkNlBO37mfLEN'), params=payload, json=query)
+        auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
     rawData.encoding = 'utf-8'
     dataDict = json.loads(rawData.text)
     return (dataDict)
@@ -24,7 +28,7 @@ getObjectTypes = {
     "aggs": {
         "Total mediums": {
             "terms": {
-                "field": "detected_objects.object.keyword",
+                "field": "objects.object.keyword",
                 "size": 100
             }
         }
@@ -32,7 +36,7 @@ getObjectTypes = {
 }
 
 objectTypesDict = callElastic(getObjectTypes)
-minObjectsLimit = 1
+minObjectsLimit = 10
 objectTypes = []
 
 # Selecting object types with more than 10 presences
@@ -45,17 +49,18 @@ from random import randrange
 
 randomObjectType = randrange(len(objectTypes))
 searchedObject = objectTypes[randomObjectType]
+print(randomObjectType, searchedObject)
 
 def getArtworksByObject(searchedObject):
 
     # Query for finding artworks containing selected object
 
     getByObject = {
-        "size": 100,
+        "size": 10,
         "query": {
             "bool": {
                 "must": [
-                    {"match": {"detected_objects.object": searchedObject}}
+                    {"match": {"objects.object": searchedObject}}
                     # {"match": {"objects.object": "Animal"}}
                 ]
             }
@@ -63,9 +68,9 @@ def getArtworksByObject(searchedObject):
         "_source": {
             "includes": [
                 "_id",
-                "detected_objects.object",
-                "detected_objects.score",
-                "detected_objects.boundBox",
+                "objects.object",
+                "objects.score",
+                "objects.boundBox",
             ]
         }
     }
@@ -78,19 +83,13 @@ def getArtworksByObject(searchedObject):
     artworksForWeb = []
 
     for artwork in artworks:
-        imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/' + artwork['_id'] + '.jpg'  # Creating img url from artwork id
-        for object in artwork['_source']['detected_objects']:
+        imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/' + artwork[
+            '_id'] + '.jpg'  # Creating img url from artwork id
+        for object in artwork['_source']['objects']:
             object['score'] = round(object['score'], 2)
         artworksForWeb.append({'artworkDescription': artwork, 'artworkImage': imageUrl})
 
     return artworksForWeb
-
-# Flask
-
-from flask import Flask
-app = Flask(__name__)
-
-from flask import render_template
 
 @app.route('/')
 def index():

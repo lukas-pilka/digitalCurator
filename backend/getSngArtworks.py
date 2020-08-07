@@ -1,23 +1,13 @@
 # IMPORTS
 
 import os
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import storage
 import requests
 from requests.auth import HTTPBasicAuth
 import json
 import config
-from writeToElastic import writeToElastic
+from connector import writeToElastic
 
-# CONNECTING TO THE STORAGE
 
-cred = credentials.Certificate("../keys/digital-curator-a894b9b08c2b.json")
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'digital-curator.appspot.com'
-})
-
-bucket = storage.bucket()
 
 
 # WRITING TO THE STORAGE FUNCTION
@@ -30,7 +20,7 @@ def saveImage(key, imagePath):
 
 # START FOR SEARCH_AFTER
 
-afterId = ""
+afterId = "SVK:VSG.G_2246"
 
 # CONNECTION TO ELASTIC SEARCH
 
@@ -46,7 +36,7 @@ query = {
     ]
 }
 
-payload = {'size': 1000}
+payload = {'size': 10000}
 rawData = requests.get('https://www.webumenia.sk/api/items_sk/_search',
                        auth=HTTPBasicAuth(config.userSngElastic, config.passSngElastic), params=payload, json=query)
 rawData.encoding = 'utf-8'
@@ -75,10 +65,9 @@ for item in artworks:
         "doc": item['_source'],
         "doc_as_upsert": True
     }
-
+    print('Artwork found: ', dcId, documentData)
     writeToElastic(dcId, documentData)
-    print('Artwork uploaded to DC elastic with ID: ' + dcId)
-    print(documentData)
+
     counter += 1
 
 print('Finished successfully')

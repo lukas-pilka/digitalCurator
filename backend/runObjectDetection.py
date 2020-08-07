@@ -1,5 +1,5 @@
-from writeToElastic import writeToElastic
-from tfObjectDetection import tfObjectDetection
+from connector import writeToElastic
+from backend.tfObjectDetection import tfObjectDetection
 import json
 import config
 import requests
@@ -15,7 +15,7 @@ query = {
     "bool": {
       "must_not": {
         "exists": {
-          "field": "objects"
+          "field": "detected_objects"
         }
       }
     }
@@ -28,7 +28,12 @@ rawData = requests.get('https://66f07727639d4755971f5173fb60e420.europe-west3.gc
 rawData.encoding = 'utf-8'
 dataDict = json.loads(rawData.text)
 artworks = dataDict['hits']['hits']
-print(str(len(artworks))+' artworks for object detection.')
+
+# Printing count of artworks in Elastic without detected objects
+if len(artworks) >= 10000:
+    print('More than 10 000 artworks for object detection.')
+else:
+    print(str(len(artworks)) + ' artworks for object detection.')
 
 # Iterating through artworks list
 
@@ -41,7 +46,7 @@ for artwork in artworks:
     # Preparing json for upload and calling Tensor Flow object detection
     documentData = {
         "doc": {
-            "objects": tfObjectDetection(image),
+            "detected_objects": tfObjectDetection(image),
         },
         "doc_as_upsert": True
     }
@@ -49,3 +54,5 @@ for artwork in artworks:
     writeToElastic(artwork['_id'], documentData) # Writing to Digital Curator Elastic Search DB
     print('Data recorded for: ' + imageUrl)
     os.remove(imageFileName) # Removing image
+
+
