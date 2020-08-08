@@ -1,12 +1,20 @@
 <html>
 
 <head>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v=3">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-480.css') }}?v=1">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-600.css') }}?v=1">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-840.css') }}?v=1">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-960.css') }}?v=1">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-1280.css') }}?v=1">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-1440.css') }}?v=1">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-1600.css') }}?v=1">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <title>Digital Curator 2.0 :)</title>
 </head>
 <body>
 
-<h1>{{ searchedObject }}</h1>
+<h1>Image of {{ searchedObject }}</h1>
 
 {% for artwork in artworksForWeb %}
     <div style="position: relative; width: 50%; margin:5em">
