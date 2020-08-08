@@ -52,7 +52,7 @@ def getArtworksByObject(searchedObject):
     # Query for finding artworks containing selected object
 
     getByObject = {
-        "size": 100,
+        "size": 10,
         "query": {
             "bool": {
                 "must": [
@@ -67,6 +67,12 @@ def getArtworksByObject(searchedObject):
                 "detected_objects.object",
                 "detected_objects.score",
                 "detected_objects.boundBox",
+                "title",
+                "author",
+                "gallery",
+                "gallery",
+                "date_earliest",
+                "date_latest"
             ]
         }
     }
@@ -100,3 +106,4 @@ def index():
                            artworksForWeb=artworksForWeb,
                            searchedObject=searchedObject
                            )
+

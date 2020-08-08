@@ -1,15 +1,77 @@
 @charset "utf-8";
 /* styles applied for all window widths */
 
-body{
-    font-family: "Helvetica Neue", sans-serif;
+html{
+    font-size: 0.75em;
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.5;
 }
-h1{
+body{
+    margin: 0;
+}
+h1, h2{
     font-family: 'Playfair Display', serif;
     font-weight: normal;
-    font-size: 16em;
 }
+h1{
+    font-size: 3.375rem;
+    line-height: 1.125;
+    margin-bottom: 0;
+}
+h2{
+    font-size: 1.5rem;
+}
+p{
+    font-size: 1rem;
+}
+
+/* title screen */
+
+.titleScreen{
+    color: #ffffff;
+    background: #111111;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+.titleScreen h1{
+    margin-bottom: 0;
+}
+.titleScreen h2{
+    margin-top: 0.25rem;
+}
+
+/* title screen end */
+
+/* gallery section */
+
+.gallerySection{
+    background: #ffffff;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+.artwork{
+    width: 100%;
+    margin-bottom: 4rem;
+}
+.imageContainer{
+    width: 100%;
+    position: relative;
+}
+.imageContainer img{
+    width: 100%;
+}
+.artworkDescription{
+    margin: 1rem 0 0 0;
+}
+
+/* gallery section end */
+
 .boundBox{
+    display: none;
     border:3px solid #00ff00;
     position:absolute;
     box-sizing: border-box;

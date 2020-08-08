@@ -1,31 +1,37 @@
-<html>
+{% extends "base.html" %}
+{% block content %}
 
-<head>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v=3">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-480.css') }}?v=1">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-600.css') }}?v=1">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-840.css') }}?v=1">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-960.css') }}?v=1">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-1280.css') }}?v=1">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-1440.css') }}?v=1">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-1600.css') }}?v=1">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <title>Digital Curator 2.0 :)</title>
-</head>
-<body>
-
-<h1>Image of {{ searchedObject }}</h1>
-
-{% for artwork in artworksForWeb %}
-    <div style="position: relative; width: 50%; margin:5em">
-        <img src="{{ artwork['artworkImage']}}" style="width: 100%">
-        {% for object in artwork['artworkDescription']['_source']['detected_objects'] %}
-            <div class="boundBox" style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
-                <span>{{ object['object'] }}: {{ 100*object['score']}}%</span>
-            </div>
-        {% endfor %}
+<div class="container">
+    <div class="titleScreen">
+        <div class="titlePart">
+            <h1 >Image of {{ searchedObject }}</h1>
+            <h2 class="subtitle flexItem">Generated exhibition based on cultural big data</h2>
+        </div>
+        <div class="footerPart">
+            <p class="tileScreenFootnote flexItem">Lukáš Pilka, 2020</p>
+        </div>
     </div>
-{% endfor %}
+    <div class="gallerySection">
+    {% for artwork in artworksForWeb %}
+        <article class="artwork">
+            <div class="imageContainer">
+                <img src="{{ artwork['artworkImage']}}">
+                {% for object in artwork['artworkDescription']['_source']['detected_objects'] %}
+                    <div class="boundBox" style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
+                        <span>{{ object['object'] }}: {{ 100*object['score']}}%</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <p class="artworkDescription">
+            {{ artwork.artworkDescription._source.title }} <br>
+            {{ artwork.artworkDescription._source.author[0] }}<br>
+            {{ artwork.artworkDescription._source.date_earliest }}<br>
+            {{ artwork.artworkDescription._source.gallery }}
+            </p>
+        </article>
+    {% endfor %}
+    </div>
 
-</body>
-</html>
+</div>
+
+{% endblock %}

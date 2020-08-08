@@ -1,2 +1,61 @@
 @charset "utf-8";
 /* styles applied from a window width of 840px */
+
+html{
+    font-size: 1.125em;
+}
+body{
+    display: flex;
+}
+p{
+    font-size: 16px;
+}
+.container{
+    height: 100vh;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+    display: flex;
+}
+
+/* title screen */
+
+.titleScreen{
+    height: 100vh;
+    width: auto;
+    min-width: 75vw;
+    display: flex;
+    padding: 2rem 6rem 2rem 2rem;
+}
+
+/* title screen end */
+
+/* gallery section */
+
+.gallerySection{
+    height: 100vh;
+    width: auto;
+    display: flex;
+    padding: 6rem;
+}
+.artwork{
+    height: 100%;
+    width: auto;
+    display: flex;
+    box-sizing: border-box;
+}
+.imageContainer{
+    height: 100%;
+    width: auto;
+}
+.imageContainer img{
+    height: 100%;
+    width: auto;
+}
+.artworkDescription{
+    margin: 0 5rem 0 1rem;
+    width: 12rem;
+    height: 100%;
+}
+
+/* gallery section end */
