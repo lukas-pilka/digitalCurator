@@ -2,25 +2,28 @@
 {% block content %}
 
 <div class="container">
-    <div class="titleScreen">
+
+	<div class="titleScreen">
         <div class="titlePart">
-            <h1 >Image of a {{ searchedObject }}</h1>
+            <h1 >Image of the {{ searchedObject }}</h1>
             <h2 class="subtitle flexItem">Generated exhibition based on big cultural data</h2>
         </div>
         <div class="footerPart">
-            <p class="tileScreenFootnote flexItem">Lukáš Pilka, 2020</p>
+            <p class="titleScreenFootnote flexItem">Lukáš Pilka, 2020</p>
         </div>
     </div>
-    <div class="gallerySection">
+	<div class="gallerySection">
     {% for artwork in artworksForWeb %}
         <article class="artwork">
             <div class="imageContainer">
                 <img src="{{ artwork['artworkImage']}}">
+                <div class="boundBoxes">
                 {% for object in artwork['artworkDescription']['_source']['detected_objects'] %}
                     <div class="boundBox" style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
-                        <span>{{ object['object'] }}: {{ 100*object['score']}}%</span>
+                        <p>{{ object['object'] }}&nbsp;{{ 100*object['score']}}%</p>
                     </div>
                 {% endfor %}
+                </div>
             </div>
             <p class="artworkDescription">
             {{ artwork.artworkDescription._source.title }} <br>
@@ -31,6 +34,7 @@
         </article>
     {% endfor %}
     </div>
+</div>
 
 </div>
 

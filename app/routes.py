@@ -106,4 +106,6 @@ def index():
                            artworksForWeb=artworksForWeb,
                            searchedObject=searchedObject
                            )
-
+@app.route('/test')
+def test():
+    return render_template('test.html')

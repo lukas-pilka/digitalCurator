@@ -4,27 +4,16 @@
 html{
     font-size: 1.125em;
 }
-body{
-    display: flex;
-}
 p{
-    font-size: 16px;
-}
-.container{
-    height: 100vh;
-    width: 100%;
-    overflow-y: hidden;
-    overflow-x: auto;
-    display: flex;
+    font-size: 14px;
 }
 
 /* title screen */
 
+h1{
+    font-size: 3.375rem;
+}
 .titleScreen{
-    height: 100vh;
-    width: auto;
-    min-width: 75vw;
-    display: flex;
     padding: 2rem 6rem 2rem 2rem;
 }
 
@@ -33,16 +22,7 @@ p{
 /* gallery section */
 
 .gallerySection{
-    height: 100vh;
-    width: auto;
-    display: flex;
     padding: 6rem;
-}
-.artwork{
-    height: 100%;
-    width: auto;
-    display: flex;
-    box-sizing: border-box;
 }
 .imageContainer{
     height: 100%;
@@ -51,11 +31,6 @@ p{
 .imageContainer img{
     height: 100%;
     width: auto;
-}
-.artworkDescription{
-    margin: 0 5rem 0 1rem;
-    width: 12rem;
-    height: 100%;
 }
 
 /* gallery section end */
