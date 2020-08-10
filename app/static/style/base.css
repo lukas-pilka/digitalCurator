@@ -41,9 +41,10 @@ p{
 
 /* container end */
 
-/* title screen */
+/* title & final screen */
 
-.titleScreen{
+.titleScreen,
+.finalScreen{
     color: #ffffff;
     background: #111111;
     padding: 2rem;
@@ -55,13 +56,16 @@ p{
     min-width: 75vw;
     flex-flow: column;
 }
-.titleScreen h1{
+.titleScreen h1,
+.finalScreen h1{
     margin-bottom: 0;
 }
-.titleScreen h2{
+.titleScreen h2,
+.finalScreen h2{
     margin-top: 0.25rem;
 }
-.titleScreenFootnote{
+.titleScreen .footnote,
+.finalScreen .footnote{
     margin-bottom: 0;
 }
 

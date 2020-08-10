@@ -9,9 +9,10 @@
             <h2 class="subtitle flexItem">Generated exhibition based on big cultural data</h2>
         </div>
         <div class="footerPart">
-            <p class="titleScreenFootnote flexItem">Lukáš Pilka, 2020</p>
+            <p class="footnote flexItem">Lukáš Pilka, 2020</p>
         </div>
     </div>
+
 	<div class="gallerySection">
     {% for artwork in artworksForWeb %}
         <article class="artwork">
@@ -39,6 +40,20 @@
         </article>
     {% endfor %}
     </div>
+
+    <div class="finalScreen">
+        <div class="titlePart">
+            <h1>Goodbye</h1>
+        </div>
+        <div class="footerPart">
+            <p class="footnote flexItem">
+                {% for collection in collectionsSum %}
+                    {{collection.key}}: {{collection.doc_count}}&nbsp;artworks<br>
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+
 </div>
 
 </div>

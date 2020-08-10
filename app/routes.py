@@ -105,6 +105,29 @@ def sorter(artwork):
     score = artwork['_source']['top_object_score']
     return (score)
 
+# get collection sum
+
+getCollectionsSum = {
+    "query": {
+        "bool": {
+            "must": {
+                "exists": {
+                    "field": "detected_objects"
+                }
+            }
+        }
+    },
+    "size": 0,
+    "aggs": {
+        "galleries_sum": {
+            "terms": {
+                "field": "gallery.keyword",
+                "size": 100
+            }
+        }
+    }
+}
+
 '''
 artworksForSorting = getArtworksByObject(searchedObject)
 artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)
@@ -124,9 +147,11 @@ def index():
     searchedObject = objectTypes[randomObjectType]
     artworksForSorting = getArtworksByObject(searchedObject)
     artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)[:maxGallerySize]
+    collectionsSum = callElastic(getCollectionsSum)['aggregations']['galleries_sum']['buckets']
     return render_template('index.html',
                            artworksForWeb=artworksSorted,
-                           searchedObject=searchedObject
+                           searchedObject=searchedObject,
+                           collectionsSum=collectionsSum
                            )
 @app.route('/test')
 def test():
