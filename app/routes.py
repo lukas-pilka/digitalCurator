@@ -17,7 +17,6 @@ def callElastic(query):
     dataDict = json.loads(rawData.text)
     return (dataDict)
 
-
 # Query returning frequent object types
 
 getObjectTypes = {
@@ -52,7 +51,7 @@ def getArtworksByObject(searchedObject):
     # Query for finding artworks containing selected object
 
     getByObject = {
-        "size": 10,
+        "size": 10000,
         "query": {
             "bool": {
                 "must": [
@@ -80,17 +79,38 @@ def getArtworksByObject(searchedObject):
     artworks = callElastic(getByObject)['hits']['hits']
     print(str(len(artworks)) + ' results')
 
-    # Preparing data for web
+    # expanding data by imageUrl and topObjectScore
 
-    artworksForWeb = []
+    expandedArtworks = []
 
     for artwork in artworks:
+        # generates image url
         imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/' + artwork['_id'] + '.jpg'  # Creating img url from artwork id
+        artwork['_source']['image_url'] = imageUrl
+        # rounds object score
         for object in artwork['_source']['detected_objects']:
             object['score'] = round(object['score'], 2)
-        artworksForWeb.append({'artworkDescription': artwork, 'artworkImage': imageUrl})
+        # selects searched object with highest score on image and saves it to topObjectScore (It's useful for sorting)
+        topObjectScore = 0
+        for objectSet in artwork['_source']['detected_objects']:
+            if objectSet['object'] == searchedObject and objectSet['score'] >= topObjectScore:
+                topObjectScore = objectSet['score']
+        artwork['_source']['top_object_score'] = topObjectScore
+        expandedArtworks.append(artwork)
+    return expandedArtworks
 
-    return artworksForWeb
+# sorts expandedArtworks by topObjectScore
+
+def sorter(artwork):
+    score = artwork['_source']['top_object_score']
+    return (score)
+
+'''
+artworksForSorting = getArtworksByObject(searchedObject)
+artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)
+for artwork in artworksSorted:
+    print(artwork['_source']['title'],artwork['_source']['top_object_score'])
+'''
 
 # Flask
 
@@ -99,11 +119,13 @@ from flask import render_template
 
 @app.route('/')
 def index():
+    maxGallerySize = 10
     randomObjectType = randrange(len(objectTypes))
     searchedObject = objectTypes[randomObjectType]
-    artworksForWeb = getArtworksByObject(searchedObject)
+    artworksForSorting = getArtworksByObject(searchedObject)
+    artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)[:maxGallerySize]
     return render_template('index.html',
-                           artworksForWeb=artworksForWeb,
+                           artworksForWeb=artworksSorted,
                            searchedObject=searchedObject
                            )
 @app.route('/test')

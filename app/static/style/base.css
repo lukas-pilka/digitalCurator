@@ -95,6 +95,13 @@ p{
     margin: 0 5rem 0 1rem;
     width: 12rem;
     height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: column;
+}
+.artworkDescription .generatedInfo{
+    color: #00ff00;
+    opacity: 0;
 }
 .artwork .boundBox{
     border:2px solid #00ff00;
@@ -124,10 +131,12 @@ p{
 .artwork .boundbox:nth-child(19) {transition: 0.25s 1.8s ease;}
 .artwork .boundbox:nth-child(20) {transition: 0.25s 1.9s ease;}
 
-.artwork.focuseIn .boundBox{
+.artwork.focuseIn .boundBox,
+.artwork.focuseIn .generatedInfo{
     opacity: 1;
 }
-.artwork.focuseIn.focuseOut .boundBox{
+.artwork.focuseIn.focuseOut .boundBox,
+.artwork.focuseIn.focuseOut .generatedInfo{
     opacity: 0;
 }
 .boundBox p{

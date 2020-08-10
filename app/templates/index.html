@@ -16,21 +16,26 @@
     {% for artwork in artworksForWeb %}
         <article class="artwork">
             <div class="imageContainer">
-                <img src="{{ artwork['artworkImage']}}">
+                <img src="{{ artwork._source.image_url }}">
                 <div class="boundBoxes">
-                {% for object in artwork['artworkDescription']['_source']['detected_objects'] %}
+                {% for object in artwork['_source']['detected_objects'] %}
                     <div class="boundBox" style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
-                        <p>{{ object['object'] }}&nbsp;{{ 100*object['score']}}%</p>
+                        <p>{{ object['object'] }}&nbsp;{{ 100*object['score']}}</p>
                     </div>
                 {% endfor %}
                 </div>
             </div>
-            <p class="artworkDescription">
-            {{ artwork.artworkDescription._source.title }} <br>
-            {{ artwork.artworkDescription._source.author[0] }}<br>
-            {{ artwork.artworkDescription._source.date_earliest }}<br>
-            {{ artwork.artworkDescription._source.gallery }}
-            </p>
+            <div class="artworkDescription">
+                <p class="museumInfo">
+                    {{ artwork._source.title }} <br>
+                    {{ artwork._source.author[0] }}<br>
+                    {{ artwork._source.date_earliest }}<br>
+                    {{ artwork._source.gallery }}<br>
+                </p>
+                <p class="generatedInfo">
+                    {{ searchedObject }}:&nbsp;{{ 100*artwork._source.top_object_score }}%
+                </p>
+            </div>
         </article>
     {% endfor %}
     </div>
