@@ -13,9 +13,23 @@
         </div>
     </section>
 
+    <section class="titleImage artwork">
+        <div class="imageContainer">
+            <img src="{{ artworksForWeb[0]._source.image_url }}">
+            <div class="boundBoxes">
+                {% for object in artworksForWeb[0]._source.detected_objects %}
+                <div class="boundBox"
+                     style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
+                    <p>{{ object['object'] }}&nbsp;{{ 100*object['score']}}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
     <section class="mainSection galleryIntro">
         <div class="introPart introTitle ">
-            <h2>{{ searchedObject }}, Data & History</h2>
+            <h2>Data & History</h2>
             <p class="subtitle">How the proportion of images with the {{ searchedObject }} has changed over the history</p>
         </div>
         <div class="introPart chart">
@@ -28,28 +42,28 @@
     </section>
 
     <section class="mainSection galleryShowcase">
-        {% for artwork in artworksForWeb %}
+        {% for i in range(1,artworksForWeb|length) %}
         <article class="artwork">
             <div class="imageContainer">
-                <img src="{{ artwork._source.image_url }}">
+                <img src="{{ artworksForWeb[i]._source.image_url }}">
                 <div class="boundBoxes">
-                    {% for object in artwork['_source']['detected_objects'] %}
+                    {% for object in artworksForWeb[i]._source.detected_objects %}
                     <div class="boundBox"
                          style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
-                        <p>{{ object['object'] }}&nbsp;{{ 100*object['score']}}</p>
+                        <p>{{ object.object }}&nbsp;{{ 100*object.score}}</p>
                     </div>
                     {% endfor %}
                 </div>
             </div>
             <div class="artworkDescription">
                 <p class="museumInfo">
-                    {{ artwork._source.title }} <br>
-                    {{ artwork._source.author[0] }}<br>
-                    {{ artwork._source.date_earliest }}<br>
-                    {{ artwork._source.gallery }}<br>
+                    {{ artworksForWeb[i]._source.title }} <br>
+                    {{ artworksForWeb[i]._source.author[0] }}<br>
+                    {{ artworksForWeb[i]._source.date_earliest }}<br>
+                    {{ artworksForWeb[i]._source.gallery }}<br>
                 </p>
                 <p class="generatedInfo">
-                    {{ searchedObject }}:&nbsp;{{ 100*artwork._source.top_object_score }}%
+                    {{ searchedObject }}:&nbsp;{{ 100*artworksForWeb[i]._source.top_object_score }}%
                 </p>
             </div>
         </article>

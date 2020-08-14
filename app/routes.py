@@ -26,7 +26,7 @@ getObjectTypes = {
         "Total mediums": {
             "terms": {
                 "field": "detected_objects.object.keyword",
-                "size": 100
+                "size": 1000
             }
         }
     }
@@ -209,7 +209,7 @@ from flask import render_template
 
 @app.route('/')
 def index():
-    maxGallerySize = 5
+    maxGallerySize = 10
     randomObjectType = randrange(len(objectTypes))
     searchedObject = objectTypes[randomObjectType]
     artworksForSorting = getArtworksByObject(searchedObject)
