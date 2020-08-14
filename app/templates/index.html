@@ -3,9 +3,9 @@
 
 <div class="container">
 
-	<div class="titleScreen">
+    <div class="titleScreen">
         <div class="titlePart">
-            <h1 >Image of the {{ searchedObject }}</h1>
+            <h1>Image of the {{ searchedObject }}</h1>
             <h2 class="subtitle flexItem">Generated exhibition based on big cultural data</h2>
         </div>
         <div class="footerPart">
@@ -13,17 +13,22 @@
         </div>
     </div>
 
-	<div class="gallerySection">
-    {% for artwork in artworksForWeb %}
+    <div style="width: 1000px;">
+        <canvas id="line-chart" width="800" height="450"></canvas>
+    </div>
+
+    <div class="gallerySection">
+        {% for artwork in artworksForWeb %}
         <article class="artwork">
             <div class="imageContainer">
                 <img src="{{ artwork._source.image_url }}">
                 <div class="boundBoxes">
-                {% for object in artwork['_source']['detected_objects'] %}
-                    <div class="boundBox" style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
+                    {% for object in artwork['_source']['detected_objects'] %}
+                    <div class="boundBox"
+                         style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
                         <p>{{ object['object'] }}&nbsp;{{ 100*object['score']}}</p>
                     </div>
-                {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
             <div class="artworkDescription">
@@ -38,7 +43,7 @@
                 </p>
             </div>
         </article>
-    {% endfor %}
+        {% endfor %}
     </div>
 
     <div class="finalScreen">
@@ -48,7 +53,7 @@
         <div class="footerPart">
             <p class="footnote flexItem">
                 {% for collection in collectionsSum %}
-                    {{collection.key}}: {{collection.doc_count}}&nbsp;artworks<br>
+                {{collection.key}}: {{collection.doc_count}}&nbsp;artworks<br>
                 {% endfor %}
             </p>
         </div>
@@ -56,6 +61,61 @@
 
 </div>
 
-</div>
+<script>
+    // Global parameters for all charts:
+    Chart.defaults.global.responsive = false;
+    Chart.defaults.global.defaultFontColor = '#111111';
+    Chart.defaults.global.defaultFontSize = 16;
+    Chart.defaults.global.defaultFontFamily = "'Montserrat', sans-serif";
+    Chart.defaults.global.tooltips.backgroundColor = "#111111";
+    Chart.defaults.global.tooltips.titleFontSize = 16;
+    Chart.defaults.global.tooltips.bodyFontSize = 16;
+    Chart.defaults.global.tooltips.cornerRadius = 0;
+    Chart.defaults.global.tooltips.xPadding = 20;
+    Chart.defaults.global.tooltips.yPadding = 20;
+    Chart.defaults.global.tooltips.borderColor = '#111111';
+    Chart.defaults.global.tooltips.borderWidth = 1;
+    Chart.defaults.global.tooltips.displayColors = false;
+    Chart.defaults.scale.gridLines.display = false;
+    Chart.defaults.scale.ticks.beginAtZero = true;
+
+    // Bar chart
+    new Chart(document.getElementById("line-chart"), {
+        type: 'line',
+        data: {
+            labels: {{artworksInPeriod[0]}},
+            datasets: [
+                {
+                    backgroundColor: "rgba(255, 255, 255, 0)",
+                    pointBackgroundColor: "#111111",
+                    borderColor: "#111111",
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    data: {{artworksInPeriod[1]}}
+                }
+            ]
+        },
+        options: {
+            legend: {display: false},
+            title: {display: false},
+            tooltips: {
+                callbacks: {
+                    label: (tooltipItems, data) => {
+                        return data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index] + ' %';
+                    }
+                },
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function(value, index, values) {
+                            return value + ' %';
+                        }
+                    }
+                }]
+            }
+        },
+    });
+</script>
 
 {% endblock %}
