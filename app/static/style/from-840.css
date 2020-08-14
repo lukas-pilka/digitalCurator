@@ -4,33 +4,15 @@
 html{
     font-size: 1.125em;
 }
-p{
-    font-size: 14px;
-}
-
-/* title screen */
-
 h1{
     font-size: 3.375rem;
 }
-.titleScreen{
-    padding: 2rem 6rem 2rem 2rem;
+p{
+    font-size: 14px;
 }
-
-/* title screen end */
-
-/* gallery section */
-
-.gallerySection{
-    padding: 6rem;
+.galleryIntro .detailInformation{
+    min-width: 25vw;
 }
-.imageContainer{
-    height: 100%;
-    width: auto;
+.artwork{
+    height: 75%;
 }
-.imageContainer img{
-    height: 100%;
-    width: auto;
-}
-
-/* gallery section end */

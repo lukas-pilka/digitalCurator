@@ -209,7 +209,7 @@ from flask import render_template
 
 @app.route('/')
 def index():
-    maxGallerySize = 50
+    maxGallerySize = 5
     randomObjectType = randrange(len(objectTypes))
     searchedObject = objectTypes[randomObjectType]
     artworksForSorting = getArtworksByObject(searchedObject)

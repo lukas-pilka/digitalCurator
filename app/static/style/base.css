@@ -10,82 +10,108 @@ html{
 body{
     margin: 0;
     display: flex;
+    overflow-y: hidden;
+    overflow-x: auto;
 }
 h1, h2{
     font-family: 'Playfair Display', serif;
     font-weight: normal;
+    line-height: 1.125;
 }
 h1{
     font-size: 2.25rem;
-    line-height: 1.125;
-    margin-bottom: 0;
 }
 h2{
-    font-size: 1rem;
+    font-size: 2.25rem;
 }
 p{
     font-size: 1rem;
+}
+.subtitle,
+.subtitle{
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    font-family: 'Playfair Display', serif;
 }
 
 /* container */
 
 .container {
-    position: relative;
-    z-index: 1;
     display: flex;
     height: 100vh;
     width: 100%;
-    overflow-y: hidden;
-    overflow-x: auto;
+}
+.mainSection {
+    padding: 2rem 6rem 2rem 2rem;
+    display: flex;
+    width: auto;
+    box-sizing: border-box;
+    height: 100%;
 }
 
 /* container end */
 
-/* title & final screen */
+/* title screen */
 
-.titleScreen,
-.finalScreen{
+.titleScreen{
     color: #ffffff;
     background: #111111;
-    padding: 2rem;
-    display: flex;
     justify-content: space-between;
-    box-sizing: border-box;
-    height: 100vh;
-    width: auto;
     min-width: 75vw;
     flex-flow: column;
 }
-.titleScreen h1,
-.finalScreen h1{
-    margin-bottom: 0;
+.titleScreen h1{
+    margin: 0;
 }
-.titleScreen h2,
-.finalScreen h2{
-    margin-top: 0.25rem;
-}
-.titleScreen .footnote,
-.finalScreen .footnote{
+.titleScreen .footnote{
     margin-bottom: 0;
 }
 
 /* title screen end */
 
-/* gallery section */
+/* gallery intro */
 
-.gallerySection{
+.galleryIntro {
+    background: #ddd;
+}
+.galleryIntro .introPart{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    margin-right: 6rem;
+}
+.galleryIntro .introPart:last-child{
+    margin-right: 0;
+}
+.galleryIntro .introTitle{
+    min-width: 50vw;
+}
+.galleryIntro .detailInformation{
+    min-width: 55vw;
+    max-height: 100%;
+    overflow-y: auto;
+}
+.galleryIntro h2{
+    margin: 0;
+}
+
+/* gallery intro end */
+
+/* gallery showcase */
+
+.galleryShowcase{
     background: #ffffff;
-    padding: 2rem;
-    height: 100vh;
+    align-items: center;
+    display: flex;
+}
+.artwork{
+    height: 50%;
     width: auto;
     display: flex;
     box-sizing: border-box;
 }
-.artwork{
-    height: 100%;
-    width: auto;
-    display: flex;
-    box-sizing: border-box;
+.artwork:first-child{
+    margin-left: 6rem;
 }
 .imageContainer{
     position: relative;
@@ -149,4 +175,22 @@ p{
     margin: 0.25rem 0.5rem 0.25rem 0.5rem;
 }
 
-/* gallery section end */
+/* gallery showcase end */
+
+/* title & final screen */
+
+.finalScreen{
+    color: #ffffff;
+    background: #111111;
+    justify-content: space-between;
+    min-width: 75vw;
+    flex-flow: column;
+}
+.finalScreen h1{
+    margin-bottom: 0;
+}
+.finalScreen .footnote{
+    margin-bottom: 0;
+}
+
+/* title screen end */

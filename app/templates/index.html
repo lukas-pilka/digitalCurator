@@ -3,21 +3,31 @@
 
 <div class="container">
 
-    <div class="titleScreen">
+    <section class="mainSection titleScreen">
         <div class="titlePart">
             <h1>Image of the {{ searchedObject }}</h1>
-            <h2 class="subtitle flexItem">Generated exhibition based on big cultural data</h2>
+            <p class="subtitle flexItem">Generated exhibition based on big cultural data</p>
         </div>
         <div class="footerPart">
             <p class="footnote flexItem">Lukáš Pilka, 2020</p>
         </div>
-    </div>
+    </section>
 
-    <div style="width: 1000px;">
-        <canvas id="line-chart" width="800" height="450"></canvas>
-    </div>
+    <section class="mainSection galleryIntro">
+        <div class="introPart introTitle ">
+            <h2>{{ searchedObject }}, Data & History</h2>
+            <p class="subtitle">How the proportion of images with the {{ searchedObject }} has changed over the history</p>
+        </div>
+        <div class="introPart chart">
+            <canvas id="line-chart" width="800" height="450"></canvas>
+        </div>
+        <article class="introPart detailInformation">
+            <p>In 2015, Lev Manovich described Digital Art History as a set of methodologies using quantitative analysis to explore cultural artifacts. DAH represents a new approach to looking at history through mathematical and statistical ways with using cultural databases, digitized museum and archive collections, metadata, texts on art, and virtual reproductions of artworks. One of the methodologies in Digital Art History is visual analyzes based on current technologies of artificial intelligence and machine image recognition. Similar tools such as those used to navigate self-driving cars, identify people in photos, or classify medical images can also be used to look at historical paintings, graphics or drawings.</p>
+            <p>Art historian is a person who can only remember hundreds of works of art in his or her memory, which he or she is able to recall and work with them. But are these the most important works? Are there other works that are much more relevant to the topic and whose finding can completely change meaning and message? Thanks to neural networks, it is possible to explore image databases of hundreds of thousands or millions of items, navigate them in large cultural data, and look at the history from a new perspective. How will our notion of a certain era change if it is based not only on a few canonical works but on all digitized works?</p>
+        </article>
+    </section>
 
-    <div class="gallerySection">
+    <section class="mainSection galleryShowcase">
         {% for artwork in artworksForWeb %}
         <article class="artwork">
             <div class="imageContainer">
@@ -44,9 +54,9 @@
             </div>
         </article>
         {% endfor %}
-    </div>
+    </section>
 
-    <div class="finalScreen">
+    <div class="mainSection finalScreen">
         <div class="titlePart">
             <h1>Goodbye</h1>
         </div>
