@@ -5,7 +5,7 @@ ID | OFFICIAL COUNT | HIGHEST FOUND
 CZK:US.K- | Kresba 2 669   | 3 038
 CZK:US.M- | Malba 1 920    | 3 810
 CZK:US.F- | Fotografie 633 | 710
-CZK:US.G- | Grafika 913    | 4910
+CZK:US.G- | Grafika 913    | 5492
 
 
 **MGB Collections**
@@ -61,6 +61,25 @@ artist_signature | str
 licence | str
 image_id | str
 gallery_url | str 
+
+**work_type**
+- graphic print (grafika, Grafika)
+- drawing (kresba, Zeichnung)
+- pencil drawing  (tužka)
+- charcoal drawing
+- ink drawing
+- painting (maliarstvo, Gemälde, obraz)
+- oil painting (olej)
+- watercolor painting
+- photography (fotografia, fotografie černobílá, dokumentárna fotografia, fotografie černobílá zvětšenina)
+- applied art (úžitkové umenie, umelecké remeslo, kov, drevo)
+- sculpture (sochárstvo)
+- architecture (architektúra)
+- new media (intermédiá)
+- books (bibliofília a staré tlače)
+
+- other (iné médiá, iné)
+
 
 
 

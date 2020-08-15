@@ -86,11 +86,33 @@ print(tfObjectDetection(Image.open('temp/WU-CZE-4RG-K1320.jpg')))
 query = {
   "query": {
     "bool": {
-      "must_not": {
-        "exists": {
-          "field": "detected_objects"
+      "must": [
+        {
+          "bool": {
+            "must_not": {
+              "exists": {
+                "field": "detected_objects"
+              }
+            }
+          }
+        },
+        {
+          "bool": {
+            "should": [
+              {"term": {"work_type": "graphic"}},
+              {"term": {"work_type": "painting"}},
+              {"term": {"work_type": "drawing"}}
+            ]
+          }
+        },
+        {
+          "bool": {
+            "must": [
+              {"term": {"is_free": True}}
+            ]
+          }
         }
-      }
+      ]
     }
   }
 }

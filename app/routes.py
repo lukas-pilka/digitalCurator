@@ -26,7 +26,7 @@ getObjectTypes = {
         "Total mediums": {
             "terms": {
                 "field": "detected_objects.object.keyword",
-                "size": 1000
+                "size": 10000
             }
         }
     }
@@ -57,7 +57,23 @@ def getArtworksByObject(searchedObject):
             "bool": {
                 "must": [
                     {"match": {"detected_objects.object": searchedObject}}
-                    # {"match": {"objects.object": "Animal"}}
+                    ,
+                    {
+                        "bool": {
+                            "must": [
+                                {"exists": {"field": "detected_objects"}},
+                                {
+                                    "bool": {
+                                        "should": [
+                                            {"term": {"work_type": "graphic"}},
+                                            {"term": {"work_type": "painting"}},
+                                            {"term": {"work_type": "drawing"}}
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
                 ]
             }
         },

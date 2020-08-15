@@ -22,7 +22,7 @@ def getTypesFromElastic():
         }
     }
 
-    payload = {'size': 1000}
+    payload = {'size': 10000}
     rawData = requests.get('https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks/_search',
                            auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=queryTypes)
     rawData.encoding = 'utf-8'
@@ -48,8 +48,8 @@ query = {
     }
 }
 
-payload = {'size': 1000}
-rawData = requests.get('https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/test/_search',
+payload = {'size': 10000}
+rawData = requests.get('https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks/_search',
                        auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
 rawData.encoding = 'utf-8'
 dataDict = json.loads(rawData.text)
