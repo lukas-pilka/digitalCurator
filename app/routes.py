@@ -2,6 +2,7 @@
 
 import requests
 from requests.auth import HTTPBasicAuth
+from random import randrange
 import json
 import config
 
@@ -33,20 +34,12 @@ getObjectTypes = {
 }
 
 objectTypesDict = callElastic(getObjectTypes)
-minObjectsLimit = 100
 objectTypes = []
 
 # Selecting object types with more than 10 presences
 for object in objectTypesDict['aggregations']['Total mediums']['buckets']:
-    if object['doc_count'] >= minObjectsLimit:
+    if object['doc_count'] >= config.minObjectsLimit:
         objectTypes.append(object['key'])
-
-# Selecting Random Object Type
-from random import randrange
-
-randomObjectType = randrange(len(objectTypes))
-searchedObject = objectTypes[randomObjectType]
-
 
 def getArtworksByObject(searchedObject):
     # Query for finding artworks containing selected object
@@ -199,11 +192,9 @@ def objectsByPeriods(searchedObject,interval):
     countAll = callElastic(allArtworksByPeriod)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
     countWithObject = callElastic(realatedArtworksByPeriod)['aggregations']['periods']['buckets'] # Gets count of artworks copntained selected object in specific periods
 
-    minArtworksLimit = 10
-
     relatedPeriods = []
     for periodSet in countWithObject: # Gets labels
-        if periodSet['doc_count'] > minArtworksLimit or len(relatedPeriods) > 0: # cuts periods with small number of artworks but only from beginning of timeline
+        if periodSet['doc_count'] > config.minArtworksLimit or len(relatedPeriods) > 0: # cuts periods with small number of artworks but only from beginning of timeline
             relatedPeriods.append(periodSet['key'])
     relatedArtworks = [periodSet['doc_count'] for periodSet in countWithObject if periodSet['key'] in relatedPeriods] # check if period is in relatedPeriods and if so, it adds cout to related artworks
     totalArtworks = [periodSet['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods] # check if period is in relatedPeriods and if so, it adds count to totoal artworks
@@ -225,13 +216,15 @@ from flask import render_template
 
 @app.route('/')
 def index():
-    maxGallerySize = 10
-    randomObjectType = randrange(len(objectTypes))
-    searchedObject = objectTypes[randomObjectType]
+    randomObjectType = randrange(len(objectTypes)) # Selecting Random Object Type
+    if config.searchedObject == None:
+        searchedObject = objectTypes[randomObjectType]
+    else:
+        searchedObject = config.searchedObject
     artworksForSorting = getArtworksByObject(searchedObject)
-    artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)[:maxGallerySize]
+    artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)[:config.maxGallerySize]
     collectionsSum = callElastic(getCollectionsSum)['aggregations']['galleries_sum']['buckets']
-    artworksInPeriod = objectsByPeriods(searchedObject,50)
+    artworksInPeriod = objectsByPeriods(searchedObject,config.periodLength)
     return render_template('index.html',
                            artworksForWeb=artworksSorted,
                            searchedObject=searchedObject,

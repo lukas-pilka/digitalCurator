@@ -63,22 +63,25 @@ image_id | str
 gallery_url | str 
 
 **work_type**
-- graphic print (grafika, Grafika)
+- graphic print (grafika, Grafika, Druck, počítačová grafika)
 - drawing (kresba, Zeichnung)
-- pencil drawing  (tužka)
+- pencil drawing  (tužka, tužka černá)
 - charcoal drawing
-- ink drawing
-- painting (maliarstvo, Gemälde, obraz)
+- pastel drawing
+- ink drawing (kresba perem tuš)
+- painting (maliarstvo, Tafelbild (Flügelretabel),maliarstvo insitné, tempera, Gemälde, obraz, Tafelbild, maliarstvo ľudové)
 - oil painting (olej)
 - watercolor painting
-- photography (fotografia, fotografie černobílá, dokumentárna fotografia, fotografie černobílá zvětšenina)
+- photography (fotografia, fotografie černobílá, dokumentárna fotografia, fotografie černobílá zvětšenina, Farbfoto)
 - applied art (úžitkové umenie, umelecké remeslo, kov, drevo)
-- sculpture (sochárstvo)
+- sculpture (sochárstvo, Büste, sochárstvo insitné, Skulptur)
 - architecture (architektúra)
 - new media (intermédiá)
-- books (bibliofília a staré tlače)
+- book (bibliofília a staré tlače)
+- woodcut (dřevoryt (xylografie), )
+- lithography (litografie)
 
-- other (iné médiá, iné)
+- other (iné médiá, iné, kombinovaná technika)
 
 
 

@@ -50,7 +50,7 @@
                     {% for object in artworksForWeb[i]._source.detected_objects %}
                     <div class="boundBox"
                          style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
-                        <p>{{ object.object }}&nbsp;{{ 100*object.score}}</p>
+                        <p>{{ object.object }}&nbsp;{{ 100*object.score }}</p>
                     </div>
                     {% endfor %}
                 </div>
