@@ -33,7 +33,17 @@
             <p class="subtitle">How the proportion of images with the {{ searchedObject }} has changed over the history</p>
         </div>
         <div class="introPart chart">
+            {% set chartLineColors = ['#111','#444','#777','#aaa','#ddd'] %}
             <canvas id="line-chart" width="800" height="450"></canvas>
+            <p class="chartLegend">
+            {% for i in range(artworksInPeriod.artworksWithObject|length) %}
+                <span class="hint">
+                    <span class="colorDot" style="background:{{chartLineColors[i]}}";></span>
+                    {{artworksInPeriod.artworksWithObject[i][0]}}
+                </span>
+            {% endfor %}
+            </p>
+
         </div>
         <article class="introPart detailInformation">
             <p>In 2015, Lev Manovich described Digital Art History as a set of methodologies using quantitative analysis to explore cultural artifacts. DAH represents a new approach to looking at history through mathematical and statistical ways with using cultural databases, digitized museum and archive collections, metadata, texts on art, and virtual reproductions of artworks. One of the methodologies in Digital Art History is visual analyzes based on current technologies of artificial intelligence and machine image recognition. Similar tools such as those used to navigate self-driving cars, identify people in photos, or classify medical images can also be used to look at historical paintings, graphics or drawings.</p>
@@ -85,7 +95,10 @@
 
 </div>
 
+
+
 <script>
+
     // Global parameters for all charts:
     Chart.defaults.global.responsive = false;
     Chart.defaults.global.defaultFontColor = '#111111';
@@ -99,7 +112,7 @@
     Chart.defaults.global.tooltips.yPadding = 20;
     Chart.defaults.global.tooltips.borderColor = '#111111';
     Chart.defaults.global.tooltips.borderWidth = 1;
-    Chart.defaults.global.tooltips.displayColors = false;
+    Chart.defaults.global.tooltips.displayColors = true;
     Chart.defaults.scale.gridLines.display = false;
     Chart.defaults.scale.ticks.beginAtZero = true;
 
@@ -107,26 +120,35 @@
     new Chart(document.getElementById("line-chart"), {
         type: 'line',
         data: {
-            labels: {{artworksInPeriod[0]}},
+            labels: {{artworksInPeriod.periods}},
             datasets: [
+
+                {% for i in range(artworksInPeriod.artworksWithObject|length) %}
                 {
+                    label: "{{artworksInPeriod.artworksWithObject[i][0]}}",
                     backgroundColor: "rgba(255, 255, 255, 0)",
-                    pointBackgroundColor: "#111111",
-                    borderColor: "#111111",
+                    pointBackgroundColor: "{{chartLineColors[i]}}",
+                    borderColor: "{{chartLineColors[i]}}",
                     pointRadius: 4,
                     pointHoverRadius: 6,
-                    data: {{artworksInPeriod[1]}}
-                }
+                    data: {{artworksInPeriod.artworksWithObject[i][2]}}
+                },
+                {% endfor%}
+
             ]
         },
         options: {
             legend: {display: false},
-            title: {display: false},
+            title: {display: true},
             tooltips: {
                 callbacks: {
-                    label: (tooltipItems, data) => {
-                        return data.datasets[tooltipItems.datasetIndex].data[tooltipItems.index] + ' %';
-                    }
+                    title: function(tooltipItems, data) {
+               return data.datasets[tooltipItems[0].datasetIndex].label;
+						},
+				label: function(tooltipItem, data) {
+                        return ' '+tooltipItem.yLabel.toString() + ' %';
+
+						}
                 },
             },
             scales: {

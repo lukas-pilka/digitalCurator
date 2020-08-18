@@ -9,12 +9,6 @@ from PIL import Image
 
 def tfObjectDetection(imageFile):
 
-    # Imports and function definitions
-
-    # For running inference on the TF-Hub module.
-    import tensorflow as tf
-    import tensorflow_hub as hub
-
     # For downloading the image.
     import tempfile
     from PIL import Image
@@ -33,12 +27,6 @@ def tfObjectDetection(imageFile):
         pil_image_rgb = pil_image.convert("RGB")
         pil_image_rgb.save(filename, format="JPEG", quality=90)
         return filename
-
-    # Apply module
-
-    module_handle = "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1" #@param ["https://tfhub.dev/google/openimages_v4/ssd/mobilenet_v2/1", "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1"]
-
-    detector = hub.load(module_handle).signatures['default']
 
     def load_img(path):
         img = tf.io.read_file(path)
@@ -129,6 +117,16 @@ if len(artworks) >= 10000:
     print('More than 10 000 artworks for object detection.')
 else:
     print(str(len(artworks)) + ' artworks for object detection.')
+
+
+
+# Imports for running inference on the TF-Hub module.
+import tensorflow as tf
+import tensorflow_hub as hub
+
+# Apply module
+module_handle = "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1" #@param ["https://tfhub.dev/google/openimages_v4/ssd/mobilenet_v2/1", "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1"]
+detector = hub.load(module_handle).signatures['default']
 
 # Iterating through artworks list
 

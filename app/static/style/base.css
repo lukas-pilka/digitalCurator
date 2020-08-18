@@ -102,6 +102,18 @@ p{
 .galleryIntro h2{
     margin: 0;
 }
+.chartLegend{
+    text-align: center;
+}
+.chartLegend .hint{
+    margin-right: 1rem;
+}
+.chartLegend .hint span{
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 1rem;
+}
 
 /* gallery intro end */
 

@@ -146,35 +146,37 @@ getCollectionsSum = {
 
 # counting objects in periods
 
-def objectsByPeriods(searchedObject,interval):
-    allArtworksByPeriod = {
-        "size": 0,
-        "query": {
-            "bool": {
-                "must": {
-                    "exists": {
-                        "field": "detected_objects"
-                    }
-                }
-            }
-        },
-        "aggs": {
-            "periods": {
-                "histogram": {
-                    "field": "date_latest",
-                    "interval": interval
-                }
-            }
-        }
-    }
-    realatedArtworksByPeriod = {
+def objectsByPeriods(objectList,interval):
+
+    # preparing object filters for query
+    aggregations = {}
+    def prepareQuery(objectList):
+        for object in objectList:
+            aggregations[object] = {"filter": {"match_phrase": {"detected_objects.object": object}}}
+    prepareQuery(objectList)
+
+    # completing query
+    artworksByPeriod = {
         "size": 0,
         "query": {
             "bool": {
                 "must": [
                     {
-                        "match": {
-                            "detected_objects.object": searchedObject
+                        "bool": {
+                            "must": {
+                                "exists": {
+                                    "field": "detected_objects"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "bool": {
+                            "should": [
+                                {"match_phrase": {"work_type": "graphic print"}},
+                                {"match_phrase": {"work_type": "painting"}},
+                                {"match_phrase": {"work_type": "drawing"}}
+                            ]
                         }
                     }
                 ]
@@ -182,6 +184,8 @@ def objectsByPeriods(searchedObject,interval):
         },
         "aggs": {
             "periods": {
+                "aggs": aggregations
+                ,
                 "histogram": {
                     "field": "date_latest",
                     "interval": interval
@@ -189,25 +193,40 @@ def objectsByPeriods(searchedObject,interval):
             }
         }
     }
-    countAll = callElastic(allArtworksByPeriod)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
-    countWithObject = callElastic(realatedArtworksByPeriod)['aggregations']['periods']['buckets'] # Gets count of artworks copntained selected object in specific periods
+    countAll = callElastic(artworksByPeriod)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
 
     relatedPeriods = []
-    for periodSet in countWithObject: # Gets labels
+    for periodSet in countAll: # Gets labels
         if periodSet['doc_count'] > config.minArtworksLimit or len(relatedPeriods) > 0: # cuts periods with small number of artworks but only from beginning of timeline
             relatedPeriods.append(periodSet['key'])
-    relatedArtworks = [periodSet['doc_count'] for periodSet in countWithObject if periodSet['key'] in relatedPeriods] # check if period is in relatedPeriods and if so, it adds cout to related artworks
+
     totalArtworks = [periodSet['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods] # check if period is in relatedPeriods and if so, it adds count to totoal artworks
-    relatedPercents = [round(relatedArtworks[item] / totalArtworks[item],3) * 100 for item in range(len(totalArtworks))] # Counting percent of artworks copntained selected object in comparison with total artworks
-    artworksInPeriod = [relatedPeriods, relatedPercents, relatedArtworks, totalArtworks]
+
+    artworksInPeriod = {'periods': relatedPeriods, 'totalArtworks': totalArtworks, 'artworksWithObject': []}
+
+    for object in objectList:
+        artworksWithObject = [periodSet[object]['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods]  # check if period is in relatedPeriods and if so, it adds count to related artworks
+        objectPercents = [round(artworksWithObject[item] / totalArtworks[item], 3) * 100 for item in range(len(totalArtworks))]  # Counting percent of artworks copntained selected object in comparison with total artworks
+        artworksInPeriod['artworksWithObject'].append([object, artworksWithObject, objectPercents])
+
     return artworksInPeriod
 
+
 '''
-artworksForSorting = getArtworksByObject(searchedObject)[0]
-artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)
-for artwork in artworksSorted:
-    print(artwork['_source']['title'],artwork['_source']['top_object_score'])
+
+randomObjectType = randrange(len(objectTypes)) # Selecting Random Object Type
+if config.searchedObject == None:
+    searchedObject = objectTypes[randomObjectType]
+else:
+    searchedObject = config.searchedObject
+artworksForSorting = getArtworksByObject(searchedObject)
+artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)[:config.maxGallerySize]
+collectionsSum = callElastic(getCollectionsSum)['aggregations']['galleries_sum']['buckets']
+artworksInPeriod = objectsByPeriods([searchedObject],config.periodLength)
+for i in artworksInPeriod:
+    print(i)
 '''
+
 
 # Flask
 
@@ -224,7 +243,7 @@ def index():
     artworksForSorting = getArtworksByObject(searchedObject)
     artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)[:config.maxGallerySize]
     collectionsSum = callElastic(getCollectionsSum)['aggregations']['galleries_sum']['buckets']
-    artworksInPeriod = objectsByPeriods(searchedObject,config.periodLength)
+    artworksInPeriod = objectsByPeriods(['man','woman','boy','girl'],config.periodLength)
     return render_template('index.html',
                            artworksForWeb=artworksSorted,
                            searchedObject=searchedObject,
