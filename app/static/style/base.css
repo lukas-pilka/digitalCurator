@@ -82,25 +82,25 @@ p{
 .galleryIntro {
     background: #ddd;
 }
-.galleryIntro .introPart{
+.introPart{
     display: flex;
     flex-flow: column;
     justify-content: center;
     margin-right: 6rem;
 }
-.galleryIntro .introPart:last-child{
+.introPart:last-child{
     margin-right: 0;
 }
-.galleryIntro .introTitle{
+.introTitle{
     min-width: 50vw;
 }
-.galleryIntro .detailInformation{
+.introTitle h2{
+    margin: 0;
+}
+.detailInformation{
     min-width: 55vw;
     max-height: 100%;
     overflow-y: auto;
-}
-.galleryIntro h2{
-    margin: 0;
 }
 .chartLegend{
     text-align: center;

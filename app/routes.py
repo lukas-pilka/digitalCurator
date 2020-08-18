@@ -21,104 +21,113 @@ def callElastic(query):
 
 # Query returning frequent object types
 
-getObjectTypes = {
-    "size": 0,
-    "aggs": {
-        "Total mediums": {
-            "terms": {
-                "field": "detected_objects.object.keyword",
-                "size": 10000
+def getRandomObjectTypes(countOfObjects):
+
+    objectTypesQuery = {
+        "size": 0,
+        "aggs": {
+            "Total mediums": {
+                "terms": {
+                    "field": "detected_objects.object.keyword",
+                    "size": 10000
+                }
             }
         }
     }
-}
 
-objectTypesDict = callElastic(getObjectTypes)
-objectTypes = []
+    objectTypesDict = callElastic(objectTypesQuery)
+    objectTypes = []
 
-# Selecting object types with more than 10 presences
-for object in objectTypesDict['aggregations']['Total mediums']['buckets']:
-    if object['doc_count'] >= config.minObjectsLimit:
-        objectTypes.append(object['key'])
+    # Selecting object types with more than 10 presences
+    for object in objectTypesDict['aggregations']['Total mediums']['buckets']:
+        if object['doc_count'] >= config.minObjectsLimit:
+            objectTypes.append(object['key'])
 
-def getArtworksByObject(searchedObject):
-    # Query for finding artworks containing selected object
+    randomObjects = []
+    for i in range(countOfObjects):
+        randomObjects.append(objectTypes[randrange(len(objectTypes))])
 
-    getByObject = {
-        "size": 10000,
-        "query": {
-            "bool": {
-                "must": [
-                    {"match": {"detected_objects.object": searchedObject}}
-                    ,
-                    {
-                        "bool": {
-                            "must": [
-                                {"exists": {"field": "detected_objects"}},
-                                {
-                                    "bool": {
-                                        "should": [
-                                            {"term": {"work_type": "graphic"}},
-                                            {"term": {"work_type": "painting"}},
-                                            {"term": {"work_type": "drawing"}}
-                                        ]
+    return randomObjects
+
+
+# Main Query for finding artworks containing selected object
+def getArtworksByObject(objectList):
+
+    allListsResult = []
+
+    def sorter(artwork):
+        score = artwork['_source']['top_object_score']
+        return score
+
+    for searchedObject in objectList:
+        queryForArtworks = {
+            "size": 1000,
+            "query": {
+                "bool": {
+                    "must": [
+                        {"match": {"detected_objects.object": searchedObject}}
+                        ,
+                        {
+                            "bool": {
+                                "must": [
+                                    {"exists": {"field": "detected_objects"}},
+                                    {
+                                        "bool": {
+                                            "should": [
+                                                {"term": {"work_type": "graphic"}},
+                                                {"term": {"work_type": "painting"}},
+                                                {"term": {"work_type": "drawing"}}
+                                            ]
+                                        }
                                     }
-                                }
-                            ]
+                                ]
+                            }
                         }
-                    }
+                    ]
+                }
+            },
+            "_source": {
+                "includes": [
+                    "_id",
+                    "detected_objects.object",
+                    "detected_objects.score",
+                    "detected_objects.boundBox",
+                    "title",
+                    "author",
+                    "gallery",
+                    "date_earliest",
+                    "date_latest"
                 ]
             }
-        },
-        "_source": {
-            "includes": [
-                "_id",
-                "detected_objects.object",
-                "detected_objects.score",
-                "detected_objects.boundBox",
-                "title",
-                "author",
-                "gallery",
-                "gallery",
-                "date_earliest",
-                "date_latest"
-            ]
         }
-    }
+        artworks = callElastic(queryForArtworks)['hits']['hits']
+        # print(searchedObject + ': '+ str(len(artworks)) + ' results')
 
-    artworks = callElastic(getByObject)['hits']['hits']
-    print(str(len(artworks)) + ' results')
+        # expanding data by imageUrl and topObjectScore
 
-    # expanding data by imageUrl and topObjectScore
+        expandedArtworks = []
 
-    expandedArtworks = []
-    earliestWork = 10000
-    latestWork = -10000
+        for artwork in artworks:
+            # generates image url
+            imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/' + artwork[
+                '_id'] + '.jpg'  # Creating img url from artwork id
+            artwork['_source']['image_url'] = imageUrl
+            # rounds object score
+            for object in artwork['_source']['detected_objects']:
+                object['score'] = round(object['score'], 2)
+            # selects searched object with highest score on image and saves it to topObjectScore (It's useful for sorting)
+            topObjectScore = 0
+            for objectSet in artwork['_source']['detected_objects']:
+                if objectSet['object'] == searchedObject and objectSet['score'] >= topObjectScore:
+                    topObjectScore = objectSet['score']
+            artwork['_source']['top_object_score'] = topObjectScore
+            expandedArtworks.append(artwork)
 
-    for artwork in artworks:
-        # generates image url
-        imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/' + artwork[
-            '_id'] + '.jpg'  # Creating img url from artwork id
-        artwork['_source']['image_url'] = imageUrl
-        # rounds object score
-        for object in artwork['_source']['detected_objects']:
-            object['score'] = round(object['score'], 2)
-        # selects searched object with highest score on image and saves it to topObjectScore (It's useful for sorting)
-        topObjectScore = 0
-        for objectSet in artwork['_source']['detected_objects']:
-            if objectSet['object'] == searchedObject and objectSet['score'] >= topObjectScore:
-                topObjectScore = objectSet['score']
-        artwork['_source']['top_object_score'] = topObjectScore
-        expandedArtworks.append(artwork)
-    return expandedArtworks
+        # sorts expandedArtworks by topObjectScore
+        sortedArtworks = sorted(expandedArtworks, key=sorter, reverse=True)[:config.maxGallerySize]
+        allListsResult.append(sortedArtworks)
 
-
-# sorts expandedArtworks by topObjectScore
-
-def sorter(artwork):
-    score = artwork['_source']['top_object_score']
-    return (score)
-
+    return allListsResult
 
 # get collection sum
 
@@ -142,7 +151,6 @@ getCollectionsSum = {
         }
     }
 }
-
 
 # counting objects in periods
 
@@ -211,23 +219,6 @@ def objectsByPeriods(objectList,interval):
 
     return artworksInPeriod
 
-
-'''
-
-randomObjectType = randrange(len(objectTypes)) # Selecting Random Object Type
-if config.searchedObject == None:
-    searchedObject = objectTypes[randomObjectType]
-else:
-    searchedObject = config.searchedObject
-artworksForSorting = getArtworksByObject(searchedObject)
-artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)[:config.maxGallerySize]
-collectionsSum = callElastic(getCollectionsSum)['aggregations']['galleries_sum']['buckets']
-artworksInPeriod = objectsByPeriods([searchedObject],config.periodLength)
-for i in artworksInPeriod:
-    print(i)
-'''
-
-
 # Flask
 
 from app import app
@@ -235,22 +226,20 @@ from flask import render_template
 
 @app.route('/')
 def index():
-    randomObjectType = randrange(len(objectTypes)) # Selecting Random Object Type
-    if config.searchedObject == None:
-        searchedObject = objectTypes[randomObjectType]
+    # Selecting objects for detection
+    if config.searchedObjects == None:
+        searchedObjects = getRandomObjectTypes(config.countOfRandomObjects)
     else:
-        searchedObject = config.searchedObject
-    artworksForSorting = getArtworksByObject(searchedObject)
-    artworksSorted = sorted(artworksForSorting, key=sorter, reverse=True)[:config.maxGallerySize]
+        searchedObjects = config.searchedObjects
+    artworksSorted = getArtworksByObject(searchedObjects)
     collectionsSum = callElastic(getCollectionsSum)['aggregations']['galleries_sum']['buckets']
-    artworksInPeriod = objectsByPeriods(['man','woman','boy','girl'],config.periodLength)
+    artworksInPeriod = objectsByPeriods(searchedObjects, config.periodLength)
     return render_template('index.html',
                            artworksForWeb=artworksSorted,
-                           searchedObject=searchedObject,
+                           searchedObjects=searchedObjects,
                            collectionsSum=collectionsSum,
                            artworksInPeriod=artworksInPeriod
                            )
 @app.route('/test')
 def test():
     return render_template('test.html')
-
