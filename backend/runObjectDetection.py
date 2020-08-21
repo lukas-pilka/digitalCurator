@@ -92,13 +92,6 @@ query = {
               {"term": {"work_type": "drawing"}}
             ]
           }
-        },
-        {
-          "bool": {
-            "must": [
-              {"term": {"is_free": True}}
-            ]
-          }
         }
       ]
     }
@@ -133,6 +126,7 @@ detector = hub.load(module_handle).signatures['default']
 for artwork in artworks:
     imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/'+artwork['_id']+'.jpg' # Creating img url from artwork id
     imageFileName = 'temp/'+artwork['_id']+'.jpg' # Creating image file name from artwork id
+    print(imageFileName)
     urllib.request.urlretrieve(imageUrl, imageFileName) # Downloading image from url and saving to file name
     image = Image.open(imageFileName)  # Converting to PIL image file
     print(image)

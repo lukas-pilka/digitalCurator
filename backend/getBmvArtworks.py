@@ -83,7 +83,7 @@ def bmvScrap(pageUrl, scrapedWebsite):
             # ADDING DIGITAL CURATOR ID
 
             collectionShortcut = 'BMV'
-            dcId = collectionShortcut + '-' + artworkData['original_id'].replace("/", "-")
+            dcId = collectionShortcut + '-' + artworkData['original_id'].replace("/", "-").replace(' ', '-')
             artworkData['id'] = dcId
 
             # ADDING COLLECTION
