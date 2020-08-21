@@ -73,7 +73,11 @@
                 <p class="museumInfo">
                     {{ artworksForWeb[object][i]._source.title }} <br>
                     {{ artworksForWeb[object][i]._source.author[0] }}<br>
-                    {{ artworksForWeb[object][i]._source.date_earliest }}<br>
+                    {{ artworksForWeb[object][i]._source.date_earliest }}
+                    {% if artworksForWeb[object][i]._source.date_earliset != artworksForWeb[object][i]._source.date_latest %}
+                    -&nbsp;{{ artworksForWeb[object][i]._source.date_latest }}
+                    {% endif %}
+                    <br>
                     {{ artworksForWeb[object][i]._source.gallery }}<br>
                 </p>
                 <p class="generatedInfo">
