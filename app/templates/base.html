@@ -2,7 +2,7 @@
 <head>
     <title>Digital Curator 2.0 </title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v=4">
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v=8">
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-480.css') }}?v=1">
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 600px)" href="{{ url_for('static', filename='style/from-600.css') }}?v=1">
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 840px)" href="{{ url_for('static', filename='style/from-840.css') }}?v=1">
@@ -12,14 +12,20 @@
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 1600px)" href="{{ url_for('static', filename='style/from-1600.css') }}?v=1">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <!-- JS -->
+
     <script src="{{ url_for('static', filename='js/scripts.js') }}?v=1"></script>
     <script src="{{ url_for('static', filename='Chart/Chart.js') }}"></script>
 
-
 </head>
-<body>
+<body id="wrapper">
 
 {% block content %}{% endblock %}
+
+<script src="{{ url_for('static', filename='horwheel/horwheel.js') }}?v=1"></script>
+    <script>
+      var view = document.getElementById('wrapper');
+      horwheel(view);
+    </script>
 
 </body>
 </html>

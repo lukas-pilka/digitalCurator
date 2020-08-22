@@ -1,1 +1,136 @@
-{"size": 1000, "query": {"bool": {"must": [{"bool": {"must": [{"exists": {"field": "detected_objects"}}, {"bool": {"should": [{"match_phrase": {"work_type": "graphic"}}, {"match_phrase": {"work_type": "painting"}}, {"match_phrase": {"work_type": "drawing"}}]}}]}}, {"range": {"date_latest": {"gte": 1400, "lt": 2000}}}, {"bool": {"should": [{"match_phrase": {"detected_objects.object": "Skull"}}]}}, {"bool": {"should": [{"match_phrase": {"detected_objects.object": "Man"}}, {"match_phrase": {"detected_objects.object": "Woman"}}, {"match_phrase": {"detected_objects.object": "Person"}}]}}]}}, "_source": {"includes": ["_id", "detected_objects.object", "detected_objects.score", "detected_objects.boundBox", "title", "author", "gallery", "date_earliest", "date_latest"]}}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="cleartype" content="on">
+    <title>Horwheel Component</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .wrapper-scroll {
+        -webkit-overflow-scrolling: touch;
+        overflow-scrolling: touch;
+        overflow: auto;
+      }
+
+      .content {
+        width: -moz-max-content;
+        width: -webkit-max-content;
+        width: -ms-max-content;
+        width: max-content;
+      }
+
+      h1 {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 2em;
+        margin: .3em 0;
+      }
+
+      .section {
+        float: left;
+        overflow: hidden;
+        width: 750px;
+        margin: 0 1.2em 0 0;
+      }
+
+      .article {
+        float: left;
+        width: 15em;
+        height: 12em;
+        margin: .2em;
+        background-color: #C40C20;
+      }
+
+      .section:nth-child(1) .article {
+        background-color: #C40C20;
+      }
+
+      .section:nth-child(2) .article {
+        background-color: #F9A02E;
+      }
+
+      .section:nth-child(3) .article {
+        background-color: #FEF20A;
+      }
+      .section:nth-child(4) .article {
+        background-color: #35A338;
+      }
+      .section:nth-child(5) .article {
+        background-color: #139CEB;
+      }
+    </style>
+  </head>
+  <body>
+  <div id="wrapper" class="wrapper-scroll">
+      <h1>Horwheel Component</h1>
+      <div class="content">
+        <div class="section">
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+        </div>
+        <div class="section">
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+        </div>
+        <div class="section">
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+        </div>
+        <div class="section">
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+        </div>
+        <div class="section">
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+          <div class="article"></div>
+        </div>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='horwheel/horwheel.js') }}?v=1"></script>
+    <script>
+      var view = document.getElementById('wrapper');
+      horwheel(view);
+    </script>
+  </body>
+</html>

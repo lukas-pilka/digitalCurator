@@ -10,8 +10,10 @@ html{
 body{
     margin: 0;
     display: flex;
-    overflow-y: hidden;
     overflow-x: auto;
+    overflow-y: hidden;
+    height: 100vh;
+    max-height: 100vh;
 }
 h1, h2{
     font-family: 'Playfair Display', serif;
@@ -38,7 +40,7 @@ p{
 
 .container {
     display: flex;
-    height: 100vh;
+    height: 100%;
     width: 100%;
 }
 .mainSection {
@@ -70,6 +72,7 @@ p{
     width: auto;
     box-sizing: border-box;
     height: 100%;
+    display: none;
 }
 .titleImage img{
     height: 100%;
@@ -81,6 +84,7 @@ p{
 
 .galleryIntro {
     background: #ddd;
+    display: none;
 }
 .introPart{
     display: flex;
