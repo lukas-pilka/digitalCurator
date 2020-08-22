@@ -16,22 +16,20 @@ def index():
         searchedObjects = engine.getRandomObjectTypes(config.countOfRandomObjects)
     else:
         searchedObjects = config.searchedObjects
-    artworksSorted = engine.getArtworksByObject(searchedObjects)
+    artworksSorted = engine.getArtworksByObject(searchedObjects, config.dateFrom, config.dateTo)
+    titleImage = artworksSorted[0][0]
+    artworksInPeriod = engine.objectsByPeriods(searchedObjects, config.periodLength, config.dateFrom, config.dateTo)
+    collectionsByPeriods = engine.devideCollectionByPeriods(artworksInPeriod, artworksSorted)
     collectionsSum = engine.getCollectionsSum()
-    artworksInPeriod = engine.objectsByPeriods(searchedObjects, config.periodLength)
-    groupNames = [] # Clearing because dicts between searched objects
-    for object in searchedObjects:
-        if type(object) == dict:
-            object = next(iter(object))
-            groupNames.append(object)
-        else:
-            groupNames.append(object)
-    print(groupNames)
+    collectionTitles = [] # Clearing because dicts between searched objects
+    for collection in searchedObjects:
+        collectionTitles.append(list(collection.keys())[0])
     return render_template('index.html',
-                           artworksForWeb=artworksSorted,
-                           searchedObjects=groupNames,
+                           artworksForWeb=collectionsByPeriods,
+                           searchedObjects=collectionTitles,
                            collectionsSum=collectionsSum,
-                           artworksInPeriod=artworksInPeriod
+                           artworksInPeriod=artworksInPeriod,
+                           titleImage=titleImage
                            )
 @app.route('/test')
 def test():

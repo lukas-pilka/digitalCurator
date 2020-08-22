@@ -117,6 +117,17 @@ p{
 
 /* gallery intro end */
 
+/* period intro start */
+.periodIntro{
+    height: 100%;
+    width: 0;
+    position: relative;
+}
+.periodTitle{
+    width: 50vw;
+}
+/* period intro end */
+
 /* gallery showcase */
 
 .galleryShowcase{

@@ -5,7 +5,7 @@
 
     <section class="mainSection titleScreen">
         <div class="titlePart">
-            <h1>Image of the {{ searchedObjects[0]}}</h1>
+            <h1>{{ searchedObjects[0]}}</h1>
             <p class="subtitle flexItem">Generated exhibition based on big cultural data</p>
         </div>
         <div class="footerPart">
@@ -15,12 +15,12 @@
 
     <section class="titleImage artwork">
         <div class="imageContainer">
-            <img src="{{ artworksForWeb[0][0]._source.image_url }}">
+            <img src="{{titleImage._source.image_url}}">
             <div class="boundBoxes">
-                {% for object in artworksForWeb[0][0]._source.detected_objects %}
+                {% for detectedObject in titleImage._source.detected_objects %}
                 <div class="boundBox"
-                     style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
-                    <p>{{ object['object'] }}&nbsp;{{ 100*object['score']}}</p>
+                     style="left:{{ detectedObject.boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
+                    <p>{{ detectedObject['object'] }}&nbsp;{{ 100*detectedObject['score']}}</p>
                 </div>
                 {% endfor %}
             </div>
@@ -51,41 +51,64 @@
         </article>
     </section>
 
-    {% for object in range(artworksForWeb|length) %}
+    <!-- unpacking collections -->
+    {% for collectionIndex in range(artworksForWeb|length) %}
     <section class="mainSection galleryShowcase">
         <div class="introPart introTitle ">
-            <h2>Image of the {{ searchedObjects[object]}}</h2>
+            <h2>{{ searchedObjects[collectionIndex]}}</h2>
         </div>
-        {% for i in range(1,artworksForWeb[object]|length) %}
-        <article class="artwork">
-            <div class="imageContainer">
-                <img src="{{ artworksForWeb[object][i]._source.image_url }}">
-                <div class="boundBoxes">
-                    {% for object in artworksForWeb[object][i]._source.detected_objects %}
-                    <div class="boundBox"
-                         style="left:{{ object.boundBox[1]*100 }}%; top: {{ object.boundBox[0]*100 }}%; width:{{ object.boundBox[3]*100 - object.boundBox[1]*100}}%; height: {{ object.boundBox[2]*100 - object.boundBox[0]*100}}%;">
-                        <p>{{ object.object }}&nbsp;{{ 100*object.score }}</p>
+
+        <!-- unpacking periods -->
+        {% for period in artworksForWeb[collectionIndex] %}
+
+            <!-- unpacking period -->
+            {% for periodTitle, artworks in period.items() %}
+            <div class="periodIntro">
+                <p class="periodTitle subtitle">{{periodTitle}}</p>
+            </div>
+
+                <!-- unpacking artworks -->
+                {% for artwork in artworks %}
+                <div class="artwork">
+                    <div class="imageContainer">
+                        <img src="{{ artwork._source.image_url }}">
+                        <div class="boundBoxes">
+
+                            <!-- unpacking boundboxes-->
+                            {% for detectedObject in artwork._source.detected_objects %}
+                            <div class="boundBox" style="left:{{ detectedObject .boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
+                                <p>{{ detectedObject.object }}&nbsp;{{ 100*detectedObject.score }}</p>
+                            </div>
+                            {% endfor %}
+
+                        </div>
                     </div>
-                    {% endfor %}
+
+                    <div class="artworkDescription">
+                        <p class="museumInfo">
+                            {{ artwork._source.title }} <br>
+                            {{ artwork._source.author[0] }}<br>
+                            {% if artwork._source.date_earliest == artwork._source.date_latest %}
+                                {{ artwork._source.date_earliest }}
+                            {% else %}
+                                between {{ artwork._source.date_earliest }}&nbsp;and&nbsp;{{ artwork._source.date_latest }}
+
+                            {% endif %}
+
+                            <br>
+                            {{ artwork._source.gallery }}<br>
+                        </p>
+                        <p class="generatedInfo">
+                            {{ searchedObjects[collectionIndex] }}:&nbsp;{{ 100*artwork._source.average_score }}%
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="artworkDescription">
-                <p class="museumInfo">
-                    {{ artworksForWeb[object][i]._source.title }} <br>
-                    {{ artworksForWeb[object][i]._source.author[0] }}<br>
-                    {{ artworksForWeb[object][i]._source.date_earliest }}
-                    {% if artworksForWeb[object][i]._source.date_earliset != artworksForWeb[object][i]._source.date_latest %}
-                    -&nbsp;{{ artworksForWeb[object][i]._source.date_latest }}
-                    {% endif %}
-                    <br>
-                    {{ artworksForWeb[object][i]._source.gallery }}<br>
-                </p>
-                <p class="generatedInfo">
-                    {{ searchedObjects[object] }}:&nbsp;{{ 100*artworksForWeb[object][i]._source.top_object_score }}%
-                </p>
-            </div>
-        </article>
+                {% endfor %}
+
+            {% endfor %}
+
         {% endfor %}
+
     </section>
     {% endfor %}
 
@@ -103,7 +126,6 @@
     </div>
 
 </div>
-
 
 
 <script>

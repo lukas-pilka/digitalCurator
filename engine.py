@@ -15,51 +15,32 @@ def callElastic(query):
     dataDict = json.loads(rawData.text)
     return (dataDict)
 
-
 # GET RANDOM OBJECT TYPES
 
 def getRandomObjectTypes(countOfObjects):
 
-    objectTypesQuery = {
-        "size": 0,
-        "aggs": {
-            "Total mediums": {
-                "terms": {
-                    "field": "detected_objects.object.keyword",
-                    "size": 10000
-                }
-            }
-        }
-    }
-
-    objectTypesDict = callElastic(objectTypesQuery)
-    objectTypes = []
-
-    # Selecting object types with more than 10 presences
-    for object in objectTypesDict['aggregations']['Total mediums']['buckets']:
-        if object['doc_count'] >= config.minObjectsLimit:
-            objectTypes.append(object['key'])
+    objectTypes = config.depositary
 
     randomObjects = []
     for i in range(countOfObjects):
-        randomObjects.append(objectTypes[randrange(len(objectTypes))])
+        randomClassIndex = randrange(len(objectTypes))
+        randomObjects.append(objectTypes[randomClassIndex])
 
     return randomObjects
 
-
 # GET ARTWORKS BY OBJECT
 
-def getArtworksByObject(objectList):
+def getArtworksByObject(objectList, dateFrom, dateTo):
 
     allListsResult = []
 
     def sorter(artwork):
-        score = artwork['_source']['top_object_score']
+        score = artwork['_source']['average_score']
         return score
 
     for searchedObject in objectList:
 
-        # Preparing the part of the query where contained object conditions are defined
+        # Preparing the part of the query where object conditions are defined
         mustObjectsQuery = [
             {
                 "bool": {
@@ -76,21 +57,29 @@ def getArtworksByObject(objectList):
                         }
                     ]
                 }
+            },
+            {
+                "range": {
+                    "date_latest": {
+                        "gte": dateFrom,
+                        "lt": dateTo
+                    }
+                }
             }
         ]
 
-        # Looking at input - if it is list of objects or single object
-        if type(searchedObject) == dict:
-            for key in searchedObject:
-                key = key
-            objectGroup = searchedObject[key]
-            for object in objectGroup:
-                mustObjectsQuery.append({"match_phrase": {"detected_objects.object": object}})
-        else:
-            mustObjectsQuery.append({"match_phrase": {"detected_objects.object": searchedObject}})
+        # Adding match_phrase conditions to must query list. One for each object.
+        key = list(searchedObject.keys())[0]
+        objectGroup = searchedObject[key]
+        for shouldGroup in objectGroup: #expanding sholud lists from collection (objectGroup)
+            shouldObjectList = []
+            for shouldObject in shouldGroup: #expanding sholud objects from shouldGroup (Shoul List)
+                shouldObjectList.append({"match_phrase": {"detected_objects.object": shouldObject}})
+            mustObjectsQuery.append({"bool": {"should": shouldObjectList}})
 
+        # Completing query
         queryForArtworks = {
-            "size": 1000,
+            "size": 2000,
             "query": {
                 "bool": {
                     "must": mustObjectsQuery # includes above defined mustObjectQuery
@@ -110,32 +99,43 @@ def getArtworksByObject(objectList):
                 ]
             }
         }
+
+        print(queryForArtworks)
+
+        # Calling elastic database with completed query
         artworks = callElastic(queryForArtworks)['hits']['hits']
-        # print(searchedObject + ': '+ str(len(artworks)) + ' results')
 
         # expanding data by imageUrl and topObjectScore
-
         expandedArtworks = []
 
         for artwork in artworks:
+
             # generates image url
             imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/' + artwork[
                 '_id'] + '.jpg'  # Creating img url from artwork id
             artwork['_source']['image_url'] = imageUrl
+
             # rounds object score
             for object in artwork['_source']['detected_objects']:
                 object['score'] = round(object['score'], 2)
-            # selects searched object with highest score on image and saves it to topObjectScore (It's useful for sorting)
-            topObjectScore = 0
-            for objectSet in artwork['_source']['detected_objects']:
-                if type(searchedObject) == dict:
-                    for key in searchedObject:
-                        key = key
-                    searchedObject = searchedObject[key][0] # If it is object group the topObjectScore is selected by first object in the group
-                print(objectSet['object'], searchedObject)
-                if objectSet['object'] == searchedObject and objectSet['score'] >= topObjectScore:
-                    topObjectScore = objectSet['score']
-            artwork['_source']['top_object_score'] = topObjectScore
+
+            # selects searched object with highest score on image and saves it to topElementaryObjectScoreSum (It's useful for sorting)
+            searchedObjectsScore = [] # saves highest probability achieved for each object
+            print('---next artwork---')
+            for elementaryObjects in searchedObject[key]:
+
+                for elementaryObject in elementaryObjects:
+
+                    topElementaryObjectScore = 0
+                    for detectedObject in artwork['_source']['detected_objects']:
+                        if elementaryObject == detectedObject['object'] and detectedObject['score'] >= topElementaryObjectScore: # If it searched elementaryObject and if is higher than topElementaryObjectScore
+                            topElementaryObjectScore = detectedObject['score']
+
+                    searchedObjectsScore.append(topElementaryObjectScore)
+                    print(elementaryObject, topElementaryObjectScore)
+
+            artwork['_source']['searched_object'] = key
+            artwork['_source']['average_score'] = sum(searchedObjectsScore) / len(searchedObjectsScore) # get percents
             expandedArtworks.append(artwork)
 
         # sorts expandedArtworks by topObjectScore
@@ -146,30 +146,33 @@ def getArtworksByObject(objectList):
 
 # AGGREGATIONS BY PERIODS
 
-def objectsByPeriods(objectList,interval):
+def objectsByPeriods(objectList,interval,dateFrom,dateTo):
 
     # preparing object filters for query
     aggregations = {}
     def prepareQuery(objectList):
         counter = 1
         for searchedObject in objectList:
-            if type(searchedObject) == dict:
-                for key in searchedObject:
-                    groupName = key
-                mustList = []
-                for object in searchedObject[groupName]:
-                    mustList.append({"match_phrase": {"detected_objects.object": object}})
-                groupAggregation = {
-                    "filter": {
-                        "bool": {
-                            "must": mustList
-                        }
+            groupName = list(searchedObject.keys())[0]
+            mustList = []
+
+            for shouldGroup in searchedObject[groupName]:
+                shouldObjectList = []
+                for shouldObject in shouldGroup:
+                    shouldObjectList.append({"match_phrase": {"detected_objects.object": shouldObject}})
+
+                mustList.append({"bool": {"should": shouldObjectList}})
+
+
+            groupAggregation = {
+                "filter": {
+                    "bool": {
+                        "must": mustList
                     }
                 }
-                aggregations[groupName] = groupAggregation
-                counter +=1
-            else:
-                aggregations[searchedObject] = {"filter":{"match_phrase": {"detected_objects.object": searchedObject}}}
+            }
+            aggregations[groupName] = groupAggregation
+            counter +=1
 
     prepareQuery(objectList)
 
@@ -185,6 +188,14 @@ def objectsByPeriods(objectList,interval):
                                 "exists": {
                                     "field": "detected_objects"
                                 }
+                            }
+                        }
+                    },
+                    {
+                        "range": {
+                            "date_latest": {
+                                "gte": dateFrom,
+                                "lt": dateTo
                             }
                         }
                     },
@@ -223,15 +234,8 @@ def objectsByPeriods(objectList,interval):
     artworksInPeriod = {'periods': relatedPeriods, 'totalArtworks': totalArtworks, 'artworksWithObject': []}
 
     for object in objectList:
-
-        if type(object) == dict:
-            objectName = ""
-            for key in object:
-                objectName = key
-            artworksWithObject = [periodSet[objectName]['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods]  # check if period is in relatedPeriods and if so, it adds count to related artworks
-        else:
-            objectName=object
-            artworksWithObject = [periodSet[object]['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods]  # check if period is in relatedPeriods and if so, it adds count to related artworks
+        objectName = list(object.keys())[0]
+        artworksWithObject = [periodSet[objectName]['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods]  # check if period is in relatedPeriods and if so, it adds count to related artworks
         objectPercents = [round(artworksWithObject[item] / totalArtworks[item], 3) * 100 for item in range(len(totalArtworks))]  # Counting percent of artworks copntained selected object in comparison with total artworks
         artworksInPeriod['artworksWithObject'].append([objectName, artworksWithObject, objectPercents])
 
@@ -263,12 +267,39 @@ def getCollectionsSum():
     collectionsSum = callElastic(collectionsQuery)['aggregations']['galleries_sum']['buckets']
     return collectionsSum
 
-'''
-collections = getArtworksByObject(config.searchedObjects)
-for collection in collections:
-    print(len(collection))
+# DEVIDE EVERY COLLECTION BY PERIODS AND SORTS ARTWORKS INTO SPECIFIC PERIOD BY ITS DATE EARLIEST
+def devideCollectionByPeriods(objectsByPeriods, getArtworksByObject):
+    sortedCollections = []
 
-print(objectsByPeriods(config.searchedObjects,100))
+    for collection in getArtworksByObject:
+        collectionPeriodsList = []
+
+        for period in objectsByPeriods['periods']:
+            periodStart = int(period)
+            periodEnd = int(periodStart) + config.periodLength
+            periodName = str(periodStart) +' - '+ str(periodEnd)
+            periodArtworksList = []
+
+            for artwork in collection:
+                artworkDatation = artwork['_source']['date_earliest']
+                if artworkDatation >= periodStart and artworkDatation < periodEnd:
+                    periodArtworksList.append(artwork)
+
+            if len(periodArtworksList) > 0:
+                collectionPeriod = {periodName: periodArtworksList}
+                collectionPeriodsList.append(collectionPeriod)
+
+        sortedCollections.append(collectionPeriodsList)
+
+    return sortedCollections
+
+
+
+
+'''
+getArtworksByObject(config.searchedObjects, config.dateFrom, config.dateTo)
+print(objectsByPeriods(config.searchedObjects,100, config.dateFrom, config.dateTo))
 print(getRandomObjectTypes(3))
 print(getCollectionsSum())
 '''
+
