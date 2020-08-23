@@ -77,6 +77,9 @@ def getArtworksByObject(objectList, dateFrom, dateTo):
                 shouldObjectList.append({"match_phrase": {"detected_objects.object": shouldObject}})
             mustObjectsQuery.append({"bool": {"should": shouldObjectList}})
 
+        if config.onlyFreeArtworks == True:
+            mustObjectsQuery.append({"bool": {"must": [{"term": {"is_free": True}}]}})
+
         # Completing query
         queryForArtworks = {
             "size": 2000,
