@@ -16,3 +16,9 @@ p{
 .artwork{
     height: 75%;
 }
+.finalScreen .footerPart p{
+    width: 50%;
+}
+.finalScreen .footerPart p.copyleft{
+    text-align: right;
+}

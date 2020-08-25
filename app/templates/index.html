@@ -3,13 +3,20 @@
 
 <div class="container">
 
-    <section class="mainSection titleScreen">
+    <section class="mainSection titleScreen" id="exhibitionStart">
         <div class="titlePart">
             <h1>{{ searchedObjects[0]}}</h1>
-            <p class="subtitle flexItem">Generated exhibition based on big cultural data</p>
+            <p class="subtitle flexItem">
+            {% if searchedObjects|length > 1%}
+                & {{ searchedObjects[1]}}<br>
+            {% endif%}
+                Generated exhibition based on computer vision and big cultural data
+            </p>
         </div>
         <div class="footerPart">
-            <p class="footnote flexItem">Lukáš Pilka, 2020</p>
+            <p>
+                <a href="/" class="button">Generate new exhibition</a>
+            </p>
         </div>
     </section>
 
@@ -22,7 +29,7 @@
                 {% for detectedObject in titleImage._source.detected_objects %}
                 <div class="boundBox"
                      style="left:{{ detectedObject.boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
-                    <p>{{ detectedObject['object'] }}&nbsp;{{ 100*detectedObject['score']}}</p>
+                    <p>{{ detectedObject['object'] }}&nbsp;{{ 100*detectedObject['score']}}%</p>
                 </div>
                 {% endfor %}
             </div>
@@ -33,10 +40,15 @@
     <section class="mainSection galleryIntro">
         <div class="introPart introTitle ">
             <h2>Data & History</h2>
-            <p class="subtitle">How the proportion of images has changed over the history</p>
+            <p class="subtitle">
+            {{ searchedObjects[0]}}
+            {% if searchedObjects|length > 1%}
+                & {{ searchedObjects[1]}}
+            {% endif%} frequency over the ages
+            </p>
         </div>
         <div class="introPart chart">
-            {% set chartLineColors = ['#111','#444','#777','#aaa','#ddd'] %}
+            {% set chartLineColors = ['#111','#555','#999','#ccc'] %}
             <canvas id="line-chart" width="800" height="450"></canvas>
             <p class="chartLegend">
             {% for i in range(artworksInPeriod.artworksWithObject|length) %}
@@ -49,8 +61,8 @@
 
         </div>
         <article class="introPart detailInformation">
-            <p>In 2015, Lev Manovich described Digital Art History as a set of methodologies using quantitative analysis to explore cultural artifacts. DAH represents a new approach to looking at history through mathematical and statistical ways with using cultural databases, digitized museum and archive collections, metadata, texts on art, and virtual reproductions of artworks. One of the methodologies in Digital Art History is visual analyzes based on current technologies of artificial intelligence and machine image recognition. Similar tools such as those used to navigate self-driving cars, identify people in photos, or classify medical images can also be used to look at historical paintings, graphics or drawings.</p>
-            <p>Art historian is a person who can only remember hundreds of works of art in his or her memory, which he or she is able to recall and work with them. But are these the most important works? Are there other works that are much more relevant to the topic and whose finding can completely change meaning and message? Thanks to neural networks, it is possible to explore image databases of hundreds of thousands or millions of items, navigate them in large cultural data, and look at the history from a new perspective. How will our notion of a certain era change if it is based not only on a few canonical works but on all digitized works?</p>
+            <p>The histogram shows the quotient of images on which the searched motif was detected in relation to the total number of images in the database.</p>
+            <p>The Digital Curator experiment attempts to demonstrate some of the basic capabilities of computer image recognition applied on cultural big data. With the help of Tensor Flow machine learning platform and Elasticsearch search engine, <strong>it&nbsp;explored {{galleriesSum['artworks count']}} digitized paintings, drawings and graphic prints from {{galleriesSum['galleries count']}} museums in Austria, Czech Republic and Slovakia.</strong> It recognized persons, icons, symbols and more than 1 000 diverse objects, marked their positions in the image and gave a precise measure of the certainty of own estimation. Finally, it prepared an online exposition presenting the most relevant works <strong>in {{ g.request_time() }}ec.</strong></p>
         </article>
     </section>
 
@@ -82,7 +94,7 @@
                             <!-- unpacking boundboxes-->
                             {% for detectedObject in artwork._source.detected_objects %}
                             <div class="boundBox" style="left:{{ detectedObject .boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
-                                <p>{{ detectedObject.object }}&nbsp;{{ 100*detectedObject.score }}</p>
+                                <p>{{ detectedObject.object }}&nbsp;{{ 100*detectedObject.score }}%</p>
                             </div>
                             {% endfor %}
 
@@ -123,15 +135,14 @@
         <div class="titlePart">
             <h1>Goodbye</h1>
         </div>
-        {#
         <div class="footerPart">
-            <p class="footnote flexItem">
-                {% for collection in collectionsSum %}
-                {{collection.key}}: {{collection.doc_count}}&nbsp;artworks<br>
-                {% endfor %}
+            <p>
+                <a href="/" class="button">Generate new exhibition</a>
+            </p>
+            <p class="copyleft">
+                <a href="http://lukaspilka.cz/" target="_blank">Lukas Pilka, 2020</a>
             </p>
         </div>
-        #}
     </div>
 
 </div>

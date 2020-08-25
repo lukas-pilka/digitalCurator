@@ -17,16 +17,19 @@ def callElastic(query):
 
 # GET RANDOM OBJECT TYPES
 
-def getRandomObjectTypes(countOfObjects):
+def getRandomObjectTypes(requestedCountOfCollections):
 
-    objectTypes = config.depositary
+    comparisonSets = config.depositary
+    randomSetIndex = randrange(len(comparisonSets))
+    selectedComparisonSet = comparisonSets[randomSetIndex]
+    randomExhibition = []
 
-    randomObjects = []
-    for i in range(countOfObjects):
-        randomClassIndex = randrange(len(objectTypes))
-        randomObjects.append(objectTypes[randomClassIndex])
+    for collection in range(requestedCountOfCollections):
+        randomCollectionIndex = randrange(len(selectedComparisonSet))
+        if not selectedComparisonSet[randomCollectionIndex] in randomExhibition:
+            randomExhibition.append(selectedComparisonSet[randomCollectionIndex])
 
-    return randomObjects
+    return randomExhibition
 
 # GET ARTWORKS BY OBJECT
 
@@ -124,7 +127,7 @@ def getArtworksByObject(objectList, dateFrom, dateTo):
 
             # selects searched object with highest score on image and saves it to topElementaryObjectScoreSum (It's useful for sorting)
             searchedObjectsScore = [] # saves highest probability achieved for each object
-            print('---next artwork---')
+            #print('---next artwork---')
             for elementaryObjects in searchedObject[key]:
 
                 for elementaryObject in elementaryObjects:
@@ -135,10 +138,10 @@ def getArtworksByObject(objectList, dateFrom, dateTo):
                             topElementaryObjectScore = detectedObject['score']
 
                     searchedObjectsScore.append(topElementaryObjectScore)
-                    print(elementaryObject, topElementaryObjectScore)
+                    #print(elementaryObject, topElementaryObjectScore)
 
             artwork['_source']['searched_object'] = key
-            artwork['_source']['average_score'] = sum(searchedObjectsScore) / len(searchedObjectsScore) # get percents
+            artwork['_source']['average_score'] = round(sum(searchedObjectsScore) / len(searchedObjectsScore), 2) # get percents
             expandedArtworks.append(artwork)
 
         # sorts expandedArtworks by topObjectScore
@@ -246,7 +249,7 @@ def objectsByPeriods(objectList,interval,dateFrom,dateTo):
 
 # GET COLLECTION SUM
 
-def getCollectionsSum():
+def getGalleriesSum():
     collectionsQuery = {
         "query": {
             "bool": {
@@ -267,8 +270,13 @@ def getCollectionsSum():
             }
         }
     }
-    collectionsSum = callElastic(collectionsQuery)['aggregations']['galleries_sum']['buckets']
-    return collectionsSum
+    galleriesData = callElastic(collectionsQuery)['aggregations']['galleries_sum']['buckets']
+    galleriesCount = len(galleriesData)
+    artworksCount = 0
+    for gallery in galleriesData:
+        artworksCount += gallery['doc_count']
+    summary = {'galleries count': galleriesCount, 'artworks count': artworksCount}
+    return summary
 
 # DEVIDE EVERY COLLECTION BY PERIODS AND SORTS ARTWORKS INTO SPECIFIC PERIOD BY ITS DATE EARLIEST
 def devideCollectionByPeriods(objectsByPeriods, getArtworksByObject):
@@ -299,10 +307,11 @@ def devideCollectionByPeriods(objectsByPeriods, getArtworksByObject):
 
 
 
+
 '''
 getArtworksByObject(config.searchedObjects, config.dateFrom, config.dateTo)
 print(objectsByPeriods(config.searchedObjects,100, config.dateFrom, config.dateTo))
 print(getRandomObjectTypes(3))
-print(getCollectionsSum())
+print(getGalleriesSum())
 '''
 

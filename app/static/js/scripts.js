@@ -31,12 +31,12 @@
 	// params: element, classes to add, distance from top, unit ('percent' or 'pixels')
 
 	window.addEventListener('scroll', function() {
-		elementFromLeft(document.querySelectorAll('.artwork'),       'focuseIn',       30, 'percent'); // as left of element hits left of viewport
-		elementFromLeft(document.querySelectorAll('.artwork'),       'focuseOut',       10, 'percent'); // as left of element hits left of viewport
+		elementFromLeft(document.querySelectorAll('.artwork'),       'focuseIn',       50, 'percent'); // as left of element hits left of viewport
+		elementFromLeft(document.querySelectorAll('.artwork'),       'focuseOut',       30, 'percent'); // as left of element hits left of viewport
 		}, false);
 
 	window.addEventListener('resize', function() {
-		elementFromLeft(document.querySelectorAll('.artwork'),       'focuseIn',       30, 'percent'); // as left of element hits left of viewport
-		elementFromLeft(document.querySelectorAll('.artwork'),       'focuseOut',       10, 'percent'); // as left of element hits left of viewport
+		elementFromLeft(document.querySelectorAll('.artwork'),       'focuseIn',       50, 'percent'); // as left of element hits left of viewport
+		elementFromLeft(document.querySelectorAll('.artwork'),       'focuseOut',       30, 'percent'); // as left of element hits left of viewport
 		}, false);
 })();

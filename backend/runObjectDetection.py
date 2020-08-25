@@ -124,22 +124,26 @@ detector = hub.load(module_handle).signatures['default']
 # Iterating through artworks list
 
 for artwork in artworks:
-    imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/'+artwork['_id']+'.jpg' # Creating img url from artwork id
-    imageFileName = 'temp/'+artwork['_id']+'.jpg' # Creating image file name from artwork id
-    print(imageFileName)
-    urllib.request.urlretrieve(imageUrl, imageFileName) # Downloading image from url and saving to file name
-    image = Image.open(imageFileName)  # Converting to PIL image file
-    print(image)
-    # Preparing json for upload and calling Tensor Flow object detection
-    documentData = {
-        "doc": {
-            "detected_objects": tfObjectDetection(image),
-        },
-        "doc_as_upsert": True
-    }
-    print('Detected objects: ' + str(documentData))
-    writeToElastic(artwork['_id'], documentData) # Writing to Digital Curator Elastic Search DB
-    print('Data recorded for: ' + imageUrl)
-    os.remove(imageFileName) # Removing image
+    try:
+        imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/'+artwork['_id']+'.jpg' # Creating img url from artwork id
+        imageFileName = 'temp/'+artwork['_id']+'.jpg' # Creating image file name from artwork id
+        print(imageFileName)
+        urllib.request.urlretrieve(imageUrl, imageFileName) # Downloading image from url and saving to file name
+        image = Image.open(imageFileName)  # Converting to PIL image file
+        print(image)
+        # Preparing json for upload and calling Tensor Flow object detection
+        documentData = {
+            "doc": {
+                "detected_objects": tfObjectDetection(image),
+            },
+            "doc_as_upsert": True
+        }
+        print('Detected objects: ' + str(documentData))
+        writeToElastic(artwork['_id'], documentData) # Writing to Digital Curator Elastic Search DB
+        print('Data recorded for: ' + imageUrl)
+        os.remove(imageFileName) # Removing image
+    except:
+        print('An error occurred')
+        pass
 
 

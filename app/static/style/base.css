@@ -226,8 +226,34 @@ p{
 .finalScreen h1{
     margin-bottom: 0;
 }
-.finalScreen .footnote{
-    margin-bottom: 0;
+.finalScreen .footerPart{
+}
+.finalScreen .footerPart p{
+    width: 100%;
+    float: left;
+}
+.finalScreen .footerPart p.copyleft{
+    text-align: left;
+}
+.finalScreen a{
+    color: rgba(255,255,255,1.0);
+}
+.finalScreen a:hover{
+    color: rgba(255,255,255,0.8);
+}
+.button{
+    border: 1px solid #fff;
+    text-decoration: none;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+    box-sizing: border-box;
+    border-radius: 0.25rem;
+    max-width: 20rem;
+}
+.button:hover{
+    background: rgba(255,255,255,0.2);
 }
 
 /* title screen end */
