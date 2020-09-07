@@ -1,136 +1,517 @@
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="HandheldFriendly" content="True">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta http-equiv="cleartype" content="on">
-    <title>Horwheel Component</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
-
-      .wrapper-scroll {
-        -webkit-overflow-scrolling: touch;
-        overflow-scrolling: touch;
-        overflow: auto;
-      }
-
-      .content {
-        width: -moz-max-content;
-        width: -webkit-max-content;
-        width: -ms-max-content;
-        width: max-content;
-      }
-
-      h1 {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 2em;
-        margin: .3em 0;
-      }
-
-      .section {
-        float: left;
-        overflow: hidden;
-        width: 750px;
-        margin: 0 1.2em 0 0;
-      }
-
-      .article {
-        float: left;
-        width: 15em;
-        height: 12em;
-        margin: .2em;
-        background-color: #C40C20;
-      }
-
-      .section:nth-child(1) .article {
-        background-color: #C40C20;
-      }
-
-      .section:nth-child(2) .article {
-        background-color: #F9A02E;
-      }
-
-      .section:nth-child(3) .article {
-        background-color: #FEF20A;
-      }
-      .section:nth-child(4) .article {
-        background-color: #35A338;
-      }
-      .section:nth-child(5) .article {
-        background-color: #139CEB;
-      }
-    </style>
-  </head>
-  <body>
-  <div id="wrapper" class="wrapper-scroll">
-      <h1>Horwheel Component</h1>
-      <div class="content">
-        <div class="section">
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-        </div>
-        <div class="section">
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-        </div>
-        <div class="section">
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-        </div>
-        <div class="section">
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-        </div>
-        <div class="section">
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-          <div class="article"></div>
-        </div>
-      </div>
-    </div>
-    <script src="{{ url_for('static', filename='horwheel/horwheel.js') }}?v=1"></script>
-    <script>
-      var view = document.getElementById('wrapper');
-      horwheel(view);
-    </script>
-  </body>
-</html>
+Dict = {
+"Person": 57387
+"Clothing": 52750
+"Human face": 44217
+"Poster": 37272
+"Man": 32102
+"Human head": 28035
+"Woman": 27654
+"Tree": 27561
+"Mammal": 16488
+"Animal": 13383
+"Plant": 11949
+"Footwear": 11061
+"Human hair": 10736
+"Building": 9525
+"Picture frame": 8950
+"House": 7856
+"Sculpture": 6764
+"Human nose": 6544
+"Flower": 6002
+"Human eye": 5363
+"Vehicle": 5191
+"Window": 5013
+"Book": 4106
+"Dress": 3812
+"Human arm": 3517
+"Bird": 3511
+"Wheel": 3277
+"Horse": 3012
+"Furniture": 2798
+"Girl": 2676
+"Fashion accessory": 2567
+"Human hand": 2518
+"Land vehicle": 2440
+"Boat": 2229
+"Tower": 2181
+"Chair": 1808
+"Human leg": 1785
+"Hat": 1628
+"Fish": 1574
+"Castle": 1433
+"Toy": 1350
+"Table": 1306
+"Human mouth": 1286
+"Boy": 1254
+"Whiteboard": 1206
+"Door": 1170
+"Food": 1102
+"Dog": 1045
+"Airplane": 891
+"Insect": 890
+"Envelope": 853
+"Cattle": 852
+"Skull": 836
+"Carnivore": 740
+"Bat": 737
+"Flag": 732
+"Glasses": 682
+"Rose": 646
+"Palm tree": 634
+"Car": 633
+"Butterfly": 631
+"Vase": 612
+"Suit": 604
+"Tire": 588
+"Bronze sculpture": 583
+"Cart": 571
+"Fruit": 559
+"Invertebrate": 538
+"Office supplies": 535
+"Tent": 533
+"Deer": 519
+"Human beard": 507
+"Coin": 483
+"Human ear": 477
+"Bull": 475
+"Elephant": 472
+"Auto part": 460
+"Houseplant": 447
+"Marine invertebrates": 441
+"Jacket": 427
+"Umbrella": 424
+"Flowerpot": 412
+"Curtain": 406
+"Maple": 406
+"Musical instrument": 400
+"Swimming pool": 385
+"Tableware": 376
+"Lamp": 361
+"Skyscraper": 353
+"Stairs": 338
+"Dinosaur": 335
+"Guitar": 333
+"Weapon": 317
+"Chicken": 312
+"Bottle": 311
+"Plate": 305
+"Ball": 304
+"Camel": 298
+"Vegetable": 293
+"Jeans": 283
+"Box": 272
+"Drink": 267
+"Fountain": 266
+"Cat": 261
+"Bicycle": 258
+"Necklace": 257
+"Street light": 256
+"Duck": 253
+"Coat": 250
+"Marine mammal": 233
+"Mule": 233
+"Watercraft": 233
+"Fedora": 230
+"Bicycle wheel": 218
+"Sun hat": 210
+"Bench": 206
+"Sports equipment": 206
+"Pumpkin": 201
+"Mushroom": 198
+"Skateboard": 194
+"Surfboard": 194
+"Balloon": 191
+"Jug": 182
+"Trousers": 182
+"Lion": 181
+"Bust": 178
+"Goat": 177
+"Human body": 172
+"Platter": 170
+"Aircraft": 169
+"Skirt": 163
+"Christmas tree": 160
+"Shellfish": 160
+"Cowboy hat": 154
+"Scarf": 152
+"Shelf": 151
+"Ladder": 150
+"Penguin": 150
+"Sheep": 148
+"Drum": 147
+"Tortoise": 145
+"Traffic sign": 144
+"Eagle": 143
+"Giraffe": 143
+"Reptile": 143
+"Kite": 141
+"Owl": 140
+"Wall clock": 139
+"Mirror": 138
+"Jellyfish": 136
+"Tool": 136
+"Helmet": 135
+"Door handle": 131
+"Earrings": 123
+"Headphones": 121
+"Lizard": 120
+"Snack": 120
+"Tie": 120
+"Bed": 117
+"Baked goods": 115
+"Boot": 111
+"Handbag": 109
+"Goose": 105
+"Goldfish": 103
+"Pig": 103
+"Canoe": 102
+"Bee": 101
+"Apple": 99
+"Pitcher": 99
+"Snake": 99
+"Bowl": 96
+"Antelope": 95
+"Stool": 95
+"Crown": 94
+"Clock": 93
+"Shirt": 93
+"Human foot": 92
+"Falcon": 91
+"Glove": 89
+"Tank": 86
+"Cake": 85
+"Helicopter": 85
+"Swan": 85
+"Microphone": 84
+"Sword": 84
+"Rabbit": 81
+"Turtle": 80
+"Nail": 79
+"Barrel": 78
+"Rhinoceros": 77
+"Coffee table": 75
+"Couch": 74
+"Doll": 74
+"Porch": 73
+"Whale": 71
+"Knife": 70
+"Train": 67
+"Cabinetry": 66
+"Swimwear": 64
+"Window blind": 62
+"Towel": 61
+"Moths and butterflies": 60
+"Wine glass": 60
+"Kettle": 59
+"Dessert": 58
+"Spoon": 58
+"Sunflower": 58
+"Lantern": 57
+"Rifle": 57
+"Light bulb": 56
+"Pillow": 56
+"Raven": 56
+"Crocodile": 54
+"Parrot": 54
+"Parachute": 53
+"Plastic bag": 53
+"Seahorse": 52
+"Mobile phone": 51
+"Turkey": 51
+"Beetle": 49
+"High heels": 48
+"Egg": 47
+"Frog": 47
+"Pear": 47
+"Snowman": 46
+"Candy": 45
+"Coffee cup": 45
+"Cosmetics": 45
+"Shorts": 45
+"Violin": 45
+"Gondola": 43
+"Kitchen appliance": 43
+"Monkey": 43
+"Piano": 43
+"Rocket": 43
+"Squirrel": 43
+"Dolphin": 42
+"Bowling equipment": 41
+"Laptop": 41
+"Saucer": 41
+"Mug": 40
+"Television": 40
+"Candle": 39
+"Mechanical fan": 39
+"Musical keyboard": 39
+"Sunglasses": 39
+"Hiking equipment": 38
+"Lipstick": 38
+"Baseball bat": 37
+"Desk": 37
+"Teapot": 37
+"Oyster": 36
+"Wine": 36
+"Goggles": 34
+"Luggage and bags": 34
+"Miniskirt": 34
+"Sea turtle": 34
+"Tiger": 34
+"Tripod": 34
+"Billboard": 33
+"Dagger": 33
+"Lemon": 33
+"Sock": 33
+"Squid": 33
+"Cupboard": 32
+"Toothbrush": 32
+"Chest of drawers": 31
+"Dragonfly": 31
+"Drawer": 31
+"Bread": 30
+"Dairy": 30
+"Rays and skates": 30
+"Crab": 29
+"Home appliance": 29
+"Paddle": 29
+"Sparrow": 29
+"Tin can": 29
+"Power plugs and sockets": 28
+"Sea lion": 28
+"Seafood": 28
+"Camera": 27
+"Cello": 27
+"Orange": 27
+"Fireplace": 26
+"Medical equipment": 26
+"Nightstand": 26
+"Wheelchair": 26
+"Kangaroo": 25
+"Mixing bowl": 25
+"Snowboard": 25
+"Watermelon": 25
+"Motorcycle": 24
+"Sombrero": 24
+"Cake stand": 23
+"Peach": 23
+"Ski": 23
+"Spider": 23
+"Woodpecker": 23
+"Banana": 22
+"Bear": 22
+"Pen": 22
+"Zebra": 22
+"Cutting board": 21
+"Dog bed": 21
+"Harp": 21
+"Kitchen knife": 21
+"Lighthouse": 21
+"Sandal": 21
+"Suitcase": 21
+"Flying disc": 20
+"Watch": 20
+"Cat furniture": 19
+"Kitchen utensil": 19
+"Picnic basket": 19
+"Snail": 19
+"Tiara": 19
+"Accordion": 18
+"Axe": 18
+"Bus": 18
+"Computer keyboard": 18
+"Fast food": 18
+"Ostrich": 18
+"Pineapple": 18
+"Scissors": 18
+"Tomato": 18
+"Bookcase": 17
+"Kitchen & dining room table": 17
+"Shotgun": 17
+"Caterpillar": 16
+"Cheese": 16
+"Filing cabinet": 16
+"Waste container": 16
+"Harbor seal": 15
+"Organ": 15
+"Shark": 15
+"Toilet": 15
+"Computer monitor": 14
+"Computer mouse": 14
+"Football": 14
+"Frying pan": 14
+"Lily": 14
+"Missile": 14
+"Starfish": 14
+"Traffic light": 14
+"Otter": 13
+"Sports uniform": 13
+"Adhesive tape": 12
+"Bicycle helmet": 12
+"Brown bear": 12
+"Carrot": 12
+"Coconut": 12
+"Dice": 12
+"Pencil case": 12
+"Squash": 12
+"Tap": 12
+"Teddy bear": 12
+"Tennis racket": 12
+"Baseball glove": 11
+"Belt": 11
+"Cannon": 11
+"Cocktail": 11
+"Serving tray": 11
+"Spatula": 11
+"Tablet computer": 11
+"Truck": 11
+"Vehicle registration plate": 11
+"Worm": 11
+"Brassiere": 10
+"Closet": 10
+"Cookie": 10
+"Drinking straw": 10
+"Fork": 10
+"Hammer": 10
+"Hippopotamus": 10
+"Honeycomb": 10
+"Bow and arrow": 9
+"Fox": 9
+"Shrimp": 9
+"Van": 9
+"Bathroom accessory": 8
+"Ceiling fan": 8
+"Chopsticks": 8
+"Cucumber": 8
+"Fire hydrant": 8
+"Mouse": 8
+"Polar bear": 8
+"Sofa bed": 8
+"Studio couch": 8
+"Table tennis racket": 8
+"Beehive": 7
+"Canary": 7
+"Countertop": 7
+"Grapefruit": 7
+"Lavender": 7
+"Light switch": 7
+"Loveseat": 7
+"Panda": 7
+"Potato": 7
+"Sink": 7
+"Wardrobe": 7
+"Zucchini": 7
+"Beer": 6
+"Blender": 6
+"Briefcase": 6
+"Cabbage": 6
+"Coffee": 6
+"Handgun": 6
+"Hedgehog": 6
+"Juice": 6
+"Lobster": 6
+"Office building": 6
+"Paper towel": 6
+"Porcupine": 6
+"Ruler": 6
+"Scorpion": 6
+"Sewing machine": 6
+"Stop sign": 6
+"Beaker": 5
+"Cantaloupe": 5
+"Magpie": 5
+"Racket": 5
+"Refrigerator": 5
+"Roller skates": 5
+"Saxophone": 5
+"Shower": 5
+"Wok": 5
+"Backpack": 4
+"Binoculars": 4
+"Flashlight": 4
+"Horn": 4
+"Ice cream": 4
+"Infant bed": 4
+"Ipod": 4
+"Leopard": 4
+"Plumbing fixture": 4
+"Wood-burning stove": 4
+"Barge": 3
+"Blue jay": 3
+"Coffeemaker": 3
+"Corded phone": 3
+"Cricket ball": 3
+"Dumbbell": 3
+"Harpsichord": 3
+"Milk": 3
+"Pomegranate": 3
+"Swim cap": 3
+"Tea": 3
+"Tennis ball": 3
+"Toilet paper": 3
+"Trumpet": 3
+"Alarm clock": 2
+"Ant": 2
+"Bathroom cabinet": 2
+"Bathtub": 2
+"Bell pepper": 2
+"Centipede": 2
+"Food processor": 2
+"Football helmet": 2
+"Golf ball": 2
+"Hand dryer": 2
+"Printer": 2
+"Punching bag": 2
+"Raccoon": 2
+"Screwdriver": 2
+"Strawberry": 2
+"Whisk": 2
+"Winter melon": 2
+"Wrench": 2
+"Alpaca": 1
+"Bagel": 1
+"Billiard table": 1
+"Broccoli": 1
+"Cheetah": 1
+"Common fig": 1
+"Cream": 1
+"Diaper": 1
+"Digital clock": 1
+"Doughnut": 1
+"Drill": 1
+"Guacamole": 1
+"Heater": 1
+"Hot dog": 1
+"Jacuzzi": 1
+"Jet ski": 1
+"Koala": 1
+"Ladybug": 1
+"Lifejacket": 1
+"Lynx": 1
+"Mango": 1
+"Measuring cup": 1
+"Mixer": 1
+"Muffin": 1
+"Parking meter": 1
+"Perfume": 1
+"Personal care": 1
+"Remote control": 1
+"Salad": 1
+"Salt and pepper shakers": 1
+"Sandwich": 1
+"Scale": 1
+"Scoreboard": 1
+"Segway": 1
+"Snowmobile": 1
+"Snowplow": 1
+"Soap dispenser": 1
+"Stapler": 1
+"Sushi": 1
+"Syringe": 1
+"Taxi": 1
+"Treadmill": 1
+"Trombone": 1
+"Unicycle": 1
+"Volleyball": 1
+"Waffle": 1
+"Washing machine": 1
+}

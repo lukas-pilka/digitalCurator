@@ -128,7 +128,7 @@ def scrapPcg():
         artwork = pcgScrap(pageUrl, webUrl)
 
 
-        # IF ARTWORK CONTAINS IMAGE IT CALLS FUNCTIONS FOR WRITING TO THE FIRESTORE AND SAVING IMAGE TO THE STORAGE
+        # IF ARTWORK CONTAINS IMAGE IT CALLS FUNCTIONS FOR WRITING TO THE ELASTIC AND SAVING IMAGE TO THE STORAGE
 
         if not artwork == None and 'image_id' in artwork:
             connector.uploadToStorage('artworks-all/' + artwork['image_id'], 'temp/' + artwork['image_id']) # saving image to google storage
