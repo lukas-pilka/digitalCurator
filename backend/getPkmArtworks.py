@@ -78,7 +78,7 @@ def pkmScrap(pageUrl):
 
         # ADDING DIGITAL CURATOR ID
         collectionShortcut = 'PKM'
-        dcId = collectionShortcut + '-' + artworkData['original_id'].replace(" ", "")
+        dcId = collectionShortcut + '-' + artworkData['original_id'].replace(" ", "").replace("/", "-")
         artworkData['id'] = dcId
 
         # SAVING URL
@@ -135,7 +135,7 @@ def scrapPkm():
             print('Artwork found: ', dcId, documentData)
             connector.writeToElastic(dcId, documentData) # saving data to Elastic
 
-            time.sleep(3)
+            time.sleep(5)
 
 scrapPkm()
 

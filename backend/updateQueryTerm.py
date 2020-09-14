@@ -35,25 +35,27 @@ def getTypesFromElastic():
 # GET DATA FOR EDIT
 
 phrasesForReplace = [
-    {'painting':['maliarstvo','Tafelbild (Flügelretabel)','maliarstvo insitné','tempera','Gemälde','obraz','Tafelbild','maliarstvo ľudové','enkaustika']},
+    {'painting':['maliarstvo','malba','Tafelbild (Flügelretabel)','maliarstvo insitné','tempera','Gemälde','obraz','Tafelbild','maliarstvo ľudové','enkaustika','Malerei']},
     {'oil painting':['olej']},
     {'watercolor painting':['akvarel','akvarel koláž tuš','akvarel tempera','kvaš']},
-    {'drawing':['kresba', 'Zeichnung','fix']},
+    {'drawing':['kresba', 'Zeichnung','fix','Konturzeichnung']},
     {'charcoal drawing':['uhel','rudka hnědá','rudka podkresba tužkou','sépie lavírovaná','rudka','coal drawing']},
     {'pencil drawing':['pastelka barevná','tužka','pastelka modrá','tužka černá']},
     {'pastel drawing':['pastel']},
     {'chalk drawing':['křída','křída barevná','křída barevná nesprašná','křídy barevné']},
-    {'ink drawing':['tuš','rudka tuš běloba','lavírovaná tuš tempera','lavírovaná sépií tuš bistrem','kresba perem tuš','inkoust','perokresba lavírovaná']},
-    {'graphic print':['monotyp','grafika','Grafika','Druck','počítačová grafika','rytina']},
+    {'ink drawing':['tuš','pero šedohnědě - podkresba tužkou','rudka tuš běloba','lavírovaná tuš tempera','lavírovaná sépií tuš bistrem','kresba perem tuš','inkoust','perokresba lavírovaná']},
+    {'graphic print':['Grafik','akvatinta','serigrafie','ofset autorský','serigrafie barevná','monotyp','suchá jehla','tisk z plochy (ofset)','grafika','Grafika','Druck','počítačová grafika','rytina','mezzotinta','heliogravura','mezzotinta (II. stav)','mezzotinta (I. stav)']},
     {'lithography':['litografie']},
-    {'woodcut':['dřevoryt','xylografie']},
+    {'etching':['lept','lept (II. stav)','lept (I. stav)','lept - mědiryt','lept - akvatinta','lept a mědiryt','lept, suchá jehla']},
+    {'copper engraving':['mědiryt','mědiryt a lept','mědiryt - lept']},
+    {'woodcut':['dřevoryt','xylografie','dřevořez']},
     {'book':['bibliofília a staré tlače']},
     {'new media':['intermédiá']},
     {'architecture':['architektúra']},
-    {'photography':['fotografia','fotografie černobílá','dokumentárna fotografia','fotografie černobílá zvětšenina','Farbfoto','Fotogramm','fotografie digitální barevná pozitiv']},
+    {'photography':['digitální fotografie','fotografia','Fotografie','fotografie','Fotomontage','fotografie kontaktní černobílá','Fotokopie','Film','fotografie černobílá','dokumentárna fotografia','fotografie černobílá zvětšenina','Farbfoto','Fotogramm','fotografie digitální barevná pozitiv']},
     {'applied art':['úžitkové umenie','umelecké remeslo','kov','drevo']},
-    {'sculpture':['sochárstvo','Büste','sochárstvo insitné','Skulptur','Plastik','Sitzstatue','perforace reliéf','Brunnenfigur','Denkmalmodell']},
-    {'other':['koláž','mosaika','asambláž','interpretácia']}
+    {'sculpture':['sochárstvo','Büste','sochárstvo insitné','Münze','Relieftondo','Reiterstatuette','Liegestatuette','Skulptur','Plastik','Sitzstatue','perforace reliéf','Brunnenfigur','Denkmalmodell']},
+    {'other':['koláž','mosaika','asambláž','interpretácia','alchymáž','kombinovaná technika','Glasbild']}
 ]
 
 for phrasesSet in phrasesForReplace:
