@@ -265,7 +265,7 @@ def getGalleriesSum():
             "galleries_sum": {
                 "terms": {
                     "field": "gallery.keyword",
-                    "size": 100
+                    "size": 1000
                 }
             }
         }

@@ -48,7 +48,7 @@
             </p>
         </div>
         <div class="introPart chart">
-            {% set chartLineColors = ['#111','#555','#999','#ccc'] %}
+            {% set chartLineColors = ['#111','#2a9d8f','#e9c46a','#f4a261','#e76f51'] %}
             <canvas id="line-chart" width="800" height="450"></canvas>
             <p class="chartLegend">
             {% for i in range(artworksInPeriod.artworksWithObject|length) %}
@@ -62,7 +62,7 @@
         </div>
         <article class="introPart detailInformation">
             <p>The histogram shows the quotient of images on which the searched motif was detected in relation to the total number of images in the database.</p>
-            <p>The Digital Curator experiment attempts to demonstrate some of the basic capabilities of computer image recognition applied on cultural big data. With the help of Tensor Flow machine learning platform and Elasticsearch search engine, <strong>it&nbsp;explored {{galleriesSum['artworks count']}} digitized paintings, drawings and graphic prints from {{galleriesSum['galleries count']}} museums in Austria, Czech Republic and Slovakia.</strong> It recognized persons, icons, symbols and more than 1 000 diverse objects, marked their positions in the image and gave a precise measure of the certainty of own estimation. Finally, it prepared an online exposition presenting the most relevant works <strong>in {{ g.request_time() }}ec.</strong></p>
+            <p>The Digital Curator experiment attempts to demonstrate some of the basic capabilities of computer image recognition applied on cultural big data. With the help of Tensor Flow machine learning platform and Elasticsearch search engine, <strong>it&nbsp;explored {{galleriesSum['artworks count']}} digitized paintings, drawings and graphic prints from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, Czech Republic and Slovakia.</strong> It recognized persons, icons, symbols and more than 1 000 diverse objects, marked their positions in the image and gave a precise measure of the certainty of own estimation. Finally, it prepared an online exposition presenting the most relevant works <strong>in {{ g.request_time() }}ec.</strong></p>
         </article>
     </section>
 
