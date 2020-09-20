@@ -13,6 +13,7 @@
 .git
 .gitignore
 venv/*
+temp/*
 
 # Python pycache:
 __pycache__/
