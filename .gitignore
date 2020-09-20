@@ -1,4 +1,5 @@
 venv/*
 backend/temp/*
+backend/downloads/*
 .idea
 config.py

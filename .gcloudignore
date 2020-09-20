@@ -14,6 +14,7 @@
 .gitignore
 venv/*
 temp/*
+downloads/*
 
 # Python pycache:
 __pycache__/
