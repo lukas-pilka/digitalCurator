@@ -9,7 +9,7 @@ import config
 def callElastic(query):
     payload = ""
     rawData = requests.get(
-        'https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks/_search',
+        'https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks3/_search',
         auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
     rawData.encoding = 'utf-8'
     dataDict = json.loads(rawData.text)
@@ -48,7 +48,6 @@ def getArtworksByObject(objectList, dateFrom, dateTo):
             {
                 "bool": {
                     "must": [
-                        {"exists": {"field": "detected_objects"}},
                         {
                             "bool": {
                                 "should": [
@@ -72,13 +71,18 @@ def getArtworksByObject(objectList, dateFrom, dateTo):
         ]
 
         # Adding match_phrase conditions to must query list. One for each object.
-        key = list(searchedObject.keys())[0]
-        objectGroup = searchedObject[key]
-        for shouldGroup in objectGroup: #expanding sholud lists from collection (objectGroup)
+        exhibitionName = list(searchedObject.keys())[0]
+        exhibitionParams = searchedObject[exhibitionName]
+        for keywordsGroup in exhibitionParams: #expanding sholud lists from collection (exhibitionParams)
             shouldObjectList = []
-            for shouldObject in shouldGroup: #expanding sholud objects from shouldGroup (Shoul List)
-                shouldObjectList.append({"match_phrase": {"detected_objects.object": shouldObject}})
-            mustObjectsQuery.append({"bool": {"should": shouldObjectList}})
+            for keyword in keywordsGroup: #expanding sholud objects from keywordsGroup (Should List)
+                shouldObjectList.append({"bool": {
+                    "must": [
+                        {"match": {"detected_objects.object": keyword}},
+                        {"range": {"detected_objects.score": {"gt": config.keywordProbabilityMin}}}
+                    ]
+                }})
+            mustObjectsQuery.append({"nested": {"path": "detected_objects", "query": {"bool": {"should": shouldObjectList}}}})
 
         if config.onlyFreeArtworks == True:
             mustObjectsQuery.append({"bool": {"must": [{"term": {"is_free": True}}]}})
@@ -89,6 +93,14 @@ def getArtworksByObject(objectList, dateFrom, dateTo):
             "query": {
                 "bool": {
                     "must": mustObjectsQuery # includes above defined mustObjectQuery
+                }
+            },
+            "aggs": {
+                "periods": {
+                    "histogram": {
+                        "field": "date_latest",
+                        "interval": 100
+                    }
                 }
             },
             "_source": {
@@ -106,10 +118,9 @@ def getArtworksByObject(objectList, dateFrom, dateTo):
             }
         }
 
-        print(queryForArtworks)
-
         # Calling elastic database with completed query
-        artworks = callElastic(queryForArtworks)['hits']['hits']
+        rawData = callElastic(queryForArtworks)
+        artworks = rawData['hits']['hits']
 
         # expanding data by imageUrl and topObjectScore
         expandedArtworks = []
@@ -128,7 +139,7 @@ def getArtworksByObject(objectList, dateFrom, dateTo):
             # selects searched object with highest score on image and saves it to topElementaryObjectScoreSum (It's useful for sorting)
             searchedObjectsScore = [] # saves highest probability achieved for each object
             #print('---next artwork---')
-            for elementaryObjects in searchedObject[key]:
+            for elementaryObjects in searchedObject[exhibitionName]:
 
                 for elementaryObject in elementaryObjects:
 
@@ -140,13 +151,18 @@ def getArtworksByObject(objectList, dateFrom, dateTo):
                     searchedObjectsScore.append(topElementaryObjectScore)
                     #print(elementaryObject, topElementaryObjectScore)
 
-            artwork['_source']['searched_object'] = key
+            artwork['_source']['searched_object'] = exhibitionName
             artwork['_source']['average_score'] = round(sum(searchedObjectsScore) / len(searchedObjectsScore), 2) # get percents
             expandedArtworks.append(artwork)
 
         # sorts expandedArtworks by topObjectScore
         sortedArtworks = sorted(expandedArtworks, key=sorter, reverse=True)[:config.maxGallerySize]
         allListsResult.append(sortedArtworks)
+
+        # expanding aggregations
+        aggregations = rawData['aggregations']['periods']['buckets']
+        for period in aggregations:
+            print(period)
 
     return allListsResult
 
@@ -189,15 +205,6 @@ def objectsByPeriods(objectList,interval,dateFrom,dateTo):
             "bool": {
                 "must": [
                     {
-                        "bool": {
-                            "must": {
-                                "exists": {
-                                    "field": "detected_objects"
-                                }
-                            }
-                        }
-                    },
-                    {
                         "range": {
                             "date_latest": {
                                 "gte": dateFrom,
@@ -228,6 +235,7 @@ def objectsByPeriods(objectList,interval,dateFrom,dateTo):
             }
         }
     }
+    print(artworksByPeriod)
     countAll = callElastic(artworksByPeriod)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
 
     relatedPeriods = []
@@ -251,15 +259,6 @@ def objectsByPeriods(objectList,interval,dateFrom,dateTo):
 
 def getGalleriesSum():
     collectionsQuery = {
-        "query": {
-            "bool": {
-                "must": {
-                    "exists": {
-                        "field": "detected_objects"
-                    }
-                }
-            }
-        },
         "size": 0,
         "aggs": {
             "galleries_sum": {
@@ -307,11 +306,9 @@ def devideCollectionByPeriods(objectsByPeriods, getArtworksByObject):
 
 
 
-
-'''
 getArtworksByObject(config.searchedObjects, config.dateFrom, config.dateTo)
 print(objectsByPeriods(config.searchedObjects,100, config.dateFrom, config.dateTo))
 print(getRandomObjectTypes(3))
 print(getGalleriesSum())
-'''
+
 
