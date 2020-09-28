@@ -18,17 +18,17 @@ def before_request():
 @app.route('/')
 def index():
     # Selecting objects for detection
-    if config.searchedObjects == None:
-        searchedObjects = engine.getRandomObjectTypes(config.countOfRandomObjects)
+    if config.exhibitionsList == None:
+        exhibitionsList = engine.getRandomObjectTypes(config.countOfRandomObjects)
     else:
-        searchedObjects = config.searchedObjects
-    artworksSorted = engine.getArtworksByObject(searchedObjects, config.dateFrom, config.dateTo)
+        exhibitionsList = config.exhibitionsList
+    artworksSorted = engine.getArtworksByObject(exhibitionsList)
     titleImage = artworksSorted[0][0]
-    artworksInPeriod = engine.objectsByPeriods(searchedObjects, config.periodLength, config.dateFrom, config.dateTo)
+    artworksInPeriod = engine.objectsByPeriods(exhibitionsList, config.periodLength, config.dateFrom, config.dateTo)
     collectionsByPeriods = engine.devideCollectionByPeriods(artworksInPeriod, artworksSorted)
     galleriesSum = engine.getGalleriesSum()
     collectionTitles = [] # Clearing because dicts between searched objects
-    for collection in searchedObjects:
+    for collection in exhibitionsList:
         collectionTitles.append(list(collection.keys())[0])
     return render_template('index.html',
                            artworksForWeb=collectionsByPeriods,
