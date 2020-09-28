@@ -24,7 +24,7 @@ def index():
         exhibitionsList = config.exhibitionsList
     artworksSorted = engine.getArtworksByObject(exhibitionsList)
     titleImage = artworksSorted[0][0]
-    artworksInPeriod = engine.objectsByPeriods(exhibitionsList, config.periodLength, config.dateFrom, config.dateTo)
+    artworksInPeriod = engine.getPeriodData(exhibitionsList, config.periodLength, config.dateFrom, config.dateTo)
     collectionsByPeriods = engine.devideCollectionByPeriods(artworksInPeriod, artworksSorted)
     galleriesSum = engine.getGalleriesSum()
     collectionTitles = [] # Clearing because dicts between searched objects

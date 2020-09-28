@@ -32,21 +32,15 @@ def getRandomObjectTypes(requestedCountOfCollections):
     return randomExhibition
 
 # PREPARING EXHIBITION QUERY
+# Common properties for getArtworksByObject and getPeriodData
 
-def prepareExhibitionQuery(exhibition):
-    exhibitionQuery = [
+exhibitionPropertiesQuery = [
         {
             "bool": {
-                "must": [
-                    {
-                        "bool": {
-                            "should": [
-                                {"match_phrase": {"work_type": "graphic"}},
-                                {"match_phrase": {"work_type": "painting"}},
-                                {"match_phrase": {"work_type": "drawing"}}
-                            ]
-                        }
-                    }
+                "should": [
+                    {"match_phrase": {"work_type": "graphic"}},
+                    {"match_phrase": {"work_type": "painting"}},
+                    {"match_phrase": {"work_type": "drawing"}}
                 ]
             }
         },
@@ -60,25 +54,21 @@ def prepareExhibitionQuery(exhibition):
         }
     ]
 
+# Common properties for getArtworksByObject query and getPeriodData aggregations
+def prepareExhibitionKeywordQuery(exhibition):
+
+    exhibitionKeywordsQuery = []
+
     # Adding match_phrase conditions to must query list. One for each object.
     exhibitionName = list(exhibition.keys())[0]
     exhibitionParams = exhibition[exhibitionName]
     for keywordsGroup in exhibitionParams:  # expanding exhibitionQuery from collection (exhibitionParams)
         keywordsQuery = []
         for keyword in keywordsGroup:  # expanding keywordsQuery from keywordsGroup
-            keywordsQuery.append({"bool": {
-                "must": [
-                    {"match": {"detected_objects.object": keyword}},
-                    {"range": {"detected_objects.score": {"gt": config.keywordProbabilityMin}}}
-                ]
-            }})
-        exhibitionQuery.append({"nested": {"path": "detected_objects", "query": {"bool": {"should": keywordsQuery}}}})
+            keywordsQuery.append({"match_phrase": {"detected_objects.object": keyword}})
+        exhibitionKeywordsQuery.append({"bool": {"should": keywordsQuery}})
 
-    # Only free artworks
-    if config.onlyFreeArtworks == True:
-        exhibitionQuery.append({"bool": {"must": [{"term": {"is_free": True}}]}})
-
-    return exhibitionQuery
+    return exhibitionKeywordsQuery
 
 # GET ARTWORKS BY OBJECT
 
@@ -91,7 +81,12 @@ def getArtworksByObject(exhibitionList):
         return score
 
     for exhibition in exhibitionList:
-        exhibitionQuery = prepareExhibitionQuery(exhibition)
+        exhibitionKeywordsQuery = prepareExhibitionKeywordQuery(exhibition)
+        exhibitionQuery = exhibitionPropertiesQuery + exhibitionKeywordsQuery
+
+        # Only free artworks
+        if config.onlyFreeArtworks == True:
+            exhibitionQuery.append({"bool": {"must": [{"term": {"is_free": True}}]}})
 
         # Completing query
         requestForArtworks = {
@@ -124,7 +119,7 @@ def getArtworksByObject(exhibitionList):
             }
         }
 
-        print(requestForArtworks)
+        print('Request for artworks: ' + str(requestForArtworks))
 
         # Calling elastic database with completed query
         rawData = callElastic(requestForArtworks)
@@ -168,23 +163,18 @@ def getArtworksByObject(exhibitionList):
         sortedArtworks = sorted(expandedArtworks, key=sorter, reverse=True)[:config.maxGallerySize]
         allListsResult.append(sortedArtworks)
 
-        # expanding aggregations
-        aggregations = rawData['aggregations']['periods']['buckets']
-        for period in aggregations:
-            print(period)
-
     return allListsResult
 
 # AGGREGATIONS BY PERIODS
 
-def objectsByPeriods(exhibitionsList, interval, dateFrom, dateTo):
+def getPeriodData(exhibitionsList, interval, dateFrom, dateTo):
 
     # preparing object filters for query
     aggregations = {}
     def prepareQuery(exhibitionsList):
         counter = 1
         for exhibition in exhibitionsList:
-            exhibitionQuery = prepareExhibitionQuery(exhibition)
+            exhibitionQuery = prepareExhibitionKeywordQuery(exhibition)
             groupAggregation = {
                 "filter": {
                     "bool": {
@@ -199,29 +189,11 @@ def objectsByPeriods(exhibitionsList, interval, dateFrom, dateTo):
     prepareQuery(exhibitionsList)
 
     # completing query
-    artworksByPeriod = {
+    requestForPeriodData = {
         "size": 0,
         "query": {
             "bool": {
-                "must": [
-                    {
-                        "range": {
-                            "date_latest": {
-                                "gte": dateFrom,
-                                "lt": dateTo
-                            }
-                        }
-                    },
-                    {
-                        "bool": {
-                            "should": [
-                                {"match_phrase": {"work_type": "graphic print"}},
-                                {"match_phrase": {"work_type": "painting"}},
-                                {"match_phrase": {"work_type": "drawing"}}
-                            ]
-                        }
-                    }
-                ]
+                "must": exhibitionPropertiesQuery
             }
         },
         "aggs": {
@@ -235,8 +207,8 @@ def objectsByPeriods(exhibitionsList, interval, dateFrom, dateTo):
             }
         }
     }
-    print(artworksByPeriod)
-    countAll = callElastic(artworksByPeriod)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
+    print('Request for periods data: ' + str(requestForPeriodData))
+    countAll = callElastic(requestForPeriodData)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
 
     relatedPeriods = []
     for periodSet in countAll: # Gets labels
@@ -253,6 +225,7 @@ def objectsByPeriods(exhibitionsList, interval, dateFrom, dateTo):
         objectPercents = [round(artworksWithObject[item] / totalArtworks[item], 3) * 100 for item in range(len(totalArtworks))]  # Counting percent of artworks copntained selected object in comparison with total artworks
         artworksInPeriod['artworksWithObject'].append([objectName, artworksWithObject, objectPercents])
 
+    print(artworksInPeriod)
     return artworksInPeriod
 
 # GET COLLECTION SUM
@@ -307,7 +280,7 @@ def devideCollectionByPeriods(objectsByPeriods, getArtworksByObject):
 
 
 #getArtworksByObject(config.exhibitionsList)
-#print(objectsByPeriods(config.exhibitionsList,100, config.dateFrom, config.dateTo))
+#getPeriodData(config.exhibitionsList,100, config.dateFrom, config.dateTo)
 #print(getRandomObjectTypes(3))
 #print(getGalleriesSum())
 
