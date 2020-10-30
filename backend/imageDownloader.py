@@ -9,14 +9,14 @@ import json
 # CONNECTION TO ELASTIC SEARCH
 def load10kFromElastic(afterId):
     query = {
-        "size":10000,
+        "size":350,
         "query": {
         "bool": {
             "must": [
                 {
                     "range": {
                         "date_earliest": {
-                            "gt": 1000,
+                            "gte": 1775,
                             "lt": 1800
                         }
                     }
@@ -51,7 +51,7 @@ def load10kFromElastic(afterId):
         elasticIdsList.append(artwork['_id'])
 
 def loadAllFromElastic():
-    for request in range(20):
+    for request in range(1):
         print('Loading IDs...')
         if len(elasticIdsList) >= 1:
             load10kFromElastic(elasticIdsList[-1])
@@ -78,7 +78,7 @@ loadAllFromElastic()
 counter = 0
 for id in elasticIdsList:
     sourceFileName = 'artworks-all/'+id+'.jpg'
-    destinationFileName = 'downloads/'+id+'.jpg'
+    destinationFileName = 'before1800/'+id+'.jpg'
     download_blob(sourceFileName,destinationFileName)
     counter += 1
     print(counter)

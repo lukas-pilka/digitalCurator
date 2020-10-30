@@ -52,17 +52,20 @@ def getTypesFromElastic():
 
         # replaces specific values
         wordPairs = [
+            ['15. Jahrhundert (?)', [1400, 1500]],
+            ['16. Jahrhundert', [1500, 1600]],
             ['16. století',[1500,1600]],
             ['17. století', [1600, 1700]],
+            ['17. Jhdt.', [1600, 1700]],
+            ['17. Jh.', [1600, 1700]],
+            ['17. Jahrhundert', [1600, 1700]],
             ['18. století', [1700, 1800]],
+            ['18. Jahrhundert', [1700, 1800]],
             ['19. století', [1800, 1900]],
+            ['19. Jahrhundert', [1800, 1900]],
             ['90. léta 19. století', [1890,1900]],
             ['Prelom 18. a 19. storočia', [1790, 1810]],
-            ['16. Jahrhundert', [1500, 1600]],
-            ['17. Jahrhundert', [1600, 1700]],
-            ['18. Jahrhundert', [1700, 1800]],
-            ['19. Jahrhundert', [1800, 1900]],
-            ['15. Jahrhundert (?)', [1400, 1500]],
+            ['Ende 17. Jh.', [1680, 1700]],
             ['um 1445/1450', [1445, 1450]],
             ['um 1470/1480', [1470, 1480]],
             ['um 1485/1490', [1485, 1490]],
@@ -71,7 +74,8 @@ def getTypesFromElastic():
             ['um 1510/1520', [1510, 1520]],
             ['um 1760/1800', [1750, 1800]],
             ['um 1770/1780', [1770, 1780]],
-            ['um 1820/1855', [1820, 1855]]
+            ['um 1820/1855', [1820, 1855]],
+            ['um 1880/1890', [1880, 1890]]
         ]
 
         for wordPair in wordPairs:
@@ -90,7 +94,7 @@ def getTypesFromElastic():
             pass
 
         # if harmful word in dating, script tries to cut it and convert dating to integer
-        harmfulWords = ['kolem', 'po', 'okolo', 'od', 'pred', 'um', 'vor', 'po roce', 'před', 'před rokem','kolem roku', 'nach', 'wohl', 'wohl vor']  # add words for cut string after them
+        harmfulWords = ['kolem', 'po', 'okolo', 'od', 'pred', 'um', 'vor', 'vor ' ,'po roce', 'před', 'před rokem','kolem roku', 'nach', 'wohl', 'wohl vor']  # add words for cut string after them
         for word in harmfulWords:
             try:
                 if artwork['_source']['dating'].find(word) >= 0: # if any of harmful word is detected then proceed to cut it from dating
