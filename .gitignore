@@ -2,4 +2,5 @@ venv/*
 backend/temp/*
 backend/downloads/*
 .idea
+.flaskenv
 config.py

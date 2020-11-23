@@ -12,6 +12,7 @@
 # below:
 .git
 .gitignore
+.flaskenv
 venv/*
 temp/*
 downloads/*
