@@ -1,6 +1,5 @@
 # IMPORTS
 
-
 import config
 import engine
 
@@ -15,6 +14,7 @@ def before_request():
     g.request_start_time = time.time()
     g.request_time = lambda: "%.5fs" % (time.time() - g.request_start_time)
 
+# Returns exhibition by config
 @app.route('/')
 def index():
     # Selecting objects for detection
@@ -37,6 +37,25 @@ def index():
                            artworksInPeriod=artworksInPeriod,
                            titleImage=titleImage
                            )
-@app.route('/test')
-def test():
-    return render_template('test.html')
+
+# Returns exhibition by keyword in url
+@app.route('/<keyword>')
+def searchKeyword(keyword):
+    # Selecting objects for detection
+    exhibitionsList = [{keyword:[[keyword]]}]
+    artworksSorted = engine.getArtworksByObject(exhibitionsList)
+    titleImage = artworksSorted[0][0]
+    artworksInPeriod = engine.getPeriodData(exhibitionsList, config.periodLength, config.dateFrom, config.dateTo)
+    collectionsByPeriods = engine.devideCollectionByPeriods(artworksInPeriod, artworksSorted)
+    galleriesSum = engine.getGalleriesSum()
+    collectionTitles = [] # Clearing because dicts between searched objects
+    for collection in exhibitionsList:
+        collectionTitles.append(list(collection.keys())[0])
+    return render_template('index.html',
+                           artworksForWeb=collectionsByPeriods,
+                           searchedObjects=collectionTitles,
+                           galleriesSum=galleriesSum,
+                           artworksInPeriod=artworksInPeriod,
+                           titleImage=titleImage
+                           )
+
