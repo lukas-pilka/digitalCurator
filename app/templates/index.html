@@ -12,6 +12,18 @@
             {% endif%}
                 Generated exhibition based on computer vision and big cultural data
             </p>
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.searchedItem.label }}<br>
+                    {{ form.searchedItem }}<br>
+                    {% for error in form.searchedItem.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+
         </div>
         <div class="footerPart">
             <p>
