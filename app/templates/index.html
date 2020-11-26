@@ -3,6 +3,13 @@
 
 <div class="container">
 
+    <script>
+        // selects with use Select2 and JQuery
+        $(document).ready(function () {
+            $('#searchedClassSelect').select2();
+        });
+    </script>
+
     <section class="mainSection titleScreen" id="exhibitionStart">
         <div class="titlePart">
             <h1>{{ searchedObjects[0]}}</h1>
@@ -12,12 +19,13 @@
             {% endif%}
                 Generated exhibition based on computer vision and big cultural data
             </p>
+
             <form action="" method="post" novalidate>
                 {{ form.hidden_tag() }}
                 <p>
-                    {{ form.searchedItem.label }}<br>
-                    {{ form.searchedItem }}<br>
-                    {% for error in form.searchedItem.errors %}
+                    {{ form.searchedClassSelect.label }}<br>
+                    {{ form.searchedClassSelect }}<br>
+                    {% for error in form.searchedClassSelect.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>

@@ -250,6 +250,26 @@ def getGalleriesSum():
     summary = {'galleries count': galleriesCount, 'artworks count': artworksCount}
     return summary
 
+# GET DETECTED OBJECT LIST
+
+def getDetectedObjectsList():
+    collectionsQuery = {
+        "size":0,
+        "aggs" : {
+            "detected_objects_list" : {
+                "terms" : {
+                    "field" : "detected_objects.object.keyword",
+                    "size": 10000
+                }
+            }
+        }
+    }
+    DetectedObjectClassesList = callElastic(collectionsQuery)['aggregations']['detected_objects_list']['buckets']
+    TuplesClassesList = []
+    for objectClass in DetectedObjectClassesList:
+        TuplesClassesList.append((objectClass['key'],objectClass['key']+' '+str(objectClass['doc_count'])))
+    return TuplesClassesList
+
 # DEVIDE EVERY COLLECTION BY PERIODS AND SORTS ARTWORKS INTO SPECIFIC PERIOD BY ITS DATE EARLIEST
 def devideCollectionByPeriods(objectsByPeriods, getArtworksByObject):
     sortedCollections = []
@@ -278,7 +298,7 @@ def devideCollectionByPeriods(objectsByPeriods, getArtworksByObject):
 
 
 
-
+#print(getDetectedObjectsList())
 #getArtworksByObject(config.exhibitionsList)
 #getPeriodData(config.exhibitionsList,100, config.dateFrom, config.dateTo)
 #print(getRandomObjectTypes(3))
