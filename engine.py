@@ -34,7 +34,8 @@ def getRandomObjectTypes(requestedCountOfCollections):
 # PREPARING EXHIBITION QUERY
 # Common properties for getArtworksByObject and getPeriodData
 
-exhibitionPropertiesQuery = [
+def exhibitionPropertiesQuery(dateFrom, dateTo):
+    return [
         {
             "bool": {
                 "should": [
@@ -47,8 +48,8 @@ exhibitionPropertiesQuery = [
         {
             "range": {
                 "date_latest": {
-                    "gte": config.dateFrom,
-                    "lt": config.dateTo
+                    "gte": dateFrom,
+                    "lt": dateTo
                 }
             }
         }
@@ -72,7 +73,7 @@ def prepareExhibitionKeywordQuery(exhibition):
 
 # GET ARTWORKS BY OBJECT
 
-def getArtworksByObject(exhibitionList):
+def getArtworksByObject(exhibitionList, dateFrom, dateTo):
 
     allListsResult = []
 
@@ -82,7 +83,7 @@ def getArtworksByObject(exhibitionList):
 
     for exhibition in exhibitionList:
         exhibitionKeywordsQuery = prepareExhibitionKeywordQuery(exhibition)
-        exhibitionQuery = exhibitionPropertiesQuery + exhibitionKeywordsQuery
+        exhibitionQuery = exhibitionPropertiesQuery(dateFrom, dateTo) + exhibitionKeywordsQuery
 
         # Only free artworks
         if config.onlyFreeArtworks == True:
@@ -193,7 +194,7 @@ def getPeriodData(exhibitionsList, interval, dateFrom, dateTo):
         "size": 0,
         "query": {
             "bool": {
-                "must": exhibitionPropertiesQuery
+                "must": exhibitionPropertiesQuery(dateFrom,dateTo)
             }
         },
         "aggs": {
@@ -222,10 +223,14 @@ def getPeriodData(exhibitionsList, interval, dateFrom, dateTo):
     for object in exhibitionsList:
         objectName = list(object.keys())[0]
         artworksWithObject = [periodSet[objectName]['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods]  # check if period is in relatedPeriods and if so, it adds count to related artworks
-        objectPercents = [round(artworksWithObject[item] / totalArtworks[item], 3) * 100 for item in range(len(totalArtworks))]  # Counting percent of artworks copntained selected object in comparison with total artworks
+        objectPercents = []
+        for item in range(len(totalArtworks)):
+            if totalArtworks[item] == 0: # Eliminates dividing by zero error
+                objectPercents.append(0)
+            else:
+                objectPercents.append(round(artworksWithObject[item] / totalArtworks[item], 3) * 100)  # Counting percent of artworks copntained selected object in comparison with total artworks
         artworksInPeriod['artworksWithObject'].append([objectName, artworksWithObject, objectPercents])
 
-    print(artworksInPeriod)
     return artworksInPeriod
 
 # GET COLLECTION SUM

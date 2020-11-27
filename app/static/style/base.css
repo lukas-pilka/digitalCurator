@@ -260,7 +260,8 @@ p{
 
 /* form */
 
-#searchedClassSelect{
+#searchedClassSelect,
+#comparisonClassSelect{
     width: 100%;
 }
 
