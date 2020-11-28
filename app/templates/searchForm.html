@@ -1,0 +1,40 @@
+<h3>Search form: Man face fruit divided seasons herb from herb moveth whose.</h3>
+<form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.exhibitionName.label }}<br>
+            {{ form.exhibitionName }}<br>
+            {% for error in form.exhibitionName.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.searchedClassSelect.label }}<br>
+            {{ form.searchedClassSelect }}<br>
+            {% for error in form.searchedClassSelect.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.comparisonClassSelect.label }}<br>
+            {{ form.comparisonClassSelect }}<br>
+            {% for error in form.comparisonClassSelect.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.dateFrom.label }}<br>
+            {{ form.dateFrom }}<br>
+            {% for error in form.dateFrom.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.dateTo.label }}<br>
+            {{ form.dateTo }}<br>
+            {% for error in form.dateTo.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container">
+<div class="container" id="container">
 
     <script>
         // selects with use Select2 and JQuery
@@ -26,52 +26,8 @@
             {% endif%}
                 Generated exhibition based on computer vision and big cultural data
             </p>
-
-            <form action="" method="post" novalidate>
-                {{ form.hidden_tag() }}
-                <p>
-                    {{ form.exhibitionName.label }}<br>
-                    {{ form.exhibitionName }}<br>
-                    {% for error in form.exhibitionName.errors %}
-                    <span style="color: red;">{{ error }}</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ form.searchedClassSelect.label }}<br>
-                    {{ form.searchedClassSelect }}<br>
-                    {% for error in form.searchedClassSelect.errors %}
-                    <span style="color: red;">{{ error }}</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ form.comparisonClassSelect.label }}<br>
-                    {{ form.comparisonClassSelect }}<br>
-                    {% for error in form.comparisonClassSelect.errors %}
-                    <span style="color: red;">{{ error }}</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ form.dateFrom.label }}<br>
-                    {{ form.dateFrom }}<br>
-                    {% for error in form.dateFrom.errors %}
-                    <span style="color: red;">{{ error }}</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ form.dateTo.label }}<br>
-                    {{ form.dateTo }}<br>
-                    {% for error in form.dateTo.errors %}
-                    <span style="color: red;">{{ error }}</span>
-                    {% endfor %}
-                </p>
-                <p>{{ form.submit() }}</p>
-            </form>
-
         </div>
         <div class="footerPart">
-            <p>
-                <a href="/" class="button">Generate new exhibition</a>
-            </p>
         </div>
     </section>
 
@@ -113,12 +69,12 @@
                 </span>
             {% endfor %}
             </p>
-
         </div>
         <article class="introPart detailInformation">
             <p>The histogram shows the quotient of images on which the searched motif was detected in relation to the total number of images in the database.</p>
             <p>The Digital Curator experiment attempts to demonstrate some of the basic capabilities of computer image recognition applied on cultural big data. With the help of Tensor Flow machine learning platform and Elasticsearch search engine, <strong>it&nbsp;explored {{galleriesSum['artworks count']}} digitized paintings, drawings and graphic prints from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, Czech Republic and Slovakia.</strong> It recognized persons, icons, symbols and more than 1 000 diverse objects, marked their positions in the image and gave a precise measure of the certainty of own estimation. Finally, it prepared an online exposition presenting the most relevant works <strong>in {{ g.request_time() }}ec.</strong></p>
         </article>
+
     </section>
 
 
@@ -191,9 +147,6 @@
             <h1>Goodbye</h1>
         </div>
         <div class="footerPart">
-            <p>
-                <a href="/" class="button">Generate new exhibition</a>
-            </p>
             <p class="copyleft">
                 <a href="http://lukaspilka.cz/" target="_blank">Lukas Pilka, 2020</a>
             </p>

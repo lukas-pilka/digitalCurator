@@ -36,15 +36,16 @@
     </script>
 
 </head>
-<body id="wrapper">
 
-{% block content %}{% endblock %}
+<body id="wrapper" class="wrapper jsWrapper">
+    {% include "menu.html" %}
+    {% block content %}{% endblock %}
+</body>
 
 <script src="{{ url_for('static', filename='horwheel/horwheel.js') }}?v=1"></script>
-    <script>
-      var view = document.getElementById('wrapper');
-      horwheel(view);
-    </script>
+<script>
+  var view = document.getElementById('wrapper');
+  horwheel(view);
+</script>
 
-</body>
 </html>

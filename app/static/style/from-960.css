@@ -4,3 +4,74 @@
 html{
     font-size: 20px;
 }
+body{
+    margin: 4rem 0 0 0;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100vh;
+    max-height: 100vh;
+}
+.container {
+    height: 100%;
+    display: flex;
+}
+.mainSection {
+    height: 100%;
+    display: flex;
+}
+.mainSection {
+    width: auto;
+    padding: 2rem 6rem 2rem 2rem;
+}
+.titleScreen{
+    min-width: 75vw;
+    flex-flow: column;
+}
+.titleImage{
+    width: auto;
+}
+.artwork.titleImage{
+    height: 100%;
+}
+.imageContainer{
+    position: relative;
+    height: 100%;
+    width: auto;
+}
+.imageContainer img{
+    height: 100%;
+}
+.artwork.titleImage{
+    height: 100%;
+}
+.introPart{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    margin-right: 6rem
+}
+.galleryShowcase{
+    align-items: center;
+    display: flex;
+}
+.periodIntro{
+    height: 100%;
+    width: 0;
+    position: relative;
+}
+.artwork{
+    width: auto;
+    display: flex;
+}
+.artworkDescription{
+    margin: 0 5rem 0 1rem;
+    width: 12rem;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: column;
+}
+.imageContainer{
+    overflow: visible;
+}

@@ -1,0 +1,28 @@
+<nav class="mainMenu">
+    <section id="jsMenuWindow" class="menuWindow opened">
+        <div class="menuFirstLevel">
+            <a href="/" class="projectLogo">DigitalCurator.art</a>
+            <a onclick="return openMenu();" class="menuIcon menu jsMenuIcon" id="jsMenuIcon"><span>Menu</span></a>
+        </div>
+        <div class="menuSecondLevel" id="menuSecondLevel">
+            <a onclick="return openSearch();" class="menuLink">Generate new exhibition</a>
+            <a onclick="return openAbout();" class="menuLink">About project</a>
+        </div>
+    </section>
+    <section id="jsSearchWindow" class="searchWindow">
+        <div class="windowBackRow">
+            <a onclick="openSearch()" class="menuIcon back"><span>Close</span></a>
+        </div>
+        <div class="windowContent">
+            {% include "searchForm.html" %}
+        </div>
+    </section>
+    <section id="jsAboutWindow" class="searchWindow">
+        <div class="windowBackRow">
+            <a onclick="openAbout()" class="menuIcon back"><span>Close</span></a>
+        </div>
+        <div class="windowContent">
+            {% include "aboutProject.html" %}
+        </div>
+    </section>
+</nav>

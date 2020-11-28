@@ -5,17 +5,14 @@ html{
     font-size: 14px;
     font-family: 'Montserrat', sans-serif;
     line-height: 1.5;
-    display: flex;
+    width: 100%;
+    height: 100%;
 }
 body{
-    margin: 0;
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    height: 100vh;
-    max-height: 100vh;
+    margin: 4rem 0 0 0;
+    background: #111111;
 }
-h1, h2{
+h1, h2, h3{
     font-family: 'Playfair Display', serif;
     font-weight: normal;
     line-height: 1.125;
@@ -26,10 +23,12 @@ h1{
 h2{
     font-size: 2.25rem;
 }
+h3{
+    font-size: 1.125rem;
+}
 p{
     font-size: 1rem;
 }
-.subtitle,
 .subtitle{
     margin-top: 0.25rem;
     font-size: 1rem;
@@ -39,16 +38,17 @@ p{
 /* container */
 
 .container {
-    display: flex;
-    height: 100%;
     width: 100%;
+    transition: opacity 0.5s, filter 0.5s;
+}
+.behindFog .container{
+    filter: blur(8px);
+    opacity: 0.5;
 }
 .mainSection {
-    padding: 2rem 6rem 2rem 2rem;
-    display: flex;
-    width: auto;
+    padding: 2rem 2rem 6rem 2rem;
+    width: 100vw;
     box-sizing: border-box;
-    height: 100%;
 }
 
 /* container end */
@@ -59,8 +59,7 @@ p{
     color: #ffffff;
     background: #111111;
     justify-content: space-between;
-    min-width: 75vw;
-    flex-flow: column;
+    z-index: 6;
 }
 .titleScreen h1{
     margin: 0;
@@ -69,10 +68,7 @@ p{
     margin-bottom: 0;
 }
 .titleImage{
-    width: auto;
-    box-sizing: border-box;
-    height: 100%;
-    display: none;
+    width: 100%;
 }
 .titleImage img{
     height: 100%;
@@ -86,10 +82,9 @@ p{
     background: #ddd;
 }
 .introPart{
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    margin-right: 6rem;
+}
+.introPart.chart{
+    overflow-x: auto;
 }
 .introPart:last-child{
     margin-right: 0;
@@ -122,9 +117,7 @@ p{
 
 /* period intro start */
 .periodIntro{
-    height: 100%;
-    width: 0;
-    position: relative;
+    margin: 6rem 0 1rem 0;
 }
 .periodTitle{
     width: 50vw;
@@ -135,36 +128,29 @@ p{
 
 .galleryShowcase{
     background: #ffffff;
-    align-items: center;
-    display: flex;
 }
 .artwork{
-    height: 50%;
-    width: auto;
-    display: flex;
+    width: 100%;
     box-sizing: border-box;
 }
 .artwork.titleImage{
-    height: 100%;
 }
 .artwork:first-child{
     margin-left: 6rem;
 }
 .imageContainer{
     position: relative;
-    height: 100%;
-    width: auto;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
 }
 .imageContainer img{
-    height: 100%;
+    width: 100%;
+    height: auto;
 }
 .artworkDescription{
-    margin: 0 5rem 0 1rem;
-    width: 12rem;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-flow: column;
+    margin: 1rem 0 4rem 0;
+    width: 100%;
 }
 .artworkDescription .generatedInfo{
     color: #00ff00;
@@ -257,6 +243,106 @@ p{
 }
 
 /* title screen end */
+
+/* Menu bar */
+
+.mainMenu{
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index:10;
+    width: 100vw;
+    font-size: 1rem;
+    display: flex;
+    justify-content: flex-start;
+}
+.menuWindow,
+.searchWindow{
+    width: 0%;
+    overflow: hidden;
+    transition: width 0.5s;
+}
+.menuWindow.opened,
+.searchWindow.opened{
+    width: 100%;
+}
+.menuWindow a{
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+    box-sizing: border-box;
+}
+.menuFirstLevel{
+    border-bottom: 1px solid #fff;
+    background: #111111;
+}
+.menuFirstLevel .projectLogo{
+    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+    line-height: 1rem;
+    height: 4rem;
+}
+.menuFirstLevel .menuIcon{
+    position: absolute;
+    top:0;
+    right: 0;
+}
+.menuSecondLevel{
+    max-height: 0;
+    background: #111111;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+.menuSecondLevel.opened{
+    max-height: 50vw;
+}
+.menuSecondLevel .menuLink{
+    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+    line-height: 1rem;
+    border-bottom: 1px solid #fff;
+    width: 100vw;
+}
+.menuIcon{
+    width: 4rem;
+    height: 4rem;
+    border-left: 1px solid #fff;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 1.5rem 1.5rem;
+    background-color: #111111;
+    display: block;
+}
+.menuIcon.menu{background-image: url("../images/icon-menu-white.svg");}
+.menuIcon.menu.opened{background-image: url("../images/icon-close-white.svg");}
+.menuIcon.back{background-image: url("../images/icon-arrow-white.svg");}
+
+.menuIcon span{
+    display: none;
+}
+
+/* Search window */
+
+.searchWindow{
+    background: #111111;
+    color: #ffffff;
+    z-index: 20;
+}
+.windowContent{
+    width: 100vw;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+.windowBackRow{
+    width: 100vw;
+    border-bottom: 1px solid #fff;
+    display: flex;
+    justify-content: flex-end;
+}
+.windowContent .backRow .menuIcon{
+}
+
+/* Search window end */
+
+/* Menu end */
 
 /* form */
 
