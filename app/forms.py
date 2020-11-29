@@ -12,8 +12,8 @@ class SearchForm(FlaskForm):
                                               )
     comparisonClassSelect = SelectMultipleField('Displayed objects for data comparison',
                                                 choices=engine.getDetectedObjectsList())
-    dateFrom = SelectField('From:', choices=[(1300, '1300'), (1400, '1400'), (1500, '1500'), (1600, '1600'),(1700, '1700'), (1800, '1800'), (1900, '1900'), (2000, '2000')])
-    dateTo = SelectField('To:',
+    dateFrom = SelectField('From', choices=[(1300, '1300'), (1400, '1400'), (1500, '1500'), (1600, '1600'),(1700, '1700'), (1800, '1800'), (1900, '1900'), (2000, '2000')])
+    dateTo = SelectField('To',
                            choices=[(2020, 'Today'), (1400, '1400'),(1400, '1400'),(1500, '1500'), (1600, '1600'), (1700, '1700'), (1800, '1800'),
                                     (1900, '1900'), (2000, '2000')])
-    submit = SubmitField('Search many artworks')
+    submit = SubmitField('Explore ' + str(engine.getGalleriesSum()['artworks count']) + ' artworks')

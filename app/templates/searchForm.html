@@ -1,40 +1,61 @@
-<h3>Search form: Man face fruit divided seasons herb from herb moveth whose.</h3>
-<form action="" method="post" novalidate>
+<h3>Generate an exhibition across the collections of {{galleriesSum['galleries count']}} art museums from Austria, Bavaria, Czech Republic and Slovakia</h3>
+<br>
+<br>
+<script>
+    // selects with use Select2 and JQuery
+    $(document).ready(function () {
+        $('#searchedClassSelect').select2({
+            placeholder: "E.g. rose, castle or boy",
+            allowClear: false
+        });
+        $('#comparisonClassSelect').select2({
+            placeholder: "E.g. sunflower, tower or girl",
+            allowClear: false
+        });
+    });
+</script>
+<section class="searchForm">
+    <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.exhibitionName.label }}<br>
-            {{ form.exhibitionName }}<br>
+        <div class="fieldBox">
+            {{ form.exhibitionName.label }}
+            {{ form.exhibitionName}}
             {% for error in form.exhibitionName.errors %}
-            <span style="color: red;">{{ error }}</span>
+            <span class="errorMessage">{{ error }}</span>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.searchedClassSelect.label }}<br>
-            {{ form.searchedClassSelect }}<br>
+        </div>
+        <div class="fieldBox">
+            {{ form.searchedClassSelect.label }}
+            {{ form.searchedClassSelect(class_="selectMultiple") }}
             {% for error in form.searchedClassSelect.errors %}
-            <span style="color: red;">{{ error }}</span>
+            <span class="errorMessage">{{ error }}</span>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.comparisonClassSelect.label }}<br>
-            {{ form.comparisonClassSelect }}<br>
+        </div>
+        <div class="fieldBox">
+            {{ form.comparisonClassSelect.label }}
+            {{ form.comparisonClassSelect(class_="selectMultiple")}}
             {% for error in form.comparisonClassSelect.errors %}
-            <span style="color: red;">{{ error }}</span>
+            <span class="errorMessage">{{ error }}</span>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.dateFrom.label }}<br>
-            {{ form.dateFrom }}<br>
-            {% for error in form.dateFrom.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.dateTo.label }}<br>
-            {{ form.dateTo }}<br>
-            {% for error in form.dateTo.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
+        </div>
+        <div class="fieldBox halved">
+            <div class="halfField">
+                {{ form.dateFrom.label }}
+                {{ form.dateFrom }}
+                {% for error in form.dateFrom.errors %}
+                <span class="errorMessage">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="halfField">
+                {{ form.dateTo.label }}
+                {{ form.dateTo }}
+                {% for error in form.dateTo.errors %}
+                <span class="errorMessage">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="fieldBox">
+            {{ form.submit(class_="buttonProceed") }}
+        </div>
     </form>
+</section>

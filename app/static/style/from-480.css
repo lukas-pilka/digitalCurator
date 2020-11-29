@@ -4,7 +4,10 @@
 html{
     font-size: 16px;
 }
-p{
+p,
+li,
+input,
+select{
     font-size: 0.875rem;
 }
 .mainMenu{

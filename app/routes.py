@@ -20,7 +20,10 @@ def before_request():
     g.request_start_time = time.time()
     g.request_time = lambda: "%.5fs" % (time.time() - g.request_start_time)
 
-
+    # Nastavit defaultni promenne
+    # Byly peromenne odeslane jako get - prepiseme defaultni promennew
+    # Nastavirt default value do formulare
+    # Vykreslit stranku
 
 # Returns exhibition by config
 @app.route('/', methods=['GET', 'POST'])
@@ -39,9 +42,9 @@ def exhibition():
             exName = exParams['exName'][0]
             dateFrom = int(exParams['exDateFrom'][0])
             dateTo = int(exParams['exDateTo'][0])
-            exhibitionsList = [{exName: [exParams['exDisplayedObjects']]}]
+            exhibitionsList = [{exName: [[displayedObject] for displayedObject in exParams['exDisplayedObjects']]}]
             try:
-                exhibitionsList.append({exName+' 2': [exParams['exComparisonObjects']]})
+                exhibitionsList.append({exName+' 2': [[comparisonObject] for comparisonObject in exParams['exComparisonObjects']]})
             except:
                 pass
 

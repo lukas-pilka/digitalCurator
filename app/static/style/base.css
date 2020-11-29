@@ -15,16 +15,18 @@ body{
 h1, h2, h3{
     font-family: 'Playfair Display', serif;
     font-weight: normal;
-    line-height: 1.125;
 }
 h1{
     font-size: 2.25rem;
+    line-height: 1.125;
 }
 h2{
     font-size: 2.25rem;
+    line-height: 1.125;
 }
 h3{
     font-size: 1.125rem;
+    line-height: 1.5;
 }
 p{
     font-size: 1rem;
@@ -32,6 +34,7 @@ p{
 .subtitle{
     margin-top: 0.25rem;
     font-size: 1rem;
+    line-height: 1.5;
     font-family: 'Playfair Display', serif;
 }
 
@@ -227,20 +230,6 @@ p{
 .finalScreen a:hover{
     color: rgba(255,255,255,0.8);
 }
-.button{
-    border: 1px solid #fff;
-    text-decoration: none;
-    width: 100%;
-    color: #fff;
-    text-align: center;
-    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
-    box-sizing: border-box;
-    border-radius: 0.25rem;
-    max-width: 20rem;
-}
-.button:hover{
-    background: rgba(255,255,255,0.2);
-}
 
 /* title screen end */
 
@@ -346,9 +335,106 @@ p{
 
 /* form */
 
-#searchedClassSelect,
-#comparisonClassSelect{
+.fieldBox{
+    margin: 0 0 1rem 0;
     width: 100%;
 }
+.fieldBox.halved{
+    display: flex;
+    justify-content: space-between;
+}
+.fieldBox .halfField{
+    width: calc(50% - 0.5rem);
+}
+.fieldBox:last-child{
+    margin: 2rem 0 1rem 0;
+}
+input,
+select{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    padding: 0.75rem 0.75rem 0.75rem 0.75rem;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+    border: 1px solid #666666;
+    background: #111111;
+    color: #fff;
+    min-height:1rem;
+}
+input:focus,
+select:focus{
+    border: 1px solid #fff;
+    outline: none;
+}
+label{
+    color: #ffffff;
+    line-height: 1.5rem;
+    margin: 0 0 0.25rem 0;
+    display: block;
+}
+.errorMessage{
+    color: rgba(255,0,0,0.75);
+    display: block;
+    margin: 0.25rem 0 0 0;
+}
+.buttonProceed{
+    text-decoration: none;
+    width: 100%;
+    border: none;
+    color: #111111;
+    background: #ffffff;
+    text-align: center;
+    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+    box-sizing: border-box;
+    border-radius: 0.25rem;
+}
+.buttonProceed:hover{
+    background: rgba(255,255,255,0.2);
+}
+.buttonProceed:focus{
+    border: none;
+}
+
+/* select 2 multiple choice */
+
+.searchForm .select2-container--default .select2-selection--multiple {
+    background-color: #111111;
+    border: 1px solid #666666;
+    border-radius: 0.25rem;
+    min-height:1rem;
+}
+.searchForm .select2-container .select2-search--inline .select2-search__field {
+    padding: 0.4rem;
+}
+.searchForm .select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #ffffff;
+}
+.searchForm .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #dddddd;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
+    color: #111111;
+}
+.searchForm .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    border-right: none;
+}
+.wrapper .select2-dropdown {
+    background-color: #333333;
+    border: none;
+    color: #ffffff;
+}
+.wrapper .select2-results__option {
+    padding: 0.3rem 0.6rem;
+}
+.wrapper .select2-container--default .select2-results__option--selected {
+    color: #777777;
+    background-color: #333333;
+}
+.wrapper .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: #555555;
+}
+
+/* select 2 multiple choice end */
 
 /* form end */
