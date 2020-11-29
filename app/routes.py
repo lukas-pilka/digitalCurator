@@ -36,15 +36,18 @@ def exhibition():
         exDateFrom = form.dateFrom.data  # Loads dateFrom from select
         exDateTo = form.dateTo.data  # Loads dateTo from select
         return redirect(url_for('exhibition', exName=exName, exDisplayedObjects=exDisplayedObjects, exComparisonObjects=exComparisonObjects, exDateFrom=exDateFrom, exDateTo=exDateTo))
+
     else:
         if len(request.args.to_dict(flat=False)) > 0: # If it receives arguments It proceeds and render exhibition
             exParams = request.args.to_dict(flat=False) # It parses arguments from url
             exName = exParams['exName'][0]
             dateFrom = int(exParams['exDateFrom'][0])
             dateTo = int(exParams['exDateTo'][0])
-            exhibitionsList = [{exName: [[displayedObject] for displayedObject in exParams['exDisplayedObjects']]}]
+            set1Name = ', '.join(exParams['exDisplayedObjects'])
+            exhibitionsList = [{ set1Name: [[displayedObject] for displayedObject in exParams['exDisplayedObjects']]}]
             try:
-                exhibitionsList.append({exName+' 2': [[comparisonObject] for comparisonObject in exParams['exComparisonObjects']]})
+                set2Name = ', '.join(exParams['exComparisonObjects'])
+                exhibitionsList.append({set2Name: [[comparisonObject] for comparisonObject in exParams['exComparisonObjects']]})
             except:
                 pass
 
@@ -55,22 +58,32 @@ def exhibition():
                 exhibitionsList = engine.getRandomObjectTypes(config.countOfRandomObjects)
             else:
                 exhibitionsList = config.exhibitionsList
+            exName = [key for key in exhibitionsList[0].keys()][0] # Get exhibition name from name of the first dict
 
         artworksInPeriod = engine.getPeriodData(exhibitionsList, config.periodLength, dateFrom, dateTo)
         artworksSorted = engine.getArtworksByObject(exhibitionsList, dateFrom, dateTo)
-        titleImage = artworksSorted[0][0]
-        collectionsByPeriods = engine.devideCollectionByPeriods(artworksInPeriod, artworksSorted)
-        galleriesSum = engine.getGalleriesSum()
-        collectionTitles = []  # Clearing because dicts between searched objects
-        for collection in exhibitionsList:
-            collectionTitles.append(list(collection.keys())[0])
-        return render_template('index.html',
-                               artworksForWeb=collectionsByPeriods,
-                               searchedObjects=collectionTitles,
-                               galleriesSum=galleriesSum,
-                               artworksInPeriod=artworksInPeriod,
-                               titleImage=titleImage,
-                               form=form,
-                               )
+
+        if len(artworksSorted[0]) == 0:
+            return redirect(url_for('noresult'))
+        else:
+            titleImage = artworksSorted[0][0]
+            collectionsByPeriods = engine.devideCollectionByPeriods(artworksInPeriod, artworksSorted)
+            galleriesSum = engine.getGalleriesSum()
+            collectionTitles = []  # Clearing because dicts between searched objects
+            for collection in exhibitionsList:
+                collectionTitles.append(list(collection.keys())[0])
+            return render_template('index.html',
+                                   exName=exName,
+                                   artworksForWeb=collectionsByPeriods,
+                                   searchedObjects=collectionTitles,
+                                   galleriesSum=galleriesSum,
+                                   artworksInPeriod=artworksInPeriod,
+                                   titleImage=titleImage,
+                                   form=form,
+                                   )
+
+@app.route('/noresult/')
+def noresult():
+    return render_template('noresult.html')
 
 

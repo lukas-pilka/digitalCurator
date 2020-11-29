@@ -5,18 +5,19 @@
 
     <section class="mainSection titleScreen" id="exhibitionStart">
         <div class="titlePart">
-            <h1>{{ searchedObjects[0]}}</h1>
+            <h1>{{ exName }}</h1>
             <p class="subtitle flexItem">
-            {% if searchedObjects|length > 1%}
-                & {{ searchedObjects[1]}}<br>
+                The artworks displaying
+                {{ searchedObjects[0]}}
+            {% if searchedObjects|length > 1 %}
+                & {{ searchedObjects[1]}}
             {% endif%}
-                Generated exhibition based on computer vision and big cultural data
+                 were selected automatically by computer vision from collection of {{galleriesSum['artworks count']}} artworks from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, Czech Republic and Slovakia in {{ g.request_time() }}ec.
             </p>
         </div>
         <div class="footerPart">
         </div>
     </section>
-
 
     <!-- title image -->
     <section class="titleImage artwork">
