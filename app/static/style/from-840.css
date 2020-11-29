@@ -7,15 +7,6 @@ html{
 h1{
     font-size: 3.375rem;
 }
-p,
-li,
-input,
-select{
-    font-size: 0.77rem;
-}
-.mainMenu{
-    font-size: 0.77rem;
-}
 .galleryIntro .detailInformation{
     min-width: 25vw;
 }

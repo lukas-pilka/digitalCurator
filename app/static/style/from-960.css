@@ -2,10 +2,11 @@
 /* styles applied from a window width of 960px */
 
 html{
-    font-size: 20px;
+    font-size: 18px;
 }
 body{
-    margin: 4rem 0 0 0;
+    margin: 0 0 0 0;
+    padding-left:4rem;
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
@@ -41,6 +42,7 @@ body{
 }
 .imageContainer img{
     height: 100%;
+    width: auto;
 }
 .artwork.titleImage{
     height: 100%;
@@ -51,6 +53,12 @@ body{
     justify-content: center;
     margin-right: 6rem
 }
+.introPart.chart{
+    overflow-x: visible;
+    margin: 0 6rem 0 0;
+    padding: 0;
+    width: auto;
+}
 .galleryShowcase{
     align-items: center;
     display: flex;
@@ -59,6 +67,7 @@ body{
     height: 100%;
     width: 0;
     position: relative;
+    margin: 0;
 }
 .artwork{
     width: auto;
@@ -75,3 +84,74 @@ body{
 .imageContainer{
     overflow: visible;
 }
+
+/* Main menu */
+
+.mainMenu{
+    min-width: 4rem;
+    width: auto;
+    height: 100vh;
+    display: block;
+    background: #111111;
+}
+.menuFirstLevel{
+    width: 100%;
+    height: 100%;
+    border-bottom: none;
+    border-right: 1px solid #ffffff;
+}
+.menuIcon {
+    border-left:none;
+    border-bottom: 1px solid #fff;
+}
+.menuFirstLevel .projectLogo {
+    transform: rotate(90deg);
+    position: absolute;
+    top: 4rem;
+    left: 0;
+    height: 4rem;
+    width: 4rem;
+}
+.menuSecondLevel {
+    overflow: hidden;
+    transition: max-width 0.5s;
+    position: absolute;
+    left: 4rem;
+    top: 0;
+    height: 100%;
+    max-height: 100%;
+    max-width: 0;
+    border-right: 1px solid #ffffff;
+}
+.menuSecondLevel.opened {
+    max-width: 35vw;
+    max-height: 100%;
+}
+.menuSecondLevel .menuLink{
+    min-width:35vw
+}
+.popupWindow{
+    z-index: 20;
+    left: 4rem;
+    top: 0;
+    height: 100%;
+    max-height: 100%;
+    max-width: 0;
+    transition: max-width 0.5s;
+    border-right: 1px solid #ffffff;
+}
+.popupWindow.opened{
+    max-width: 60vw;
+    left: 4rem;
+    max-height: 100%;
+}
+.windowContent{
+    min-width: 60vw;
+    height: 100%;
+}
+.windowBackRow{
+    display: none;
+}
+
+
+/* Main menu end */

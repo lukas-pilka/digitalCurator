@@ -7,6 +7,10 @@ function openMenu() {
   element2.classList.toggle("behindFog");
   let element3 = document.getElementById("jsMenuIcon");
   element3.classList.toggle("opened");
+  let element4 = document.getElementById("jsSearchWindow");
+  element4.classList.remove("opened");
+  let element5 = document.getElementById("jsAboutWindow");
+  element5.classList.remove("opened");
 }
 function openSearch() {
   let element = document.getElementById("jsSearchWindow");

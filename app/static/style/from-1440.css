@@ -7,12 +7,9 @@ h1{
 h2{
     font-size: 3.375rem;
 }
-p,
-li,
-input,
-select{
-    font-size: 0.66rem;
+h3{
+    font-size: 1.4em;
 }
-.mainMenu{
-    font-size: 0.66rem;
+.subtitle{
+    font-size: 1.4rem;
 }

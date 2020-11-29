@@ -31,9 +31,16 @@ h3{
 p{
     font-size: 1rem;
 }
+a{
+    color: #ffffff;
+    cursor: pointer;
+}
+a:hover{
+    color: #999999;
+}
 .subtitle{
     margin-top: 0.25rem;
-    font-size: 1rem;
+    font-size: 1.125rem;
     line-height: 1.5;
     font-family: 'Playfair Display', serif;
 }
@@ -88,6 +95,9 @@ p{
 }
 .introPart.chart{
     overflow-x: auto;
+    margin: 0 -2rem 0 -2rem;
+    width: 100%;
+    padding: 0 2rem 0 2rem;
 }
 .introPart:last-child{
     margin-right: 0;
@@ -221,9 +231,6 @@ p{
     width: 100%;
     float: left;
 }
-.finalScreen .footerPart p.copyleft{
-    text-align: left;
-}
 .finalScreen a{
     color: rgba(255,255,255,1.0);
 }
@@ -233,7 +240,7 @@ p{
 
 /* title screen end */
 
-/* Menu bar */
+/* Main menu */
 
 .mainMenu{
     position: fixed;
@@ -245,28 +252,18 @@ p{
     display: flex;
     justify-content: flex-start;
 }
-.menuWindow,
-.searchWindow{
-    width: 0%;
-    overflow: hidden;
-    transition: width 0.5s;
-}
-.menuWindow.opened,
-.searchWindow.opened{
-    width: 100%;
-}
 .menuWindow a{
-    color: #ffffff;
     text-decoration: none;
     display: block;
     box-sizing: border-box;
+    cursor: pointer;
 }
 .menuFirstLevel{
     border-bottom: 1px solid #fff;
     background: #111111;
 }
 .menuFirstLevel .projectLogo{
-    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+    padding: 1.5rem 1.5rem 1.5rem 2rem;
     line-height: 1rem;
     height: 4rem;
 }
@@ -280,15 +277,18 @@ p{
     background: #111111;
     overflow: hidden;
     transition: max-height 0.5s;
+    width: 100vw;
 }
 .menuSecondLevel.opened{
     max-height: 50vw;
 }
 .menuSecondLevel .menuLink{
-    padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+    padding: 1.5rem 2rem;
     line-height: 1rem;
     border-bottom: 1px solid #fff;
-    width: 100vw;
+    width: 100%;
+    box-sizing: border-box;
+    height: 4rem;
 }
 .menuIcon{
     width: 4rem;
@@ -299,6 +299,7 @@ p{
     background-size: 1.5rem 1.5rem;
     background-color: #111111;
     display: block;
+    box-sizing: border-box;
 }
 .menuIcon.menu{background-image: url("../images/icon-menu-white.svg");}
 .menuIcon.menu.opened{background-image: url("../images/icon-close-white.svg");}
@@ -308,30 +309,44 @@ p{
     display: none;
 }
 
-/* Search window */
+/* Popup window */
 
-.searchWindow{
+.popupWindow{
     background: #111111;
     color: #ffffff;
     z-index: 20;
-}
-.windowContent{
+    position: absolute;
+    left: 100%;
+    overflow: hidden;
+    transition: left 0.5s;
     width: 100vw;
-    padding: 1.5rem;
-    box-sizing: border-box;
+}
+.popupWindow.opened{
+    left: 0%;
 }
 .windowBackRow{
-    width: 100vw;
+    width: 100%;
     border-bottom: 1px solid #fff;
     display: flex;
     justify-content: flex-end;
+    height: 4rem;
+    box-sizing: border-box;
+    overflow: hidden;
 }
-.windowContent .backRow .menuIcon{
+.windowContent{
+    width: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+    height: calc(100vh - 4rem);
+    overflow: auto;
+}
+.windowContent h3{
+    margin-bottom: 4rem;
 }
 
-/* Search window end */
+/* Popup window end */
 
-/* Menu end */
+/* Main menu end */
 
 /* form */
 
@@ -359,7 +374,8 @@ select{
     border: 1px solid #666666;
     background: #111111;
     color: #fff;
-    min-height:1rem;
+    min-height: 1rem;
+    font-size: 1rem;
 }
 input:focus,
 select:focus{
@@ -387,9 +403,10 @@ label{
     padding: 0.75rem 1.5rem 0.75rem 1.5rem;
     box-sizing: border-box;
     border-radius: 0.25rem;
+    cursor: pointer;
 }
 .buttonProceed:hover{
-    background: rgba(255,255,255,0.2);
+    background: #999999;
 }
 .buttonProceed:focus{
     border: none;
