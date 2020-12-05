@@ -243,16 +243,23 @@ def getGalleriesSum():
                 "terms": {
                     "field": "gallery.keyword",
                     "size": 1000
+                },
+            },
+            "free_sum": {
+                "terms": {
+                    "field": "is_free"
                 }
             }
         }
     }
-    galleriesData = callElastic(collectionsQuery)['aggregations']['galleries_sum']['buckets']
+    rawData = callElastic(collectionsQuery)['aggregations']
+    galleriesData = rawData['galleries_sum']['buckets']
+    freeArtworksCount = rawData['free_sum']['buckets'][1]['doc_count']
     galleriesCount = len(galleriesData)
     artworksCount = 0
     for gallery in galleriesData:
         artworksCount += gallery['doc_count']
-    summary = {'galleries count': galleriesCount, 'artworks count': artworksCount}
+    summary = {'galleries count': galleriesCount, 'artworks count': artworksCount, 'free artworks count': freeArtworksCount}
     return summary
 
 # GET DETECTED OBJECT LIST

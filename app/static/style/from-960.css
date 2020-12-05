@@ -23,7 +23,7 @@ body{
 }
 .mainSection {
     width: auto;
-    padding: 2rem 6rem 2rem 2rem;
+    padding: 3rem 6rem 3rem 3rem;
 }
 .titleScreen{
     min-width: 75vw;
@@ -148,6 +148,7 @@ body{
 .windowContent{
     min-width: 60vw;
     height: 100%;
+    padding: 3rem;
 }
 .windowBackRow{
     display: none;
