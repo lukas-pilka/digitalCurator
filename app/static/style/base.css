@@ -69,9 +69,10 @@ a:hover{
     background: #111111;
     justify-content: space-between;
     z-index: 6;
+    padding: 2rem 2rem 2rem 2rem;
 }
-.titleScreen .footnote{
-    margin-bottom: 0;
+.titleScreen .footerPart{
+    margin-top: 6rem;
 }
 .titleImage{
     width: 100%;
@@ -206,7 +207,7 @@ a:hover{
 
 /* gallery showcase end */
 
-/* title & final screen */
+/* final screen */
 
 .finalScreen{
     color: #ffffff;
@@ -216,19 +217,62 @@ a:hover{
     flex-flow: column;
 }
 .finalScreen .footerPart{
+    margin-top: 6rem;
 }
-.finalScreen .footerPart p{
-    width: 100%;
-    float: left;
+.finalScreen .partners{
+    margin: 6rem 0 0 0;
 }
-.finalScreen a{
-    color: rgba(255,255,255,1.0);
+.finalScreen .logo{
+    background-repeat: no-repeat;
+    display: block;
+    height: 3rem;
+    margin: 1rem 2rem 0 0;
 }
-.finalScreen a:hover{
-    color: rgba(255,255,255,0.8);
+.finalScreen .logo.logoUmprum{
+    background-image: url("../images/logo-umprum.svg");
+    width: 14.43rem;
+}
+.finalScreen .logo.logoMsmt{
+    background-image: url("../images/logo-msmt.svg");
+    width: 4.38rem;
+}
+.finalScreen .logo.logoSng{
+    background-image: url("../images/logo-sng.svg");
+    width: 6.33rem;
+}
+.finalScreen .logo span{
+    display: none;
 }
 
-/* title screen end */
+/* final screen end */
+
+/* buttons */
+
+.buttonProceed{
+    text-decoration: none;
+    border: none;
+    color: #111111;
+    background: #ffffff;
+    text-align: center;
+    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+    box-sizing: border-box;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    display: inline-block;
+}
+.buttonProceed.buttonOutline{
+    color: #ffffff;
+    background: #111111;
+    border: 1px solid #ffffff;
+}
+.buttonProceed:hover{
+    background: #999999;
+}
+.buttonProceed:focus{
+    border: none;
+}
+
+/* buttons end */
 
 /* Main menu */
 
@@ -380,23 +424,8 @@ label{
     display: block;
     margin: 0.25rem 0 0 0;
 }
-.buttonProceed{
-    text-decoration: none;
+.searchForm .buttonProceed{
     width: 100%;
-    border: none;
-    color: #111111;
-    background: #ffffff;
-    text-align: center;
-    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
-    box-sizing: border-box;
-    border-radius: 0.25rem;
-    cursor: pointer;
-}
-.buttonProceed:hover{
-    background: #999999;
-}
-.buttonProceed:focus{
-    border: none;
 }
 
 /* select 2 multiple choice */

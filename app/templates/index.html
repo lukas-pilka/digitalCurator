@@ -11,10 +11,12 @@
             {% if searchedObjects|length > 1 %}
                 & {{artworksInPeriod.artworksWithObject[1][1]|sum}} works with a {{artworksInPeriod.artworksWithObject[1][0]}}
             {% endif%}
-                 were assembled automatically by AI computer vision. The generated exhibition was selected from a collection of {{galleriesSum['artworks count']}} artworks from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, Czech Republic, and Slovakia in {{ g.request_time() }}ec.
+                 were assembled automatically by AI computer vision. The generated exhibition was selected from a collection of {{galleriesSum['artworks count']}} artworks from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, the Czech Republic, and Slovakia in {{ g.request_time() }}ec.
             </p>
+
         </div>
         <div class="footerPart">
+            <a onclick="return openMenu(), openSearch();" class="buttonProceed buttonOutline">Generate new exhibition</a>
         </div>
     </section>
 
@@ -51,14 +53,13 @@
             {% for i in range(artworksInPeriod.artworksWithObject|length) %}
                 <span class="hint">
                     <span class="colorDot" style="background:{{chartLineColors[i]}}";></span>
-                    {{artworksInPeriod.artworksWithObject[i][0]}}
+                    {{artworksInPeriod.artworksWithObject[i][0]}}: {{artworksInPeriod.artworksWithObject[i][1]|sum}} artworks
                 </span>
             {% endfor %}
             </p>
         </div>
         <article class="introPart detailInformation">
             <p>The histogram shows the quotient of images on which the searched motif was detected in relation to the total number of images in the database.</p>
-            <p>The Digital Curator experiment attempts to demonstrate some of the basic capabilities of computer image recognition applied on cultural big data. With the help of Tensor Flow machine learning platform and Elasticsearch search engine, <strong>it&nbsp;explored {{galleriesSum['artworks count']}} digitized paintings, drawings and graphic prints from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, Czech Republic and Slovakia.</strong> It recognized persons, icons, symbols and more than 1 000 diverse objects, marked their positions in the image and gave a precise measure of the certainty of own estimation. Finally, it prepared an online exposition presenting the most relevant works <strong>in {{ g.request_time() }}ec.</strong></p>
         </article>
 
     </section>
@@ -133,6 +134,13 @@
             <h1>Goodbye</h1>
         </div>
         <div class="footerPart">
+            <a onclick="return openMenu(), openSearch();" class="buttonProceed buttonOutline">Generate new exhibition</a>
+            <section class="partners">
+                <p><a onclick="return openMenu(), openAbout();">Digital Curator</a> was designed by Lukas Pilka with kind support of:</p>
+                <a href="https://www.umprum.cz/web/en/" target="_blank" class="logo logoUmprum" title="UMPRUM, Academy od Arts Architecture and Design in Prague"><span>UMPRUM, Academy od Arts Architecture and Design in Prague</span></a>
+                <a href="https://www.msmt.cz/?lang=2" target="_blank" class="logo logoMsmt" title="Ministry of Education, Youth and Sports of Czech Republic"><span>Ministry of Education, Youth and Sports of Czech Republic</span></a>
+                <a href="https://www.sng.sk/en" target="_blank" class="logo logoSng" title="Slovak National Gallery"><span>Slovak National Gallery</span></a>
+            </section>
         </div>
     </div>
 

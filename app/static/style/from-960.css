@@ -72,6 +72,10 @@ body{
 .artwork{
     width: auto;
     display: flex;
+    height: 75%;
+}
+.galleryIntro .detailInformation{
+    min-width: 25vw;
 }
 .artworkDescription{
     margin: 0 5rem 0 1rem;
@@ -151,8 +155,14 @@ body{
     padding: 3rem;
 }
 .windowBackRow{
-    display: none;
 }
 
-
 /* Main menu end */
+
+/* Final screen */
+
+.finalScreen .logo{
+    display: inline-block;
+}
+
+/* Final screen end */
