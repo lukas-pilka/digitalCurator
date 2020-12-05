@@ -43,10 +43,20 @@ def exhibition():
             exName = exParams['exName'][0]
             dateFrom = int(exParams['exDateFrom'][0])
             dateTo = int(exParams['exDateTo'][0])
-            set1Name = ', '.join(exParams['exDisplayedObjects'])
+
+            # preparing name of 1st collection
+            if len(exParams['exDisplayedObjects']) > 1:
+                set1Name = ', '.join(exParams['exDisplayedObjects'][:-1]) +" and "+ (exParams['exDisplayedObjects'][-1])
+            else:
+                set1Name = exParams['exDisplayedObjects'][0]
+
             exhibitionsList = [{ set1Name: [[displayedObject] for displayedObject in exParams['exDisplayedObjects']]}]
             try:
-                set2Name = ', '.join(exParams['exComparisonObjects'])
+                # preparing name of 2nd collection
+                if len(exParams['exComparisonObjects']) > 1:
+                    set2Name = ', '.join(exParams['exComparisonObjects'][:-1]) +" and "+ (exParams['exComparisonObjects'][-1])
+                else:
+                    set2Name = exParams['exComparisonObjects'][0]
                 exhibitionsList.append({set2Name: [[comparisonObject] for comparisonObject in exParams['exComparisonObjects']]})
             except:
                 pass

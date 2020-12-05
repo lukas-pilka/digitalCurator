@@ -7,12 +7,11 @@
         <div class="titlePart">
             <h1>{{ exName }}</h1>
             <p class="subtitle flexItem">
-                The artworks displaying
-                {{ searchedObjects[0]}}
+                {{artworksInPeriod.artworksWithObject[0][1]|sum}} artworks displaying {{artworksInPeriod.artworksWithObject[0][0]}}
             {% if searchedObjects|length > 1 %}
-                & {{ searchedObjects[1]}}
+                & {{artworksInPeriod.artworksWithObject[1][1]|sum}} works with a {{artworksInPeriod.artworksWithObject[1][0]}}
             {% endif%}
-                 were selected automatically by computer vision from collection of {{galleriesSum['artworks count']}} artworks from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, Czech Republic and Slovakia in {{ g.request_time() }}ec.
+                 were assembled automatically by AI computer vision. The generated exhibition was selected from a collection of {{galleriesSum['artworks count']}} artworks from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, Czech Republic, and Slovakia in {{ g.request_time() }}ec.
             </p>
         </div>
         <div class="footerPart">
