@@ -276,6 +276,19 @@ a:hover{
 
 /* Main menu */
 
+.closingField{
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0.2;
+    z-index: 8;
+    display: none;
+}
+.behindFog .closingField{
+    display: block;
+}
 .mainMenu{
     position: fixed;
     top:0;
