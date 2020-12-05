@@ -151,7 +151,7 @@ body{
 }
 .windowContent{
     min-width: 60vw;
-    height: 100%;
+    height: calc(100% - 4rem);
     padding: 3rem;
 }
 .windowBackRow{

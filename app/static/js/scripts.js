@@ -25,6 +25,16 @@ function openAbout() {
   element2.classList.toggle("opened");
 }
 
+// Open popup window with search forms if contains error messages
+
+function checkErrors() {
+	let isError = document.getElementsByClassName('errorMessage');
+	if (isError.length > 0) {
+		openMenu()
+		openSearch()
+	}
+}
+
 // artwork focused
 
 (function(){

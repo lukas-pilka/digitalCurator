@@ -17,7 +17,7 @@
         {{ form.hidden_tag() }}
         <div class="fieldBox">
             {{ form.exhibitionName.label }}
-            {{ form.exhibitionName}}
+            {{ form.exhibitionName(class_="Proceed")}}
             {% for error in form.exhibitionName.errors %}
             <span class="errorMessage">{{ error }}</span>
             {% endfor %}
