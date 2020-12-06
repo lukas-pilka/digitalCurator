@@ -1,3 +1,4 @@
+
 <a onclick="return openMenu();" class="closingField"></a>
 <nav class="mainMenu">
     <section id="jsMenuWindow" class="menuWindow opened">
@@ -15,6 +16,7 @@
             <a onclick="openSearch()" class="menuIcon back"><span>Close</span></a>
         </div>
         <div class="windowContent">
+            {% block message %}{% endblock %}
             {% include "searchForm.html" %}
         </div>
     </section>

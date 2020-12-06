@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+{% set chartLineColors = ['#111','#2a9d8f','#e9c46a','#f4a261','#e76f51'] %}
 
 <div class="container" id="container">
+{% if searchedObjects is defined %} {# Check if it receives results #}
 
     <section class="mainSection titleScreen" id="exhibitionStart">
         <div class="titlePart">
@@ -47,7 +49,6 @@
             </p>
         </div>
         <div class="introPart chart">
-            {% set chartLineColors = ['#111','#2a9d8f','#e9c46a','#f4a261','#e76f51'] %}
             <canvas id="line-chart" width="800" height="450"></canvas>
             <p class="chartLegend">
             {% for i in range(artworksInPeriod.artworksWithObject|length) %}
@@ -61,7 +62,6 @@
         <article class="introPart detailInformation">
             <p>The histogram shows the quotient of images on which the searched motif was detected in relation to the total number of images in the database.</p>
         </article>
-
     </section>
 
 
@@ -144,9 +144,11 @@
         </div>
     </div>
 
+{% endif %}
 </div>
 
 <!-- chart data -->
+
 <script>
 
     // Global parameters for all charts:
@@ -213,8 +215,5 @@
         },
     });
 </script>
-
-
-
 
 {% endblock %}

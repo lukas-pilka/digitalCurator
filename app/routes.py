@@ -33,6 +33,7 @@ def exhibition():
     # Set default values of exhibition from config
     exDateFrom = config.dateFrom
     exDateTo = config.dateTo
+    galleriesSum = engine.getGalleriesSum()
     if config.exhibitionsList == None:
         exhibitionsList = engine.getRandomObjectTypes(config.countOfRandomObjects)
     else:
@@ -77,13 +78,16 @@ def exhibition():
 
     # Check for zero results
     if len(artworksSorted[0]) == 0:
-        return redirect(url_for('noresult'))
+        return render_template('index.html',
+                               exName=exName,
+                               galleriesSum=galleriesSum,
+                               artworksInPeriod=artworksInPeriod,
+                               form=form,
+                               )
 
-    # Render data for website
     else:
         titleImage = artworksSorted[0][0]
         collectionsByPeriods = engine.devideCollectionByPeriods(artworksInPeriod, artworksSorted)
-        galleriesSum = engine.getGalleriesSum()
         collectionTitles = []  # Clearing because dicts between searched objects
         for collection in exhibitionsList:
             collectionTitles.append(list(collection.keys())[0])

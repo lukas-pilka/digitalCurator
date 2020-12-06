@@ -1,3 +1,8 @@
+{% if searchedObjects is not defined %}
+<p class="errorMessage">No results match your selection.</p>
+<br><br>
+{% endif %}
+
 <h3>Generate an exhibition across the collections of {{galleriesSum['galleries count']}} art museums from Austria, Bavaria, Czech Republic and Slovakia</h3>
 <script>
     // selects with use Select2 and JQuery
@@ -12,6 +17,7 @@
         });
     });
 </script>
+
 <section class="searchForm">
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
