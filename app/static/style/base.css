@@ -282,7 +282,6 @@ a:hover{
     left: 0;
     width: 100vw;
     height: 100vh;
-    opacity: 0.2;
     z-index: 8;
     display: none;
 }
@@ -299,48 +298,43 @@ a:hover{
     display: flex;
     justify-content: flex-start;
 }
-.menuWindow a{
-    text-decoration: none;
-    display: block;
-    box-sizing: border-box;
-    cursor: pointer;
-}
 .menuFirstLevel{
     border-bottom: 1px solid #fff;
     background: #111111;
+    width: 100vw;
+    height: 4rem;
+    z-index: 20;
+    position: absolute;
+    box-sizing: border-box;
 }
-.menuFirstLevel .projectLogo{
+.projectLogo{
     padding: 1.5rem 1.5rem 1.5rem 2rem;
     line-height: 1rem;
     height: 4rem;
+    display: inline-block;
+    box-sizing: border-box;
+    text-decoration: none;
 }
-.menuFirstLevel .menuIcon{
+.menuIcon{
     position: absolute;
     top:0;
     right: 0;
 }
-.menuSecondLevel{
-    max-height: 0;
-    background: #111111;
-    overflow: hidden;
-    transition: max-height 0.5s;
-    width: 100vw;
-}
-.menuSecondLevel.opened{
-    max-height: 50vw;
-}
-.menuSecondLevel .menuLink{
+.menuLink{
     padding: 1.5rem 2rem;
     line-height: 1rem;
     border-bottom: 1px solid #fff;
     width: 100%;
     box-sizing: border-box;
     height: 4rem;
+    display: block;
+    text-decoration: none;
 }
 .menuIcon{
     width: 4rem;
     height: 4rem;
     border-left: 1px solid #fff;
+    border-bottom: 1px solid #fff;
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 1.5rem 1.5rem;
@@ -355,21 +349,24 @@ a:hover{
 .menuIcon span{
     display: none;
 }
-
-/* Popup window */
-
-.popupWindow{
-    background: #111111;
-    color: #ffffff;
-    z-index: 20;
+.menuSecondLevel,
+.menuThirdLevel{
     position: absolute;
-    left: 100%;
-    overflow: hidden;
+    color: #ffffff;
+    z-index: 10;
+    background: #111111;
     transition: left 0.5s;
     width: 100vw;
+    left:-100vw;
+    top:4rem;
 }
-.popupWindow.opened{
-    left: 0%;
+.menuSecondLevel.opened,
+.menuThirdLevel.opened{
+    left:0;
+}
+.menuThirdLevel{
+    z-index: 20;
+    top:0;
 }
 .windowBackRow{
     width: 100%;
@@ -388,7 +385,7 @@ a:hover{
     overflow: auto;
 }
 
-/* Popup window end */
+/* Menu window end */
 
 /* Main menu end */
 

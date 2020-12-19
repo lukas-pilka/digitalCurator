@@ -1,17 +1,15 @@
 
 <a onclick="return openMenu();" class="closingField"></a>
 <nav class="mainMenu">
-    <section id="jsMenuWindow" class="menuWindow opened">
-        <div class="menuFirstLevel">
-            <a href="/" class="projectLogo">DigitalCurator.art</a>
-            <a onclick="return openMenu();" class="menuIcon menu jsMenuIcon" id="jsMenuIcon"><span>Menu</span></a>
-        </div>
-        <div class="menuSecondLevel" id="menuSecondLevel">
-            <a onclick="return openSearch();" class="menuLink">Generate new exhibition</a>
-            <a onclick="return openAbout();" class="menuLink">About project</a>
-        </div>
+    <section class="menuFirstLevel">
+        <a href="/" class="projectLogo">DigitalCurator.art</a>
+        <a onclick="return openMenu();" class="menuIcon menu jsMenuIcon" id="jsMenuIcon"><span>Menu</span></a>
     </section>
-    <section id="jsSearchWindow" class="popupWindow">
+    <section class="menuSecondLevel" id="menuSecondLevel">
+        <a onclick="return openSearch();" class="menuLink">Generate new exhibition</a>
+        <a onclick="return openAbout();" class="menuLink">About project</a>
+    </section>
+    <section class="menuThirdLevel" id="jsSearchWindow" >
         <div class="windowBackRow">
             <a onclick="openSearch()" class="menuIcon back"><span>Close</span></a>
         </div>
@@ -20,7 +18,7 @@
             {% include "searchForm.html" %}
         </div>
     </section>
-    <section id="jsAboutWindow" class="popupWindow">
+    <section class="menuThirdLevel" id="jsAboutWindow">
         <div class="windowBackRow">
             <a onclick="openAbout()" class="menuIcon back"><span>Close</span></a>
         </div>

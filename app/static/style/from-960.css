@@ -92,21 +92,23 @@ body{
 /* Main menu */
 
 .mainMenu{
-    min-width: 4rem;
     width: auto;
     height: 100vh;
     display: block;
-    background: #111111;
 }
 .menuFirstLevel{
-    width: 100%;
+    width: 4rem;
     height: 100%;
     border-bottom: none;
     border-right: 1px solid #ffffff;
 }
 .menuIcon {
     border-left:none;
-    border-bottom: 1px solid #fff;
+    border-right: 1px solid #fff;
+    border-left: none;
+    position: absolute;
+    top:0;
+    left: 0;
 }
 .menuFirstLevel .projectLogo {
     transform: rotate(90deg);
@@ -116,41 +118,20 @@ body{
     height: 4rem;
     width: 4rem;
 }
-.menuSecondLevel {
-    overflow: hidden;
-    transition: max-width 0.5s;
-    position: absolute;
-    left: 4rem;
-    top: 0;
-    height: 100%;
-    max-height: 100%;
-    max-width: 0;
+.menuSecondLevel,
+.menuThirdLevel{
+    width: 80vw;
+    left:-80vw;
     border-right: 1px solid #ffffff;
-}
-.menuSecondLevel.opened {
-    max-width: 35vw;
-    max-height: 100%;
-}
-.menuSecondLevel .menuLink{
-    min-width:35vw
-}
-.popupWindow{
-    z-index: 20;
-    left: 4rem;
-    top: 0;
+    top:0;
     height: 100%;
-    max-height: 100%;
-    max-width: 0;
-    transition: max-width 0.5s;
-    border-right: 1px solid #ffffff;
 }
-.popupWindow.opened{
-    max-width: 60vw;
-    left: 4rem;
-    max-height: 100%;
+.menuSecondLevel.opened,
+.menuThirdLevel.opened{
+    left:4rem;
 }
 .windowContent{
-    min-width: 60vw;
+    width: 100%;
     height: calc(100% - 4rem);
     padding: 3rem;
 }

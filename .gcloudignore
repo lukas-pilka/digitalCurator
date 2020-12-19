@@ -16,6 +16,7 @@
 venv/*
 temp/*
 downloads/*
+tfcurator-a9c6f1da8d40.json
 
 # Python pycache:
 __pycache__/

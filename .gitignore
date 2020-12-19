@@ -1,6 +1,8 @@
 venv/*
 backend/temp/*
+backend/test/*
 backend/downloads/*
 .idea
 .flaskenv
 config.py
+tfcurator-a9c6f1da8d40.json
