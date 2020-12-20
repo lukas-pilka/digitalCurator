@@ -35,13 +35,15 @@ def exhibition():
         browseExhibitions.append(exhibition)
 
     # If it doesn't receive arguments it set arguments with default values of exhibition from config
-    if len(request.args.to_dict(flat=False)) == 0:
+    receivedArguments = request.args.to_dict(flat=False)
+
+    if 'exDisplayedObjects' not in receivedArguments: # Condition is based on presence of Displayed objects (not on presence of arguments because different arguments can exist)
         arguments = engine.createArguments(engine.getRandomObjectTypes())
         return redirect(url_for('exhibition', exName=arguments['exName'], exDisplayedObjects=arguments['exDisplayedObjects'],
                                 exComparisonObjects=arguments['exComparisonObjects'], exDateFrom=arguments['exDateFrom'], exDateTo=arguments['exDateTo']))
 
     # If it receives arguments it overwrites default values
-    if len(request.args.to_dict(flat=False)) > 0:
+    if 'exDisplayedObjects' in receivedArguments:
         exDisplayedObjectsNotParsed = request.args.getlist('exDisplayedObjects') # it returns strings instead of lists, parsing is necessary
         exDisplayedObjects = [i.strip("[]").replace("'", "").split(', ') for i in exDisplayedObjectsNotParsed] # Parsing - geting lists from strings
         exParams = request.args.to_dict(flat=False) # It parses arguments from url
