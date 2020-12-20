@@ -7,6 +7,7 @@
     </section>
     <section class="menuSecondLevel" id="menuSecondLevel">
         <a onclick="return openSearch();" class="menuLink">Generate new exhibition</a>
+        <a onclick="return openShowcase();" class="menuLink">Browse exhibitions</a>
         <a onclick="return openAbout();" class="menuLink">About project</a>
     </section>
     <section class="menuThirdLevel" id="jsSearchWindow" >
@@ -16,6 +17,14 @@
         <div class="windowContent">
             {% block message %}{% endblock %}
             {% include "searchForm.html" %}
+        </div>
+    </section>
+    <section class="menuThirdLevel" id="jsShowcase">
+        <div class="windowBackRow">
+            <a onclick="openShowcase()" class="menuIcon back"><span>Close</span></a>
+        </div>
+        <div class="windowContent">
+            {% include "showcase.html" %}
         </div>
     </section>
     <section class="menuThirdLevel" id="jsAboutWindow">

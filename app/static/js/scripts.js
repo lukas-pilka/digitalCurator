@@ -9,11 +9,19 @@ function openMenu() {
   element3.classList.toggle("opened");
   let element4 = document.getElementById("jsSearchWindow");
   element4.classList.remove("opened");
-  let element5 = document.getElementById("jsAboutWindow");
+  let element5 = document.getElementById("jsShowcase");
   element5.classList.remove("opened");
+  let element6 = document.getElementById("jsAboutWindow");
+  element6.classList.remove("opened");
 }
 function openSearch() {
   let element = document.getElementById("jsSearchWindow");
+  element.classList.toggle("opened");
+  let element2 = document.getElementById("jsMenuWindow");
+  element2.classList.toggle("opened");
+}
+function openShowcase() {
+  let element = document.getElementById("jsShowcase");
   element.classList.toggle("opened");
   let element2 = document.getElementById("jsMenuWindow");
   element2.classList.toggle("opened");
