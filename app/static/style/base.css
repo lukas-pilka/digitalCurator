@@ -514,10 +514,11 @@ label{
     right: 0;
     background-size: cover;
     background-position: center center;
+    transform: scale(1.1, 1.1);
     transition: transform 0.5s;
 }
 .exhibitionPreview:hover .previewImage{
-    transform: scale(1.2, 1.2);
+    transform: scale(1.25, 1.25);
 }
 .previewInfo{
     position:  absolute;

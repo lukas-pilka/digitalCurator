@@ -17,19 +17,13 @@ def callElastic(query):
 
 # GET RANDOM OBJECT TYPES
 
-def getRandomObjectTypes(requestedCountOfCollections):
-
-    comparisonSets = config.depositary
-    randomSetIndex = randrange(len(comparisonSets))
-    selectedComparisonSet = comparisonSets[randomSetIndex]
-    randomExhibition = []
-
-    for collection in range(requestedCountOfCollections):
-        randomCollectionIndex = randrange(len(selectedComparisonSet))
-        if not selectedComparisonSet[randomCollectionIndex] in randomExhibition:
-            randomExhibition.append(selectedComparisonSet[randomCollectionIndex])
-
-    return randomExhibition
+def getRandomObjectTypes():
+    comparisonSets = config.depository
+    randomSetIndex = randrange(len(config.depository))
+    if config.preSelectedExhibition != None:
+        return config.preSelectedExhibition
+    else:
+        return comparisonSets[randomSetIndex]
 
 # PREPARING EXHIBITION QUERY
 # Common properties for getArtworksByObject and getPeriodData
@@ -308,12 +302,34 @@ def devideCollectionByPeriods(objectsByPeriods, getArtworksByObject):
 
     return sortedCollections
 
+# PREPARES NAME OF COLLECTION
+def prepareName(listOfNames):
+    if len(listOfNames) > 1:
+        setName = ', '.join(listOfNames[:-1]) +" and "+ (listOfNames[-1])
+    else:
+        setName = listOfNames[0]
+    return setName
+
+# CREATES DICT WITH ARGUMENTS FOR url_for
+def createArguments(exhibition):
+    arguments = {}
+    arguments['exName'] = exhibition['name']
+    arguments['exDateFrom'] = exhibition['dateFrom']
+    arguments['exDateTo'] = exhibition['dateTo']
+    arguments['exDisplayedObjects'] = exhibition['displayedObjects'][0]
+    # tests whether data comparison objects exists in defaultExhibition
+    if len(exhibition['displayedObjects']) > 1:
+        arguments['exComparisonObjects'] = exhibition['displayedObjects'][1]
+    else:
+        arguments['exComparisonObjects'] = None
+    return arguments
+
 
 
 #print(getDetectedObjectsList())
 #getArtworksByObject(config.exhibitionsList)
 #getPeriodData(config.exhibitionsList,100, config.dateFrom, config.dateTo)
-#print(getRandomObjectTypes(3))
+#print(getRandomObjectTypes())
 #print(getGalleriesSum())
 
 
