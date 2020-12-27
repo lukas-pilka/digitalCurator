@@ -81,6 +81,7 @@ def exhibition():
     # Sending request to Elastic
     artworksInPeriod = engine.getPeriodData(exhibitionsList, config.periodLength, exDateFrom, exDateTo)
     artworksSorted = engine.getArtworksByObject(exhibitionsList, exDateFrom, exDateTo)
+    print(exhibitionsList)
 
     # Check for zero results
     if len(artworksSorted[0]) == 0:

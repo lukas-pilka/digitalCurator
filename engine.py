@@ -205,13 +205,8 @@ def getPeriodData(exhibitionsList, interval, dateFrom, dateTo):
     print('Request for periods data: ' + str(requestForPeriodData))
     countAll = callElastic(requestForPeriodData)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
 
-    relatedPeriods = []
-    for periodSet in countAll: # Gets labels
-        if periodSet['doc_count'] > config.minArtworksLimit or len(relatedPeriods) > 0: # cuts periods with small number of artworks but only from beginning of timeline
-            relatedPeriods.append(periodSet['key'])
-
+    relatedPeriods = [periodSet['key'] for periodSet in countAll]
     totalArtworks = [periodSet['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods] # check if period is in relatedPeriods and if so, it adds count to totoal artworks
-
     artworksInPeriod = {'periods': relatedPeriods, 'totalArtworks': totalArtworks, 'artworksWithObject': []}
 
     for object in exhibitionsList:
@@ -222,9 +217,10 @@ def getPeriodData(exhibitionsList, interval, dateFrom, dateTo):
             if totalArtworks[item] == 0: # Eliminates dividing by zero error
                 objectPercents.append(0)
             else:
-                objectPercents.append(round(artworksWithObject[item] / totalArtworks[item], 3) * 100)  # Counting percent of artworks copntained selected object in comparison with total artworks
+                objectPercents.append(round(artworksWithObject[item] / totalArtworks[item], 6) * 100)  # Counting percent of artworks copntained selected object in comparison with total artworks
         artworksInPeriod['artworksWithObject'].append([objectName, artworksWithObject, objectPercents])
 
+    print('Resulting periods data: ' + str(artworksInPeriod))
     return artworksInPeriod
 
 # GET COLLECTION SUM
@@ -328,7 +324,7 @@ def createArguments(exhibition):
 
 #print(getDetectedObjectsList())
 #getArtworksByObject(config.exhibitionsList)
-#getPeriodData(config.exhibitionsList,100, config.dateFrom, config.dateTo)
+getPeriodData([{'Wine glass, Plate, Table and Tableware': [['Wine glass'], ['Plate', 'Table', 'Tableware']]}],100, 1200, 2000)
 #print(getRandomObjectTypes())
 #print(getGalleriesSum())
 
