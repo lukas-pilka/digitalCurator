@@ -79,7 +79,7 @@ def exhibition():
                                 exComparisonObjects=exComparisonObjects, exDateFrom=exDateFrom, exDateTo=exDateTo))
 
     # Sending request to Elastic
-    artworksInPeriod = engine.getPeriodData(exhibitionsList, config.periodLength, exDateFrom, exDateTo)
+    artworksInPeriod = engine.getPeriodData(exhibitionsList, exDateFrom, exDateTo)
     artworksSorted = engine.getArtworksByObject(exhibitionsList, exDateFrom, exDateTo)
     print(exhibitionsList)
 
@@ -95,7 +95,7 @@ def exhibition():
 
     else:
         titleImage = artworksSorted[0][0]
-        collectionsByPeriods = engine.devideCollectionByPeriods(artworksInPeriod, artworksSorted)
+        collectionsByPeriods = engine.sortCollectionByPeriods(artworksInPeriod, artworksSorted)
         collectionTitles = []  # Clearing because dicts between searched objects
         for collection in exhibitionsList:
             collectionTitles.append(list(collection.keys())[0])
@@ -108,6 +108,8 @@ def exhibition():
                                browseExhibitions=browseExhibitions,
                                titleImage=titleImage,
                                form=form,
+                               dateFrom = exDateFrom,
+                               dateTo=exDateTo,
                                )
 
 

@@ -69,6 +69,10 @@ def prepareExhibitionKeywordQuery(exhibition):
 
 def getArtworksByObject(exhibitionList, dateFrom, dateTo):
 
+    # preparing interval
+    interval = prepareInterval(dateFrom, dateTo)
+    print('Interval: ' + str(interval))
+
     allListsResult = []
 
     def sorter(artwork):
@@ -95,7 +99,7 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
                 "periods": {
                     "histogram": {
                         "field": "date_latest",
-                        "interval": 100
+                        "interval": interval
                     }
                 }
             },
@@ -160,9 +164,29 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
 
     return allListsResult
 
+# PREPARE INTERVAL
+
+def prepareInterval(dateFrom, dateTo):
+    rawInterval = (dateTo - dateFrom) / 7
+    if rawInterval > 100:
+        interval = 100
+    elif rawInterval > 50:
+        interval = 50
+    elif rawInterval > 25:
+        interval = 25
+    elif rawInterval > 10:
+        interval = 10
+    else:
+        interval = int(round(rawInterval, 0))
+    return interval
+
 # AGGREGATIONS BY PERIODS
 
-def getPeriodData(exhibitionsList, interval, dateFrom, dateTo):
+def getPeriodData(exhibitionsList, dateFrom, dateTo):
+
+    # preparing interval
+    interval = prepareInterval(dateFrom, dateTo)
+    print('Interval: ' + str(interval))
 
     # preparing object filters for query
     aggregations = {}
@@ -188,7 +212,7 @@ def getPeriodData(exhibitionsList, interval, dateFrom, dateTo):
         "size": 0,
         "query": {
             "bool": {
-                "must": exhibitionPropertiesQuery(dateFrom,dateTo)
+                "must": exhibitionPropertiesQuery(dateFrom,dateTo+interval)
             }
         },
         "aggs": {
@@ -205,13 +229,14 @@ def getPeriodData(exhibitionsList, interval, dateFrom, dateTo):
     print('Request for periods data: ' + str(requestForPeriodData))
     countAll = callElastic(requestForPeriodData)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
 
-    relatedPeriods = [periodSet['key'] for periodSet in countAll]
-    totalArtworks = [periodSet['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods] # check if period is in relatedPeriods and if so, it adds count to totoal artworks
-    artworksInPeriod = {'periods': relatedPeriods, 'totalArtworks': totalArtworks, 'artworksWithObject': []}
+    periodStarts = [int(periodSet['key']) for periodSet in countAll]
+    periodNames = [str(periodStart)+' - '+str(periodStart+interval) for periodStart in periodStarts]
+    totalArtworks = [periodSet['doc_count'] for periodSet in countAll if periodSet['key'] in periodStarts] # check if period is in relatedPeriods and if so, it adds count to totoal artworks
+    artworksInPeriod = {'periodStarts': periodStarts, 'periodNames':periodNames, 'totalArtworks': totalArtworks, 'artworksWithObject': [], 'interval': interval}
 
     for object in exhibitionsList:
         objectName = list(object.keys())[0]
-        artworksWithObject = [periodSet[objectName]['doc_count'] for periodSet in countAll if periodSet['key'] in relatedPeriods]  # check if period is in relatedPeriods and if so, it adds count to related artworks
+        artworksWithObject = [periodSet[objectName]['doc_count'] for periodSet in countAll if periodSet['key'] in periodStarts]  # check if period is in relatedPeriods and if so, it adds count to related artworks
         objectPercents = []
         for item in range(len(totalArtworks)):
             if totalArtworks[item] == 0: # Eliminates dividing by zero error
@@ -273,15 +298,15 @@ def getDetectedObjectsList():
     return TuplesClassesList
 
 # DEVIDE EVERY COLLECTION BY PERIODS AND SORTS ARTWORKS INTO SPECIFIC PERIOD BY ITS DATE EARLIEST
-def devideCollectionByPeriods(objectsByPeriods, getArtworksByObject):
+def sortCollectionByPeriods(objectsByPeriods, getArtworksByObject):
     sortedCollections = []
 
     for collection in getArtworksByObject:
         collectionPeriodsList = []
 
-        for period in objectsByPeriods['periods']:
-            periodStart = int(period)
-            periodEnd = int(periodStart) + config.periodLength
+        for period in objectsByPeriods['periodStarts']:
+            periodStart = period
+            periodEnd = periodStart + objectsByPeriods['interval']
             periodName = str(periodStart) +' - '+ str(periodEnd)
             periodArtworksList = []
 
@@ -324,7 +349,7 @@ def createArguments(exhibition):
 
 #print(getDetectedObjectsList())
 #getArtworksByObject(config.exhibitionsList)
-getPeriodData([{'Wine glass, Plate, Table and Tableware': [['Wine glass'], ['Plate', 'Table', 'Tableware']]}],100, 1200, 2000)
+#getPeriodData([{'Wine glass, Plate, Table and Tableware': [['Wine glass'], ['Plate', 'Table', 'Tableware']]}], 1740, 2000)
 #print(getRandomObjectTypes())
 #print(getGalleriesSum())
 
