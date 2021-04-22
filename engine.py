@@ -20,7 +20,7 @@ def callElastic(query):
 def getRandomObjectTypes():
     comparisonSets = config.depository
     randomSetIndex = randrange(len(config.depository))
-    if config.preSelectedExhibition != None:
+    if config.preSelectedExhibition != False:
         return config.preSelectedExhibition
     else:
         return comparisonSets[randomSetIndex]
@@ -60,7 +60,20 @@ def prepareExhibitionKeywordQuery(exhibition):
     for keywordsGroup in exhibitionParams:  # expanding exhibitionQuery from collection (exhibitionParams)
         keywordsQuery = []
         for keyword in keywordsGroup:  # expanding keywordsQuery from keywordsGroup
-            keywordsQuery.append({"match_phrase": {"detected_objects.object": keyword}})
+            keywordsQuery.append(
+                {
+                    "nested": {
+                        "path": "detected_objects",
+                        "query": {
+                            "bool": {
+                                "must": [
+                                    {"match": {"detected_objects.object": keyword}},
+                                    {"range": {"detected_objects.score": {"gt": config.scoreThreshold}}}
+                                ]
+                            }
+                        }
+                    }
+                })
         exhibitionKeywordsQuery.append({"bool": {"should": keywordsQuery}})
 
     return exhibitionKeywordsQuery
@@ -87,10 +100,11 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
         if config.onlyFreeArtworks == True:
             exhibitionQuery.append({"bool": {"must": [{"term": {"is_free": True}}]}})
 
+        #  exhibitionQuery # includes above defined exhibitionQuery
         # Completing query
         requestForArtworks = {
             "size": 1000,
-            "query": {
+            "query":{
                 "bool": {
                     "must": exhibitionQuery # includes above defined exhibitionQuery
                 }
@@ -128,7 +142,7 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
         expandedArtworks = []
 
         for artwork in artworks:
-
+            print(artwork)
             # generates image url
             imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/' + artwork[
                 '_id'] + '.jpg'  # Creating img url from artwork id
@@ -281,17 +295,34 @@ def getGalleriesSum():
 
 def getDetectedObjectsList():
     collectionsQuery = {
-        "size":0,
-        "aggs" : {
-            "detected_objects_list" : {
-                "terms" : {
-                    "field" : "detected_objects.object.keyword",
-                    "size": 10000
+        "size": 0,
+        "query": {
+            "nested": {
+                "path": "detected_objects",
+                "query": {
+                    "bool": {
+                        "must": {"range": {"detected_objects.score": {"gt": config.scoreThreshold}}}
+                    }
+                }
+            }
+        },
+        "aggs": {
+            "detected_objects_list": {
+                "nested": {
+                    "path": "detected_objects"
+                },
+                "aggs": {
+                    "terms": {
+                        "terms": {
+                            "field": "detected_objects.object.keyword",
+                            "size": 10000
+                        }
+                    }
                 }
             }
         }
     }
-    DetectedObjectClassesList = callElastic(collectionsQuery)['aggregations']['detected_objects_list']['buckets']
+    DetectedObjectClassesList = callElastic(collectionsQuery)['aggregations']['detected_objects_list']['terms']['buckets']
     TuplesClassesList = []
     for objectClass in DetectedObjectClassesList:
         TuplesClassesList.append((objectClass['key'],objectClass['key']+' '+str(objectClass['doc_count'])))
@@ -345,10 +376,8 @@ def createArguments(exhibition):
         arguments['exComparisonObjects'] = None
     return arguments
 
-
-
 #print(getDetectedObjectsList())
-#getArtworksByObject(config.exhibitionsList)
+#getArtworksByObject([{'Tree, Plant and Castle': [['Tree', 'Plant'], ['Castle']]}], 1500,1900)
 #getPeriodData([{'Wine glass, Plate, Table and Tableware': [['Wine glass'], ['Plate', 'Table', 'Tableware']]}], 1740, 2000)
 #print(getRandomObjectTypes())
 #print(getGalleriesSum())
