@@ -9,7 +9,7 @@
         <div class="titlePart">
             <h1>{{ exName }}</h1>
             <p class="subtitle flexItem">
-                {{simpleObjectList}}{{artworksInPeriod.artworksWithObject[0][1]|sum}} artworks from the years {{dateFrom}} - {{dateTo}} displaying {{artworksInPeriod.artworksWithObject[0][0]}}
+                {{artworksInPeriod.artworksWithObject[0][1]|sum}} artworks from the years {{dateFrom}} - {{dateTo}} displaying {{artworksInPeriod.artworksWithObject[0][0]}}
             {% if searchedObjects|length > 1 %}
                 & {{artworksInPeriod.artworksWithObject[1][1]|sum}} works with a {{artworksInPeriod.artworksWithObject[1][0]}}
             {% endif%}

@@ -345,12 +345,13 @@ def getDetectedObjectsList():
             }
         }
     }
-    DetectedObjectClassesList = callElastic(collectionsQuery)['aggregations']['detected_objects_list']['object_categories']['filtered_by_threshold']['buckets']
-    TuplesClassesList = []
-    for objectClass in DetectedObjectClassesList:
-        relatedArtworksCount = str(objectClass["artworks_count"]['doc_count'])
-        TuplesClassesList.append((objectClass['key'],objectClass['key']+' ('+relatedArtworksCount +')'))
-    return TuplesClassesList
+    detectedObjectClassesList = callElastic(collectionsQuery)['aggregations']['detected_objects_list']['object_categories']['filtered_by_threshold']['buckets']
+    tuplesClassesList = []
+    for objectClass in detectedObjectClassesList:
+        if objectClass['key'] not in config.classesBlackList:
+            relatedArtworksCount = str(objectClass["artworks_count"]['doc_count'])
+            tuplesClassesList.append((objectClass['key'],objectClass['key']+' ('+relatedArtworksCount +')'))
+    return tuplesClassesList
 
 # DEVIDE EVERY COLLECTION BY PERIODS AND SORTS ARTWORKS INTO SPECIFIC PERIOD BY ITS DATE EARLIEST
 def sortCollectionByPeriods(objectsByPeriods, getArtworksByObject):
@@ -400,7 +401,7 @@ def createArguments(exhibition):
         arguments['exComparisonObjects'] = None
     return arguments
 
-#print(getDetectedObjectsList())
+print(getDetectedObjectsList())
 #getArtworksByObject([{'Tree, Plant and Castle': [['Tree', 'Plant'], ['Castle']]}], 1500,1900)
 #getPeriodData([{'Angel': [['Angel']]}], 1000, 2000)
 #print(getRandomObjectTypes())
