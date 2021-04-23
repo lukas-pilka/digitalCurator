@@ -84,7 +84,7 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
 
     # preparing interval
     interval = prepareInterval(dateFrom, dateTo)
-    print('Interval: ' + str(interval))
+    #print('Interval: ' + str(interval))
 
     allListsResult = []
 
@@ -132,7 +132,7 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
             }
         }
 
-        print('Request for artworks: ' + str(requestForArtworks))
+        # print('Request for artworks: ' + str(requestForArtworks))
 
         # Calling elastic database with completed query
         rawData = callElastic(requestForArtworks)
@@ -142,7 +142,6 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
         expandedArtworks = []
 
         for artwork in artworks:
-            print(artwork)
             # generates image url
             imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/' + artwork[
                 '_id'] + '.jpg'  # Creating img url from artwork id
@@ -200,7 +199,7 @@ def getPeriodData(exhibitionsList, dateFrom, dateTo):
 
     # preparing interval
     interval = prepareInterval(dateFrom, dateTo)
-    print('Interval: ' + str(interval))
+    #print('Interval: ' + str(interval))
 
     # preparing object filters for query
     aggregations = {}
@@ -240,9 +239,9 @@ def getPeriodData(exhibitionsList, dateFrom, dateTo):
             }
         }
     }
-    print('Request for periods data: ' + str(requestForPeriodData))
+    #print('Request for periods data: ' + str(requestForPeriodData))
     countAll = callElastic(requestForPeriodData)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
-    print(countAll)
+    #print(countAll)
 
     periodStarts = [int(periodSet['key']) for periodSet in countAll]
     periodNames = [str(periodStart)+' - '+str(periodStart+interval) for periodStart in periodStarts]
@@ -260,7 +259,7 @@ def getPeriodData(exhibitionsList, dateFrom, dateTo):
                 objectPercents.append(round(artworksWithObject[item] / totalArtworks[item], 6) * 100)  # Counting percent of artworks copntained selected object in comparison with total artworks
         artworksInPeriod['artworksWithObject'].append([objectName, artworksWithObject, objectPercents])
 
-    print('Resulting periods data: ' + str(artworksInPeriod))
+    #print('Resulting periods data: ' + str(artworksInPeriod))
     return artworksInPeriod
 
 # GET COLLECTION SUM

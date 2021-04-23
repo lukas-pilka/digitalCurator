@@ -51,22 +51,23 @@ def exhibition():
         exDateFrom = int(exParams['exDateFrom'][0])
         exDateTo = int(exParams['exDateTo'][0])
         set1Name = engine.prepareName(sum(exDisplayedObjects, []))
+        simpleObjectList = []  # Preparing simple list for decisions on displaying bound boxes (string compliance is required)
+        for objectSet in exDisplayedObjects:
+            for selectedObject in objectSet:
+                simpleObjectList.append(selectedObject)
         exhibitionsList = [{set1Name: [displayedObject for displayedObject in exDisplayedObjects]}]
 
         # tests whether data comparison objects exists in arguments
         try:
             exComparisonObjectsNotParsed = request.args.getlist('exComparisonObjects')  # it returns strings instead of lists, parsing is necessary
             exComparisonObjects = [i.strip("[]").replace("'", "").split(', ') for i in exComparisonObjectsNotParsed]  # Parsing - geting lists from strings
+            for objectSet in exComparisonObjects:
+                for selectedObject in objectSet:
+                    simpleObjectList.append(selectedObject)
             set2Name = engine.prepareName(sum(exComparisonObjects, []))
             exhibitionsList.append({set2Name: [comparisonObject for comparisonObject in exComparisonObjects]})
         except:
             pass
-
-    print('---------')
-    print(exName)
-    print(exDateFrom, exDateTo)
-    print(exhibitionsList)
-    print('---------')
 
     # After form submit it posts values into url attributes and redirect to start
     if form.validate_on_submit():
@@ -84,8 +85,6 @@ def exhibition():
     # Sending request to Elastic
     artworksInPeriod = engine.getPeriodData(exhibitionsList, exDateFrom, exDateTo)
     artworksSorted = engine.getArtworksByObject(exhibitionsList, exDateFrom, exDateTo)
-    print('--------artworksInPeriod--------')
-    print(artworksInPeriod)
 
     # Check for zero results
     if len(artworksSorted[0]) == 0:
@@ -101,6 +100,8 @@ def exhibition():
         titleImage = artworksSorted[0][0]
         collectionsByPeriods = engine.sortCollectionByPeriods(artworksInPeriod, artworksSorted)
         collectionTitles = []  # Clearing because dicts between searched objects
+
+        print(exDisplayedObjects)
         for collection in exhibitionsList:
             collectionTitles.append(list(collection.keys())[0])
         return render_template('index.html',
@@ -114,6 +115,7 @@ def exhibition():
                                form=form,
                                dateFrom = exDateFrom,
                                dateTo=exDateTo,
+                               simpleObjectList=simpleObjectList,
                                )
 
 

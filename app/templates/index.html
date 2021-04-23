@@ -9,7 +9,7 @@
         <div class="titlePart">
             <h1>{{ exName }}</h1>
             <p class="subtitle flexItem">
-                {{artworksInPeriod.artworksWithObject[0][1]|sum}} artworks from the years {{dateFrom}} - {{dateTo}} displaying {{artworksInPeriod.artworksWithObject[0][0]}}
+                {{simpleObjectList}}{{artworksInPeriod.artworksWithObject[0][1]|sum}} artworks from the years {{dateFrom}} - {{dateTo}} displaying {{artworksInPeriod.artworksWithObject[0][0]}}
             {% if searchedObjects|length > 1 %}
                 & {{artworksInPeriod.artworksWithObject[1][1]|sum}} works with a {{artworksInPeriod.artworksWithObject[1][0]}}
             {% endif%}
@@ -24,14 +24,18 @@
 
     <!-- title image -->
     <section class="titleImage artwork">
+
         <div class="imageContainer">
             <img src="{{titleImage._source.image_url}}">
             <div class="boundBoxes">
                 {% for detectedObject in titleImage._source.detected_objects %}
-                <div class="boundBox"
-                     style="left:{{ detectedObject.boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
-                    <p>{{ detectedObject['object'] }}&nbsp;{{ 100*detectedObject['score']}}%</p>
-                </div>
+                    {% for selectedObject in simpleObjectList %}
+                        {% if selectedObject == detectedObject['object'] %}
+                            <div class="boundBox" style="left:{{ detectedObject.boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
+                                <p>{{ detectedObject['object'] }}&nbsp;{{ 100*detectedObject['score']}}%</p>
+                            </div>
+                        {% endif%}
+                    {% endfor %}
                 {% endfor %}
             </div>
         </div>
@@ -91,9 +95,13 @@
 
                             <!-- unpacking boundboxes-->
                             {% for detectedObject in artwork._source.detected_objects %}
-                            <div class="boundBox" style="left:{{ detectedObject .boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
-                                <p>{{ detectedObject.object }}&nbsp;{{ 100*detectedObject.score }}%</p>
-                            </div>
+                                {% for selectedObject in simpleObjectList %}
+                                    {% if selectedObject == detectedObject['object'] %}
+                                        <div class="boundBox" style="left:{{ detectedObject .boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
+                                            <p>{{ detectedObject.object }}&nbsp;{{ 100*detectedObject.score }}%</p>
+                                        </div>
+                                    {% endif%}
+                                {% endfor %}
                             {% endfor %}
 
                         </div>
