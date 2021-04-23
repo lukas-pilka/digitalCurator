@@ -19,7 +19,7 @@ print(tfObjectDetection(Image.open('temp/WU-CZE-4RG-K1320.jpg')))
 
 
 # CONNECTION TO ELASTIC SEARCH
-lastTimeSwitch = input('Select artworks by previous object update. Set time in format 2000-01-01T23:59:00Z:') or '2000-01-01T23:59:00Z'
+lastTimeSwitch = input('Select artworks by previous object update. Set time in format 2000-01-01T23:59:00Z:') or '2022-01-01T23:59:00Z'
 print('Connecting to Elastic Search...')
 
 # Query returning artworks without detected objects

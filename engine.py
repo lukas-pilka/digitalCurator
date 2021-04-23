@@ -242,6 +242,7 @@ def getPeriodData(exhibitionsList, dateFrom, dateTo):
     }
     print('Request for periods data: ' + str(requestForPeriodData))
     countAll = callElastic(requestForPeriodData)['aggregations']['periods']['buckets'] # Gets count of all artworks in specific periods
+    print(countAll)
 
     periodStarts = [int(periodSet['key']) for periodSet in countAll]
     periodNames = [str(periodStart)+' - '+str(periodStart+interval) for periodStart in periodStarts]
@@ -297,13 +298,24 @@ def getDetectedObjectsList():
     collectionsQuery = {
         "size": 0,
         "query": {
-            "nested": {
-                "path": "detected_objects",
-                "query": {
-                    "bool": {
-                        "must": {"range": {"detected_objects.score": {"gt": config.scoreThreshold}}}
+            "bool": {
+                "should": [
+                    {
+                        "match_phrase": {
+                            "work_type": "graphic"
+                        }
+                    },
+                    {
+                        "match_phrase": {
+                            "work_type": "painting"
+                        }
+                    },
+                    {
+                        "match_phrase": {
+                            "work_type": "drawing"
+                        }
                     }
-                }
+                ]
             }
         },
         "aggs": {
@@ -312,20 +324,33 @@ def getDetectedObjectsList():
                     "path": "detected_objects"
                 },
                 "aggs": {
-                    "terms": {
-                        "terms": {
-                            "field": "detected_objects.object.keyword",
-                            "size": 10000
+                    "object_categories": {
+                        "filter": {
+                            "range": {"detected_objects.score": {"gt": config.scoreThreshold}}
+                        },
+                        "aggs": {
+                            "filtered_by_threshold":{
+                                "terms": {
+                                    "field": "detected_objects.object.keyword",
+                                    "size": 10000
+                                },
+                                "aggs": {
+                                    "artworks_count": {
+                                        "reverse_nested": {}
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     }
-    DetectedObjectClassesList = callElastic(collectionsQuery)['aggregations']['detected_objects_list']['terms']['buckets']
+    DetectedObjectClassesList = callElastic(collectionsQuery)['aggregations']['detected_objects_list']['object_categories']['filtered_by_threshold']['buckets']
     TuplesClassesList = []
     for objectClass in DetectedObjectClassesList:
-        TuplesClassesList.append((objectClass['key'],objectClass['key']+' '+str(objectClass['doc_count'])))
+        relatedArtworksCount = str(objectClass["artworks_count"]['doc_count'])
+        TuplesClassesList.append((objectClass['key'],objectClass['key']+' ('+relatedArtworksCount +')'))
     return TuplesClassesList
 
 # DEVIDE EVERY COLLECTION BY PERIODS AND SORTS ARTWORKS INTO SPECIFIC PERIOD BY ITS DATE EARLIEST
@@ -378,7 +403,7 @@ def createArguments(exhibition):
 
 #print(getDetectedObjectsList())
 #getArtworksByObject([{'Tree, Plant and Castle': [['Tree', 'Plant'], ['Castle']]}], 1500,1900)
-#getPeriodData([{'Wine glass, Plate, Table and Tableware': [['Wine glass'], ['Plate', 'Table', 'Tableware']]}], 1740, 2000)
+#getPeriodData([{'Angel': [['Angel']]}], 1000, 2000)
 #print(getRandomObjectTypes())
 #print(getGalleriesSum())
 
