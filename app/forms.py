@@ -4,8 +4,7 @@ from wtforms.validators import DataRequired
 import engine
 
 class SearchForm(FlaskForm):
-    exhibitionName = StringField('Exhibition name',
-                                 validators=[DataRequired('Choose a name for your exhibition')])
+    exhibitionName = StringField('Exhibition name',render_kw={"placeholder": "Digital curator's choice"})
     searchedClassSelect = SelectMultipleField('Displayed objects',
                                               choices=engine.getDetectedObjectsList(),
                                               validators=[DataRequired('Select the objects that the artworks should display')]

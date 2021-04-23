@@ -70,7 +70,10 @@ def exhibition():
 
     # After form submit it posts values into url attributes and redirect to start
     if form.validate_on_submit():
-        exName = form.exhibitionName.data
+        if len(form.exhibitionName.data) > 0:
+            exName = form.exhibitionName.data
+        else:
+            exName = "Digital curator's choice"
         exDisplayedObjects = form.searchedClassSelect.data  # Loads list of classes from select multiple choices
         exComparisonObjects = form.comparisonClassSelect.data  # Loads list of classes from select multiple choices
         exDateFrom = form.dateFrom.data  # Loads exDateFrom from select
