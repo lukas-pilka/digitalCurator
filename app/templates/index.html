@@ -110,16 +110,19 @@
                     <div class="artworkDescription">
                         <p class="museumInfo">
                             {{ artwork._source.title }} <br>
-                            {{ artwork._source.author[0] }}<br>
+                            {% if artwork._source.author is defined %}
+                                {{ artwork._source.author[0] }}<br>
+                            {% endif %}
                             {% if artwork._source.date_earliest == artwork._source.date_latest %}
                                 {{ artwork._source.date_earliest }}
                             {% else %}
                                 between {{ artwork._source.date_earliest }}&nbsp;and&nbsp;{{ artwork._source.date_latest }}
-
                             {% endif %}
 
                             <br>
                             {{ artwork._source.gallery }}<br>
+                            <br>
+                            <a href="{{ artwork.similar_works_url }}" target="_blank" style="color: #111111">Ask for similar</a>
                         </p>
                         <p class="generatedInfo">
                             {{ searchedObjects[collectionIndex] }}:&nbsp;{{ 100*artwork._source.average_score }}%

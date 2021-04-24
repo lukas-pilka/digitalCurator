@@ -33,7 +33,8 @@ def exhibition():
                 exDateTo=arguments['exDateTo']))
         exhibition['url'] = url
         browseExhibitions.append(exhibition)
-
+    print('---browseExhibitions---')
+    print(browseExhibitions)
     # If it doesn't receive arguments it set arguments with default values of exhibition from config
     receivedArguments = request.args.to_dict(flat=False)
 
@@ -85,6 +86,43 @@ def exhibition():
     # Sending request to Elastic
     artworksInPeriod = engine.getPeriodData(exhibitionsList, exDateFrom, exDateTo)
     artworksSorted = engine.getArtworksByObject(exhibitionsList, exDateFrom, exDateTo)
+
+    # Preparing link for similar artworks
+    for artworkSet in artworksSorted:
+        for artwork in artworkSet:
+
+            similarSetName = 'Similar works to ' + artwork['_source']['title']
+
+            # Set range for similar artwork created date
+            createdRange = 50
+            dateFrom = artwork['_source']['date_earliest'] - createdRange
+            dateTo = artwork['_source']['date_earliest'] + createdRange
+
+            # Sort original list of detected objects by their score
+            def sortByScore(detectedObject):
+                return detectedObject['score']
+            artwork['_source']['detected_objects'].sort(key=sortByScore, reverse=True)
+
+            detectedObjectList = []
+            maxObjectsLimit = 4 # Sets the max count of object classes from original artwork that a similar artwork must contain
+            limitCounter = 0
+            for detectedObject in artwork['_source']['detected_objects']:
+                print(detectedObject['object'] +' ' + str(detectedObject['score']))
+                if [detectedObject['object']] not in detectedObjectList and detectedObject['object'] not in config.classesBlackList:
+                    detectedObjectList.append([detectedObject['object']])
+                    limitCounter += 1
+                if limitCounter == maxObjectsLimit: # when the limit is reached it will stop
+                    break
+
+            # Preparing url for similar artworks link
+            arguments = {'exName': similarSetName, 'exDateFrom': dateFrom, 'exDateTo': dateTo,
+                         'exDisplayedObjects': detectedObjectList, 'exComparisonObjects': None}
+            url = str(
+                url_for('exhibition', exName=arguments['exName'], exDisplayedObjects=arguments['exDisplayedObjects'],
+                        exComparisonObjects=arguments['exComparisonObjects'], exDateFrom=arguments['exDateFrom'],
+                        exDateTo=arguments['exDateTo']))
+            artwork['similar_works_url'] = url # ads url to original artwork dict
+
 
     # Check for zero results
     if len(artworksSorted[0]) == 0:
