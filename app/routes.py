@@ -87,7 +87,7 @@ def exhibition():
     artworksInPeriod = engine.getPeriodData(exhibitionsList, exDateFrom, exDateTo)
     artworksSorted = engine.getArtworksByObject(exhibitionsList, exDateFrom, exDateTo)
 
-    # Preparing link for similar artworks
+    # Preparing links for similar artworks
     for artworkSet in artworksSorted:
         for artwork in artworkSet:
 

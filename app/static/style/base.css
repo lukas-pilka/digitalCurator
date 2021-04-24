@@ -430,11 +430,16 @@ select:focus{
     border: 1px solid #fff;
     outline: none;
 }
+input[type='checkbox']{
+    width: 1rem;
+    display: inline-block;
+    margin: 0.5rem 0.5rem 0.5rem 0;
+}
 label{
     color: #ffffff;
     line-height: 1.5rem;
     margin: 0 0 0.25rem 0;
-    display: block;
+    display: inline-block;
 }
 .errorMessage{
     color: rgba(255,0,0,0.75);
@@ -444,9 +449,21 @@ label{
 .searchForm .buttonProceed{
     width: 100%;
 }
+.comparisonClassBox{
+    max-height: 0;
+    transition: max-height 1s ease;
+    overflow: hidden;
+    margin: 0;
+}
+.comparisonClassBox.opened{
+    max-height: 6rem;
+}
 
 /* select 2 multiple choice */
 
+.searchForm .select2-container {
+    width: 100%;
+}
 .searchForm .select2-container--default .select2-selection--multiple {
     background-color: #111111;
     border: 1px solid #666666;

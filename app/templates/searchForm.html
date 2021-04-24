@@ -35,13 +35,6 @@
             <span class="errorMessage">{{ error }}</span>
             {% endfor %}
         </div>
-        <div class="fieldBox">
-            {{ form.comparisonClassSelect.label }}
-            {{ form.comparisonClassSelect(class_="selectMultiple")}}
-            {% for error in form.comparisonClassSelect.errors %}
-            <span class="errorMessage">{{ error }}</span>
-            {% endfor %}
-        </div>
         <div class="fieldBox halved">
             <div class="halfField">
                 {{ form.dateFrom.label }}
@@ -57,6 +50,17 @@
                 <span class="errorMessage">{{ error }}</span>
                 {% endfor %}
             </div>
+        </div>
+        <div class="fieldBox">
+            <input type="checkbox" id="comparisonCheck" onclick="showComparisonSelect()">
+            <label for="comparisonCheck">Compare with different artworks</label>
+        </div>
+        <div id="comparisonClassBox" class="fieldBox comparisonClassBox">
+            {{ form.comparisonClassSelect.label }}
+            {{ form.comparisonClassSelect(class_="selectMultiple")}}
+            {% for error in form.comparisonClassSelect.errors %}
+            <span class="errorMessage">{{ error }}</span>
+            {% endfor %}
         </div>
         <div class="fieldBox">
             {{ form.submit(class_="buttonProceed") }}

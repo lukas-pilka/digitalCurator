@@ -43,6 +43,23 @@ function checkErrors() {
 	}
 }
 
+// Show select for object comparison
+
+function showComparisonSelect() {
+  // Get the checkbox
+  var checkBox = document.getElementById("comparisonCheck");
+  // Get the output text
+  var text = document.getElementById("comparisonClassBox");
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    text.classList.add("opened");
+  } else {
+    text.classList.remove("opened");
+  }
+}
+
+
 // artwork focused
 
 (function(){
