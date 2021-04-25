@@ -166,7 +166,11 @@ a:hover{
     margin: 1rem 0 4rem 0;
     width: 100%;
 }
+.artworkDescription .museumInfo{
+    font-size: 0.875rem;
+}
 .artworkDescription .generatedInfo{
+    font-size: 0.875rem;
     color: #00ff00;
     opacity: 0;
 }
@@ -207,6 +211,7 @@ a:hover{
     opacity: 0;
 }
 .boundBox p{
+    font-size: 0.875rem;
     color: #00ff00;
     font-weight: bold;
     margin: 0.25rem 0.5rem 0.25rem 0.5rem;
@@ -228,6 +233,9 @@ a:hover{
 }
 .finalScreen .partners{
     margin: 6rem 0 0 0;
+}
+.finalScreen .authorInfo{
+    font-size: 0.875rem;
 }
 .finalScreen .logo{
     background-repeat: no-repeat;

@@ -109,7 +109,7 @@
 
                     <div class="artworkDescription">
                         <p class="museumInfo">
-                            {{ artwork._source.title }} <br>
+                            <strong>{{ artwork._source.title }}</strong> <br>
                             {% if artwork._source.author is defined %}
                                 {{ artwork._source.author[0] }}<br>
                             {% endif %}
@@ -121,8 +121,10 @@
 
                             <br>
                             {{ artwork._source.gallery }}<br>
-                            <br>
+                            <!-- Link to similar artworkss -->
+                            <!--
                             <a href="{{ artwork.similar_works_url }}" target="_blank" style="color: #111111">Ask for similar</a>
+                            -->
                         </p>
                         <p class="generatedInfo">
                             {{ searchedObjects[collectionIndex] }}:&nbsp;{{ 100*artwork._source.average_score }}%
@@ -147,7 +149,7 @@
         <div class="footerPart">
             <a onclick="return openMenu(), openSearch();" class="buttonProceed buttonOutline">Generate new exhibition</a>
             <section class="partners">
-                <p><a onclick="return openMenu(), openAbout();">Digital Curator</a> was designed by Lukas Pilka with kind support of:</p>
+                <p class="authorInfo">Digital Curator</a> was designed by Lukas Pilka with kind support of:</p>
                 <a href="https://www.umprum.cz/web/en/" target="_blank" class="logo logoUmprum" title="UMPRUM, Academy od Arts Architecture and Design in Prague"><span>UMPRUM, Academy od Arts Architecture and Design in Prague</span></a>
                 <a href="https://www.msmt.cz/?lang=2" target="_blank" class="logo logoMsmt" title="Ministry of Education, Youth and Sports of Czech Republic"><span>Ministry of Education, Youth and Sports of Czech Republic</span></a>
                 <a href="https://www.sng.sk/en" target="_blank" class="logo logoSng" title="Slovak National Gallery"><span>Slovak National Gallery</span></a>
