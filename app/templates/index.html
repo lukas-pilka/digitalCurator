@@ -18,7 +18,7 @@
 
         </div>
         <div class="footerPart">
-            <a onclick="return openMenu(), openSearch();" class="buttonProceed buttonOutline">Generate new exhibition</a>
+            <a onclick="return openMenu(), openSearch();" class="buttonProceed">Generate new exhibition</a>
         </div>
     </section>
 
@@ -79,12 +79,14 @@
 
         <!-- unpacking periods -->
         {% for period in artworksForWeb[collectionIndex] %}
-
             <!-- unpacking period -->
+            {%set roomNumber = loop.index - 1%}
+            {% set romanNumbers = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX']%}
             {% for periodTitle, artworks in period.items() %}
-            <div class="periodIntro">
-                <p class="periodTitle subtitle">{{periodTitle}}</p>
-            </div>
+                <div class="periodIntro">
+
+                    <p class="periodTitle subtitle">Room {{romanNumbers[roomNumber]}}.<br>{{periodTitle}}</p>
+                </div>
 
                 <!-- unpacking artworks -->
                 {% for artwork in artworks %}
@@ -133,6 +135,7 @@
                 </div>
                 {% endfor %}
 
+
             {% endfor %}
 
         {% endfor %}
@@ -147,9 +150,9 @@
             <h1>Goodbye</h1>
         </div>
         <div class="footerPart">
-            <a onclick="return openMenu(), openSearch();" class="buttonProceed buttonOutline">Generate new exhibition</a>
+            <a onclick="return openMenu(), openSearch();" class="buttonProceed">Generate new exhibition</a>
             <section class="partners">
-                <p class="authorInfo">Digital Curator</a> was designed by Lukas Pilka with kind support of:</p>
+                <p class="authorInfo">Digital Curator</a> was designed by <a href="https://lukaspilka.cz/" target="_blank">Lukas Pilka</a> with kind support of:</p>
                 <a href="https://www.umprum.cz/web/en/" target="_blank" class="logo logoUmprum" title="UMPRUM, Academy od Arts Architecture and Design in Prague"><span>UMPRUM, Academy od Arts Architecture and Design in Prague</span></a>
                 <a href="https://www.msmt.cz/?lang=2" target="_blank" class="logo logoMsmt" title="Ministry of Education, Youth and Sports of Czech Republic"><span>Ministry of Education, Youth and Sports of Czech Republic</span></a>
                 <a href="https://www.sng.sk/en" target="_blank" class="logo logoSng" title="Slovak National Gallery"><span>Slovak National Gallery</span></a>

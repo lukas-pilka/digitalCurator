@@ -267,7 +267,7 @@ a:hover{
     text-decoration: none;
     border: none;
     color: #111111;
-    background: #ffffff;
+    background: #cccccc;
     text-align: center;
     padding: 0.75rem 1.5rem 0.75rem 1.5rem;
     box-sizing: border-box;
@@ -275,14 +275,19 @@ a:hover{
     cursor: pointer;
     display: inline-block;
 }
+.buttonProceed:hover{
+    background: #ffffff;
+    color: #111111;
+}
 .buttonProceed.buttonOutline{
     color: #ffffff;
     background: #111111;
     border: 1px solid #ffffff;
 }
-.buttonProceed:hover{
-    background: #999999;
+.buttonProceed.buttonOutline:hover{
+    background: #333333;
 }
+
 .buttonProceed:focus{
     border: none;
 }

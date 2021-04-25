@@ -139,7 +139,6 @@ def exhibition():
         collectionsByPeriods = engine.sortCollectionByPeriods(artworksInPeriod, artworksSorted)
         collectionTitles = []  # Clearing because dicts between searched objects
 
-        print(exDisplayedObjects)
         for collection in exhibitionsList:
             collectionTitles.append(list(collection.keys())[0])
         return render_template('index.html',
