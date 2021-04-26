@@ -85,6 +85,7 @@ function checkErrors() {
 		openSearch()
 	}
 }
+checkErrors()
 
 // Show select for object comparison
 
@@ -145,9 +146,10 @@ function copyUrl() {
 		el.className = el.className.replace(new RegExp('(?:^|\\s)'+cls+'(?!\\S)'),'');
 		}
 
+
 	function elementFromLeft(elem, classToAdd, distanceFromLeft, unit) {
-		var container = document.getElementById("container");
-		var winX = container.innerWidth || document.documentElement.clientWidth,
+		let container = document.getElementById("container");
+		let winX = container.innerWidth || document.documentElement.clientWidth,
 		elemLength = elem.length, distLeft, distPercent, distPixels, distUnit, i;
 		for (i = 0; i < elemLength; ++i) {
 			distLeft = elem[i].getBoundingClientRect().left;
@@ -163,7 +165,8 @@ function copyUrl() {
 		}
 
 	function elementFromTop(elem, classToAdd, distanceFromTop, unit) {
-		var winY = container.innerHeight || document.documentElement.clientHeight,
+		let container = document.getElementById("container");
+		let winY = container.innerHeight || document.documentElement.clientHeight,
 		elemLength = elem.length, distTop, distPercent, distPixels, distUnit, i;
 		for (i = 0; i < elemLength; ++i) {
 			distTop = elem[i].getBoundingClientRect().top;

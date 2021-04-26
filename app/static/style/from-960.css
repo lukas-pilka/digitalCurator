@@ -8,8 +8,6 @@ body{
     margin: 0 0 0 0;
     padding-left:4rem;
     display: flex;
-    height: 100vh;
-    max-height: 100vh;
 }
 .container {
     height: 100%;

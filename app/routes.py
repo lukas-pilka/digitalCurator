@@ -89,13 +89,11 @@ def exhibition():
     artworksInPeriod = engine.getPeriodData(exhibitionsList, exDateFrom, exDateTo)
     artworksSorted = engine.getArtworksByObject(exhibitionsList, exDateFrom, exDateTo)
 
-    # Preparing links for similar artworks
+    # Preparing links for related tags
     for artworkSet in artworksSorted:
         for artwork in artworkSet:
 
-            similarSetName = 'Similar works to ' + artwork['_source']['title']
-
-            # Set range for similar artwork created date
+            # Set range for related artwork created date
             createdRange = 50
             dateFrom = artwork['_source']['date_earliest'] - createdRange
             dateTo = artwork['_source']['date_earliest'] + createdRange
@@ -105,25 +103,32 @@ def exhibition():
                 return detectedObject['score']
             artwork['_source']['detected_objects'].sort(key=sortByScore, reverse=True)
 
-            detectedObjectList = []
-            maxObjectsLimit = 4 # Sets the max count of object classes from original artwork that a similar artwork must contain
+            relatedTags = []
+            alreadyUsedTags = []
+            maxObjectsLimit = 7 # Sets the max count of object classes from original artwork that a similar artwork must contain
             limitCounter = 0
             for detectedObject in artwork['_source']['detected_objects']:
                 #print(detectedObject['object'] +' ' + str(detectedObject['score']))
-                if [detectedObject['object']] not in detectedObjectList and detectedObject['object'] not in config.classesBlackList:
-                    detectedObjectList.append([detectedObject['object']])
+                if detectedObject['object'] not in alreadyUsedTags and detectedObject['object'] not in config.classesBlackList:
+                    tagSetName = 'Image of the ' + str(detectedObject['object'])
+                    arguments = {'exName': tagSetName, 'exDateFrom': dateFrom, 'exDateTo': dateTo,
+                                 'exDisplayedObjects':detectedObject['object'], 'exComparisonObjects': None}
+                    url = str(
+                        url_for('exhibition', exName=arguments['exName'],
+                                exDisplayedObjects=arguments['exDisplayedObjects'],
+                                exComparisonObjects=arguments['exComparisonObjects'],
+                                exDateFrom=arguments['exDateFrom'],
+                                exDateTo=arguments['exDateTo']))
+                    objectLink = (detectedObject['object'],url)
+                    relatedTags.append(objectLink)
+                    alreadyUsedTags.append(detectedObject['object'])
                     limitCounter += 1
                 if limitCounter == maxObjectsLimit: # when the limit is reached it will stop
                     break
 
             # Preparing url for similar artworks link
-            arguments = {'exName': similarSetName, 'exDateFrom': dateFrom, 'exDateTo': dateTo,
-                         'exDisplayedObjects': detectedObjectList, 'exComparisonObjects': None}
-            url = str(
-                url_for('exhibition', exName=arguments['exName'], exDisplayedObjects=arguments['exDisplayedObjects'],
-                        exComparisonObjects=arguments['exComparisonObjects'], exDateFrom=arguments['exDateFrom'],
-                        exDateTo=arguments['exDateTo']))
-            artwork['similar_works_url'] = url # ads url to original artwork dict
+
+            artwork['related_tags'] = relatedTags # ads url to original artwork dict
 
 
     # Check for zero results

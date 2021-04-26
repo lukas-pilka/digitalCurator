@@ -2,7 +2,7 @@
 <head>
     <title>Digital Curator</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v=17">
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v=18">
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-480.css') }}?v=5">
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 600px)" href="{{ url_for('static', filename='style/from-600.css') }}?v=5">
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 840px)" href="{{ url_for('static', filename='style/from-840.css') }}?v=5">
@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <!-- JS -->
-    <script src="{{ url_for('static', filename='js/scripts.js') }}?v=8" defer></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}?v=10" defer></script>
 
     <!-- Chart JS-->
     <script src="{{ url_for('static', filename='Chart/Chart.js') }}"></script>
@@ -26,11 +26,13 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
     <!-- OG Tags -->
-    <meta property="og:url"           content="DigitalCurator.art" />
-    <meta property="og:type"          content="website" />
-    <meta property="og:title"         content="{{ exName }}" />
-    <meta property="og:description"   content="Digital Curator's exhibitiion displaying artworks with {{artworksInPeriod.artworksWithObject[0][0]}} was assembled automatically by AI computer vision." />
-    <meta property="og:image"         content="{{titleImage._source.image_url}}" />
+    <meta property="og:url" content="DigitalCurator.art" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ exName }}" />
+    <meta property="og:description" content="Digital Curator's exhibitiion displaying artworks with {{artworksInPeriod.artworksWithObject[0][0]}} was assembled automatically by AI computer vision." />
+    {% if titleImage is defined %}
+        <meta property="og:image" content="{{titleImage._source.image_url}}" />
+    {% endif %}
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-144703876-5"></script>

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% set chartLineColors = ['#111','#2a9d8f','#e9c46a','#f4a261','#e76f51'] %}
+{% if searchedObjects is defined %}
 
 <!-- sharing popup -->
     <div class="sharingPopup closed" id="sharingPopup">
@@ -25,6 +26,7 @@
             </div>
         </div>
     </div>
+{% endif %}
 
 <div class="container" id="container">
 
@@ -162,17 +164,16 @@
                             {% else %}
                                 between {{ artwork._source.date_earliest }}&nbsp;and&nbsp;{{ artwork._source.date_latest }}
                             {% endif %}
-
                             <br>
                             {{ artwork._source.gallery }}<br>
-                            <!-- Link to similar artworkss -->
-                            <!--
-                            <a href="{{ artwork.similar_works_url }}" target="_blank" style="color: #111111">Ask for similar</a>
-                            -->
+                            <span class="generatedInfo">{{ searchedObjects[collectionIndex] }}:&nbsp;{{ 100*artwork._source.average_score }}%</span>
                         </p>
-                        <p class="generatedInfo">
-                            {{ searchedObjects[collectionIndex] }}:&nbsp;{{ 100*artwork._source.average_score }}%
-                        </p>
+                        <!-- Related tags -->
+                        <div class="relatedTags">
+                        {% for tag in artwork.related_tags %}
+                            <a href="{{tag[1]}}" class="buttonText buttonOutline">{{tag[0]}}</a>
+                        {% endfor%}
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
