@@ -401,7 +401,7 @@ def createArguments(exhibition):
         arguments['exComparisonObjects'] = None
     return arguments
 
-print(getDetectedObjectsList())
+#print(getDetectedObjectsList())
 #getArtworksByObject([{'Tree, Plant and Castle': [['Tree', 'Plant'], ['Castle']]}], 1500,1900)
 #getPeriodData([{'Angel': [['Angel']]}], 1000, 2000)
 #print(getRandomObjectTypes())

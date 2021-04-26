@@ -146,7 +146,8 @@ function copyUrl() {
 		}
 
 	function elementFromLeft(elem, classToAdd, distanceFromLeft, unit) {
-		var winX = window.innerWidth || document.documentElement.clientWidth,
+		var container = document.getElementById("container");
+		var winX = container.innerWidth || document.documentElement.clientWidth,
 		elemLength = elem.length, distLeft, distPercent, distPixels, distUnit, i;
 		for (i = 0; i < elemLength; ++i) {
 			distLeft = elem[i].getBoundingClientRect().left;
@@ -162,7 +163,7 @@ function copyUrl() {
 		}
 
 	function elementFromTop(elem, classToAdd, distanceFromTop, unit) {
-		var winY = window.innerHeight || document.documentElement.clientHeight,
+		var winY = container.innerHeight || document.documentElement.clientHeight,
 		elemLength = elem.length, distTop, distPercent, distPixels, distUnit, i;
 		for (i = 0; i < elemLength; ++i) {
 			distTop = elem[i].getBoundingClientRect().top;
@@ -178,21 +179,21 @@ function copyUrl() {
 		}
 	// params: element, classes to add, distance from top, unit ('percent' or 'pixels')
 
-	if(window.innerWidth <= 960) {
-		window.addEventListener('scroll', function () {
+	if(container.innerWidth <= 960) {
+		container.addEventListener('scroll', function () {
 			elementFromTop(document.querySelectorAll('.artwork'), 'focuseIn', 50, 'percent'); // as top of element hits top of viewport
 			elementFromTop(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent'); // as top of element hits top of viewport
 		}, false);
-		window.addEventListener('resize', function () {
+		container.addEventListener('resize', function () {
 			elementFromTop(document.querySelectorAll('.artwork'), 'focuseIn', 50, 'percent'); // as top of element hits top of viewport
 			elementFromTop(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent'); // as top of element hits top of viewport
 		}, false);
 	}else{
-		window.addEventListener('scroll', function () {
+		container.addEventListener('scroll', function () {
 			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseIn', 50, 'percent'); // as left of element hits left of viewport
 			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent'); // as left of element hits left of viewport
 		}, false);
-		window.addEventListener('resize', function () {
+		container.addEventListener('resize', function () {
 			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseIn', 50, 'percent'); // as left of element hits left of viewport
 			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent'); // as left of element hits left of viewport
 		}, false);

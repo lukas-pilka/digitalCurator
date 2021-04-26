@@ -503,6 +503,8 @@ label{
 
 .searchForm .select2-container {
     width: 100%;
+    position: relative;
+    z-index: 30;
 }
 .searchForm .select2-container--default .select2-selection--multiple {
     background-color: #111111;

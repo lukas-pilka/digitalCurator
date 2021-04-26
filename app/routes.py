@@ -79,8 +79,11 @@ def exhibition():
         exComparisonObjects = form.comparisonClassSelect.data  # Loads list of classes from select multiple choices
         exDateFrom = form.dateFrom.data  # Loads exDateFrom from select
         exDateTo = form.dateTo.data  # Loads exDateTo from select
-        return redirect(url_for('exhibition', exName=exName, exDisplayedObjects=exDisplayedObjects,
-                                exComparisonObjects=exComparisonObjects, exDateFrom=exDateFrom, exDateTo=exDateTo))
+        url = url_for('exhibition', exName=exName, exDisplayedObjects=exDisplayedObjects, exComparisonObjects=exComparisonObjects, exDateFrom=exDateFrom, exDateTo=exDateTo)
+        print('---------------------')
+        print(exDisplayedObjects)
+        print(url)
+        return redirect(url)
 
     # Sending request to Elastic
     artworksInPeriod = engine.getPeriodData(exhibitionsList, exDateFrom, exDateTo)
@@ -106,7 +109,7 @@ def exhibition():
             maxObjectsLimit = 4 # Sets the max count of object classes from original artwork that a similar artwork must contain
             limitCounter = 0
             for detectedObject in artwork['_source']['detected_objects']:
-                print(detectedObject['object'] +' ' + str(detectedObject['score']))
+                #print(detectedObject['object'] +' ' + str(detectedObject['score']))
                 if [detectedObject['object']] not in detectedObjectList and detectedObject['object'] not in config.classesBlackList:
                     detectedObjectList.append([detectedObject['object']])
                     limitCounter += 1

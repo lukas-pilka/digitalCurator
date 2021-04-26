@@ -8,14 +8,14 @@ body{
     margin: 0 0 0 0;
     padding-left:4rem;
     display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
     height: 100vh;
     max-height: 100vh;
 }
 .container {
     height: 100%;
     display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 .mainSection {
     height: 100%;
