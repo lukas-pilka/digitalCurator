@@ -2,8 +2,50 @@
 {% block content %}
 {% set chartLineColors = ['#111','#2a9d8f','#e9c46a','#f4a261','#e76f51'] %}
 
+<!-- sharing popup -->
+    <div class="sharingPopup closed" id="sharingPopup">
+        <a onclick="closeWindow();" class="sharingPopupCover" id="sharingClosingFiled"></a>
+        <div class="sharingPopupFlex">
+            <div class="sharingPopupWindow">
+                <a onclick="closeWindow();" class="sharingPopupClose"></a>
+                <div class="sharingPopupImage" style="background-image:url('{{titleImage._source.image_url}}') "></div>
+                <h3>Help Digital Curator and share your exhibition</h3>
+                <p>Are you interested in new ways of exploring art? Support the efforts of Digital Curator and share your exhibition.</p>
+                <div class="sharingLinks">
+                    <a onclick="copyUrl();" class="jsCopyLink buttonIcon buttonOutline link"><span>Link</span></a>
+                    <a href=""
+                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+                       target="_blank" title="Share on Facebook" class="jsFbShare buttonIcon buttonOutline facebook"><span>Share on Facebook</span>
+                    </a>
+                    <a href=""
+                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+                       target="_blank" title="Share on Twitter" class="jsTwShare buttonIcon buttonOutline twitter"><span>Share on Twitter</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <div class="container" id="container">
+
 {% if searchedObjects is defined %} {# Check if it receives results #}
+
+    <!-- sharing panel -->
+    <div class="sharingPanel">
+
+        <span class="textJunction">Help Digital Curator and share via: </span>
+        <a onclick="copyUrl();" class="jsCopyLink buttonIcon buttonOutline link"><span>Link</span></a>
+        <a href=""
+           onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+           target="_blank" title="Share on Facebook" class="jsFbShare buttonIcon buttonOutline facebook"><span>Share on Facebook</span>
+        </a>
+        <a href=""
+           onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
+           target="_blank" title="Share on Twitter" class="jsTwShare buttonIcon buttonOutline twitter"><span>Share on Twitter</span>
+        </a>
+        <span class="textJunction">or</span>
+        <a onclick="return openMenu(), openSearch();" class="buttonText buttonOutline">Generate new exhibition</a>
+    </div>
 
     <section class="mainSection titleScreen" id="exhibitionStart">
         <div class="titlePart">
@@ -18,7 +60,7 @@
 
         </div>
         <div class="footerPart">
-            <a onclick="return openMenu(), openSearch();" class="buttonProceed">Generate new exhibition</a>
+            <a onclick="return openMenu(), openSearch();" class="buttonText">Generate new exhibition</a>
         </div>
     </section>
 
@@ -150,7 +192,7 @@
             <h1>Goodbye</h1>
         </div>
         <div class="footerPart">
-            <a onclick="return openMenu(), openSearch();" class="buttonProceed">Generate new exhibition</a>
+            <a onclick="return openMenu(), openSearch();" class="buttonText">Generate new exhibition</a>
             <section class="partners">
                 <p class="authorInfo">Digital Curator</a> was designed by <a href="https://lukaspilka.cz/" target="_blank">Lukas Pilka</a> with kind support of:</p>
                 <a href="https://www.umprum.cz/web/en/" target="_blank" class="logo logoUmprum" title="UMPRUM, Academy od Arts Architecture and Design in Prague"><span>UMPRUM, Academy od Arts Architecture and Design in Prague</span></a>

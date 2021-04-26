@@ -1,10 +1,53 @@
-// popup window
+// sharing window
+let splash = document.getElementById("sharingPopup"); // Get a reference to the sharing window
+let container = document.getElementById("container");
+let mainMenu = document.getElementById("mainMenu");
+
+function closeWindow() {
+	let element = document.getElementById("sharingPopup");
+	element.classList.toggle("closed"); // add class closed
+	let d = new Date();
+	let xDays = 1 // * Duration in days
+	d.setTime(d.getTime() + (xDays * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + d.toGMTString();
+	document.cookie = "visited=true;" + expires; // Creating cookie when closing window
+	container.classList.toggle("blurred");
+	mainMenu.classList.toggle("blurred");
+}
+window.addEventListener("load", function () {
+	if (document.cookie.indexOf("visited=true") === -1) { // Check to see if the cookie indicates a first-time visit
+		setTimeout(function () { // Reveal the window after delay
+			splash.classList.remove("closed");
+			container.classList.toggle("blurred");
+			mainMenu.classList.toggle("blurred");
+		}, 20000); // set delay in ms
+	}
+});
+
+// get urls for sharing
+
+window.onload = function() {
+	let fbLink = document.getElementsByClassName("jsFbShare");
+	let fb;
+	for (fb = 0; fb < fbLink.length; fb++) {
+	  fbLink[fb].href ='http://www.facebook.com/share.php?u=' + encodeURIComponent(location.href);
+	}
+	let twLink = document.getElementsByClassName("jsTwShare");
+	let tw;
+	for (tw = 0; tw < twLink.length; tw++) {
+	  twLink[tw].href ='https://twitter.com/share?url=' + encodeURIComponent(location.href);
+	}
+}
+
+// menu window
 
 function openMenu() {
   let element = document.getElementById("menuSecondLevel");
   element.classList.toggle("opened");
-  let element2 = document.getElementById("wrapper");
-  element2.classList.toggle("behindFog");
+  let element2 = document.getElementById("container");
+  element2.classList.toggle("blurred");
+  let menuClosingField = document.getElementById("menuCover");
+  menuClosingField.classList.toggle("hidden");
   let element3 = document.getElementById("jsMenuIcon");
   element3.classList.toggle("opened");
   let element4 = document.getElementById("jsSearchWindow");
@@ -59,6 +102,35 @@ function showComparisonSelect() {
   }
 }
 
+// Copy url
+
+function copyUrl() {
+	if (!window.getSelection) {
+		alert('Please copy the URL from the location bar.');
+		return;
+	}
+	const dummy = document.createElement('p');
+	dummy.textContent = window.location.href;
+	document.body.appendChild(dummy);
+
+	const range = document.createRange();
+	range.setStartBefore(dummy);
+	range.setEndAfter(dummy);
+
+	const selection = window.getSelection();
+	// First clear, in case the user already selected some other text
+	selection.removeAllRanges();
+	selection.addRange(range);
+
+	document.execCommand('copy');
+	document.body.removeChild(dummy);
+
+	let htmlElement = document.getElementsByClassName("jsCopyLink");
+	let i;
+	for (i = 0; i < htmlElement.length; i++) {
+	  htmlElement[i].classList.add("done");
+	}
+}
 
 // artwork focused
 
@@ -127,3 +199,4 @@ function showComparisonSelect() {
 	}
 
 })();
+

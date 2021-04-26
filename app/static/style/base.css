@@ -55,16 +55,15 @@ a:hover{
 
 .container {
     width: 100%;
-    transition: opacity 0.5s, filter 0.5s;
-}
-.behindFog .container{
-    filter: blur(8px);
-    opacity: 0.5;
+    transition: filter 0.5s;
 }
 .mainSection {
     padding: 2rem 2rem 6rem 2rem;
     width: 100vw;
     box-sizing: border-box;
+}
+.blurred{
+    filter: blur(8px);
 }
 
 /* container end */
@@ -94,6 +93,7 @@ a:hover{
 
 .galleryIntro {
     background: #ddd;
+    position: relative;
 }
 .introPart{
 }
@@ -227,6 +227,7 @@ a:hover{
     justify-content: space-between;
     min-width: 75vw;
     flex-flow: column;
+    position: relative;
 }
 .finalScreen .footerPart{
     margin-top: 6rem;
@@ -263,11 +264,11 @@ a:hover{
 
 /* buttons */
 
-.buttonProceed{
+.buttonText{
     text-decoration: none;
     border: none;
     color: #111111;
-    background: #cccccc;
+    background-color: #cccccc;
     text-align: center;
     padding: 0.75rem 1.5rem 0.75rem 1.5rem;
     box-sizing: border-box;
@@ -275,38 +276,64 @@ a:hover{
     cursor: pointer;
     display: inline-block;
 }
-.buttonProceed:hover{
+.buttonText:hover{
     background: #ffffff;
     color: #111111;
 }
-.buttonProceed.buttonOutline{
-    color: #ffffff;
-    background: #111111;
-    border: 1px solid #ffffff;
-}
-.buttonProceed.buttonOutline:hover{
-    background: #333333;
-}
-
-.buttonProceed:focus{
+.buttonText:focus {
     border: none;
+}
+.buttonOutline{
+    color: #111111;
+    background-color: transparent;
+    border: 1px solid #111111;
+    opacity: 0.5;
+}
+.buttonOutline:hover{
+    opacity: 1;
+}
+.buttonIcon.buttonOutline{
+    text-decoration: none;
+    width: 3rem;
+    height: 3rem;
+    box-sizing: border-box;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid #111111;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.buttonIcon.buttonOutline.link{background-image: url("../images/icon-link.svg");}
+.buttonIcon.buttonOutline.facebook{background-image: url("../images/icon-facebook.svg");}
+.buttonIcon.buttonOutline.twitter{background-image: url("../images/icon-twitter.svg");}
+.buttonIcon.buttonOutline.done{background-image: url("../images/icon-done.svg");}
+
+.buttonIcon span{
+    display: none;
 }
 
 /* buttons end */
 
 /* Main menu */
 
-.closingField{
+.menuCover{
     position: fixed;
     top:0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 8;
-    display: none;
-}
-.behindFog .closingField{
+    z-index: 5;
+    background-color: #111111;
+    opacity: 0.5;
+    visibility: visible;
+    transition: opacity 0.5s, visibility 0.5s;
     display: block;
+}
+.hidden.menuCover{
+    opacity: 0;
+    visibility: hidden;
 }
 .mainMenu{
     position: fixed;
@@ -459,7 +486,7 @@ label{
     display: block;
     margin: 0.25rem 0 0 0;
 }
-.searchForm .buttonProceed{
+.searchForm .buttonText{
     width: 100%;
 }
 .comparisonClassBox{
@@ -565,5 +592,89 @@ label{
     color: #ffffff;
 }
 
-
 /* browse exhibitions end */
+
+/* sharing panel start */
+
+.sharingPanel{
+    display: none;
+}
+
+/* sharing panel end */
+
+/* sharing popup */
+
+.sharingPopup{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 30;
+    opacity: 1;
+    transition: opacity 0.5s, visibility 0.5s;
+    visibility: visible;
+}
+.sharingPopup.closed{
+    visibility: hidden;
+    opacity: 0;
+}
+.sharingPopupCover{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index: 30;
+    opacity: 0.5;
+    background-color: #111111;
+}
+.sharingPopupFlex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.sharingPopupWindow{
+    width: 100%;
+    max-width: 25rem;
+    text-align: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    background: #ffffff;
+    position: relative;
+    z-index: 40;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.25rem 1rem 0.25rem rgba(0,0,0,0.25);
+}
+.sharingPopupClose{
+    background: url("../images/icon-close-black.svg") center no-repeat;
+    background-size: 100%;
+    width: 1rem;
+    height: 1rem;
+    display: block;
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+}
+.sharingPopupImage{
+    width:10rem;
+    height: 10rem;
+    margin: 0 auto 1.125rem auto;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 100%;
+}
+.sharingPopupWindow h3{
+    margin: 0 0 1.125rem 0;
+}
+.sharingPopup .sharingLinks{
+    display: flex;
+    justify-content: center;
+    margin: 2.25rem 0 1.125rem 0;
+}
+.sharingPopup .sharingLinks *{
+    margin: 0 0.25rem;
+}
+

@@ -21,7 +21,7 @@ def before_request():
 # Returns exhibition
 @app.route('/', methods=['GET', 'POST'])
 def exhibition():
-    form = SearchForm()
+    form = SearchForm(dateTo=1900) # Load SearForm from forms.py and set default value for dateTo SelectField
     galleriesSum = engine.getGalleriesSum()
 
     # Extends browse exhibitions by parsed url
@@ -33,8 +33,7 @@ def exhibition():
                 exDateTo=arguments['exDateTo']))
         exhibition['url'] = url
         browseExhibitions.append(exhibition)
-    print('---browseExhibitions---')
-    print(browseExhibitions)
+
     # If it doesn't receive arguments it set arguments with default values of exhibition from config
     receivedArguments = request.args.to_dict(flat=False)
 
