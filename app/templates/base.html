@@ -3,19 +3,21 @@
     <title>Digital Curator</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="all, follow" />
+    
+    {% set styleVersion = 20 %}
 
-	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v=18">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-480.css') }}?v=5">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 600px)" href="{{ url_for('static', filename='style/from-600.css') }}?v=5">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 840px)" href="{{ url_for('static', filename='style/from-840.css') }}?v=5">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 960px)" href="{{ url_for('static', filename='style/from-960.css') }}?v=6">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 1280px)" href="{{ url_for('static', filename='style/from-1280.css') }}?v=5">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 1440px)" href="{{ url_for('static', filename='style/from-1440.css') }}?v=5">
-    <link rel="stylesheet" type="text/css" media="screen and (min-width: 1600px)" href="{{ url_for('static', filename='style/from-1600.css') }}?v=5">
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v={{styleVersion}}">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-480.css') }}?v={{styleVersion}}">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 600px)" href="{{ url_for('static', filename='style/from-600.css') }}?v={{styleVersion}}">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 840px)" href="{{ url_for('static', filename='style/from-840.css') }}?v={{styleVersion}}">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 960px)" href="{{ url_for('static', filename='style/from-960.css') }}?v={{styleVersion}}">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 1280px)" href="{{ url_for('static', filename='style/from-1280.css') }}?v={{styleVersion}}">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 1440px)" href="{{ url_for('static', filename='style/from-1440.css') }}?v={{styleVersion}}">
+    <link rel="stylesheet" type="text/css" media="screen and (min-width: 1600px)" href="{{ url_for('static', filename='style/from-1600.css') }}?v={{styleVersion}}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <!-- JS -->
-    <script src="{{ url_for('static', filename='js/scripts.js') }}?v=10" defer></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}?v={{styleVersion}}" defer></script>
 
     <!-- Chart JS-->
     <script src="{{ url_for('static', filename='Chart/Chart.js') }}"></script>
