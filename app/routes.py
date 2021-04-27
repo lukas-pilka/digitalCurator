@@ -54,9 +54,11 @@ def exhibition():
         exDateTo = int(exParams['exDateTo'][0])
         set1Name = engine.prepareName(sum(exDisplayedObjects, []))
         simpleObjectList = []  # Preparing simple list for decisions on displaying bound boxes (string compliance is required)
+        print(exDisplayedObjects)
         for objectSet in exDisplayedObjects:
             for selectedObject in objectSet:
                 simpleObjectList.append(selectedObject)
+        print(simpleObjectList)
         exhibitionsList = [{set1Name: [displayedObject for displayedObject in exDisplayedObjects]}]
 
         # tests whether data comparison objects exists in arguments
