@@ -7,6 +7,8 @@ import engine
 
 from app import app
 from flask import render_template, g, flash, url_for, redirect, request
+from flask_sitemap import Sitemap
+ext = Sitemap(app=app)
 
 # Forms
 from .forms import SearchForm
@@ -94,9 +96,8 @@ def exhibition():
         for artwork in artworkSet:
 
             # Set range for related artwork created date
-            createdRange = 50
-            dateFrom = artwork['_source']['date_earliest'] - createdRange
-            dateTo = artwork['_source']['date_earliest'] + createdRange
+            dateFrom = 1300
+            dateTo = 1900
 
             # Sort original list of detected objects by their score
             def sortByScore(detectedObject):
@@ -105,7 +106,6 @@ def exhibition():
 
             relatedTags = []
             alreadyUsedTags = []
-            maxObjectsLimit = 7 # Sets the max count of object classes from original artwork that a similar artwork must contain
             limitCounter = 0
             for detectedObject in artwork['_source']['detected_objects']:
                 #print(detectedObject['object'] +' ' + str(detectedObject['score']))
@@ -123,7 +123,7 @@ def exhibition():
                     relatedTags.append(objectLink)
                     alreadyUsedTags.append(detectedObject['object'])
                     limitCounter += 1
-                if limitCounter == maxObjectsLimit: # when the limit is reached it will stop
+                if limitCounter == config.relatedTagsLimit: # when the limit is reached it will stop
                     break
 
             # Preparing url for similar artworks link
@@ -161,6 +161,11 @@ def exhibition():
                                dateTo=exDateTo,
                                simpleObjectList=simpleObjectList,
                                )
+
+# Flask Sitemap
+@ext.register_generator
+def index():
+    yield 'exhibition', {}
 
 
 
