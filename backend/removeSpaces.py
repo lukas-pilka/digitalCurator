@@ -61,7 +61,7 @@ for artwork in dataDict['hits']['hits']:
     # DOWNLODING IMAGE
 
     imagePath = 'temp/' + artwork['_id'] + '.jpg'
-    iiUrl = 'storage.googleapis.com/digital-curator.appspot.com/artworks-all/'+oldId+'.jpg'
+    iiUrl = 'storage.googleapis.com/tfcurator-artworks/artworks-all/'+oldId+'.jpg'
     repairedUrl = 'https://' + urllib.parse.quote(iiUrl)
     urllib.request.urlretrieve(repairedUrl, imagePath)
 

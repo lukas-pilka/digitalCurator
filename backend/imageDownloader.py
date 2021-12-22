@@ -62,8 +62,8 @@ def loadAllFromElastic():
 # CONNECTING TO BUCKET
 def download_blob(source_blob_name, destination_file_name):
 
-    storage_client = storage.Client.from_service_account_json('../../keys/digital-curator-a894b9b08c2b.json')
-    bucket = storage_client.bucket('digital-curator.appspot.com')
+    storage_client = storage.Client.from_service_account_json('../../keys/tfcurator-c227c8fe0180.json')
+    bucket = storage_client.bucket('tfcurator-artworks')
     blob = bucket.blob(source_blob_name)
     blob.download_to_filename(destination_file_name)
 

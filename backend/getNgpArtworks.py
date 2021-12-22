@@ -142,6 +142,7 @@ def scrapNgp():
                 "doc": artwork,
                 "doc_as_upsert": True
             }
+
             print('Artwork found: ', dcId, documentData)
             connector.writeToElastic(dcId, documentData)  # saving data to Elastic
 

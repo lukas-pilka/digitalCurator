@@ -143,7 +143,7 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
 
         for artwork in artworks:
             # generates image url
-            imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/' + artwork[
+            imageUrl = 'https://storage.googleapis.com/tfcurator-artworks/artworks-all/' + artwork[
                 '_id'] + '.jpg'  # Creating img url from artwork id
             artwork['_source']['image_url'] = imageUrl
 

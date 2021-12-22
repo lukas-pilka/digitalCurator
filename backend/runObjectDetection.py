@@ -195,7 +195,7 @@ for artwork in artworks:
     print(now)
 
     try:
-        imageUrl = 'https://storage.googleapis.com/digital-curator.appspot.com/artworks-all/'+artwork['_id']+'.jpg' # Creating img url from artwork id
+        imageUrl = 'https://storage.googleapis.com/tfcurator-artworks/artworks-all/'+artwork['_id']+'.jpg' # Creating img url from artwork id
         imageFileName = 'temp/'+artwork['_id']+'.jpg' # Creating image file name from artwork id
         urllib.request.urlretrieve(imageUrl, imageFileName) # Downloading image from url and saving to file name
         pilImage = Image.open(imageFileName)  # Converting to PIL image file

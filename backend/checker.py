@@ -8,9 +8,9 @@ import json
 
 
 # CONNECTING TO BUCKET
-cred = credentials.Certificate("../../keys/digital-curator-a894b9b08c2b.json")
+cred = credentials.Certificate("../../keys/tfcurator-c227c8fe0180.json")
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'digital-curator.appspot.com'
+    'storageBucket': 'tfcurator-artworks'
 })
 bucket = storage.bucket()
 print("Bucket {} connected.".format(bucket.name))

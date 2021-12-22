@@ -36,9 +36,9 @@ def exhibition():
         exhibition['url'] = url
         browseExhibitions.append(exhibition)
 
-    # If it doesn't receive arguments it set arguments with default values of exhibition from config
     receivedArguments = request.args.to_dict(flat=False)
 
+    # If it doesn't receive arguments it set arguments with default values of exhibition from config
     if 'exDisplayedObjects' not in receivedArguments: # Condition is based on presence of Displayed objects (not on presence of arguments because different arguments can exist)
         arguments = engine.createArguments(engine.getRandomObjectTypes())
         return redirect(url_for('exhibition', exName=arguments['exName'], exDisplayedObjects=arguments['exDisplayedObjects'],

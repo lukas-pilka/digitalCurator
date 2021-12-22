@@ -4,9 +4,9 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import storage
 
-cred = credentials.Certificate("/Users/lukas/PycharmProjects/keys/digital-curator-a894b9b08c2b.json")
+cred = credentials.Certificate("/Users/lukas/PycharmProjects/keys/tfcurator-c227c8fe0180.json")
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'digital-curator.appspot.com'
+    'storageBucket': 'tfcurator-artworks'
 })
 
 
