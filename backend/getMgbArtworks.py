@@ -121,10 +121,9 @@ def scrapMgb():
     # SETTING INPUTS
 
     '''
-
     CZE:MG.A_       6621
     CZE:MG.SDK_      889
-    ZE:MG.MM_       2079
+    CZE:MG.MM_      2079
     CZE:MG.STD_     1000
     CZE:MG.C_      25241
     CZE:MG.SDR_     3163
