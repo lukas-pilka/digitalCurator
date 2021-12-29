@@ -106,23 +106,25 @@ def scrapKmv():
         startUrlNumber += 1
         pageUrl = str(collectionUrl) + str(startUrlNumber)
         print('Searching at: ' + str(pageUrl) + ' ...')
-        artwork = kmvScrap(pageUrl, webUrl)
+        try:
+            artwork = kmvScrap(pageUrl, webUrl)
 
-        # IF ARTWORK CONTAINS IMAGE IT CALLS FUNCTIONS FOR WRITING TO THE FIRESTORE AND SAVING IMAGE TO THE STORAGE
+            # IF ARTWORK CONTAINS IMAGE IT CALLS FUNCTIONS FOR WRITING TO THE FIRESTORE AND SAVING IMAGE TO THE STORAGE
 
-        if not artwork == None and 'image_id' in artwork:
-            connector.uploadToStorage('artworks-all/' + artwork['image_id'], 'temp/' + artwork['image_id']) # saving image to google storage
-            os.remove('temp/' + artwork['image_id']) # deleting temporary image from local
-            dcId = artwork['id'] # Taking id from dic. WritetoElastic sends id separately
-            del artwork['id'] # Deleting id
-            documentData = {
-                "doc": artwork,
-                "doc_as_upsert": True
-            }
-            print('Artwork found: ', dcId, documentData)
-            connector.writeToElastic(dcId, documentData) # saving data to Elastic
+            if not artwork == None and 'image_id' in artwork:
+                connector.uploadToStorage('artworks-all/' + artwork['image_id'], 'temp/' + artwork['image_id']) # saving image to google storage
+                os.remove('temp/' + artwork['image_id']) # deleting temporary image from local
+                dcId = artwork['id'] # Taking id from dic. WritetoElastic sends id separately
+                del artwork['id'] # Deleting id
+                documentData = {
+                    "doc": artwork,
+                    "doc_as_upsert": True
+                }
+                print('Artwork found: ', dcId, documentData)
+                connector.writeToElastic(dcId, documentData) # saving data to Elastic
+        except:
+            print("Connection error occurred")
 
         print('-----')
-
 
 scrapKmv()

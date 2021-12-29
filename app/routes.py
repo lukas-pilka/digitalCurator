@@ -20,6 +20,16 @@ def before_request():
     g.request_start_time = time.time()
     g.request_time = lambda: "%.5fs" % (time.time() - g.request_start_time)
 
+@app.route('/intro', methods=['GET', 'POST'])
+def intro():
+    form = SearchForm(dateTo=1900)  # Load SearForm from forms.py and set default value for dateTo SelectField
+    galleriesSum = engine.getGalleriesSum()
+    return render_template('intro.html',
+                           galleriesSum=galleriesSum,
+                           form=form,
+                           )
+
+
 # Returns exhibition
 @app.route('/', methods=['GET', 'POST'])
 def exhibition():

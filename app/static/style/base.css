@@ -51,6 +51,73 @@ a:hover{
     color: #999999;
 }
 
+/* buttons */
+
+.primaryButton{
+    text-decoration: none;
+    border: none;
+    color: #111111;
+    background-color: #AB8B62;
+    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+    box-sizing: border-box;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    display: inline-block;
+    transition: 0.5s ease;
+    text-align: center;
+    background-image: linear-gradient(to right, #AB8B62 0%, #eacda3 50%, #AB8B62 100%);
+    background-size: 200% auto;
+}
+.primaryButton:hover{
+    background-position: right center;
+    color: #111111;
+}
+.primaryButton:focus {
+    border: none;
+}
+.secondaryButton{
+    text-decoration: none;
+    color: #111111;
+    box-sizing: border-box;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    border: 1px solid #111111;
+    opacity: 0.5;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+}
+.secondaryButton:hover{
+    opacity: 1;
+    color: #111111;
+}
+.secondaryButton:focus {
+    border: 1px solid #111111;
+}
+.buttonIcon.secondaryButton{
+    text-decoration: none;
+    width: 3rem;
+    height: 3rem;
+    box-sizing: border-box;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid #111111;
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.buttonIcon.secondaryButton.link{background-image: url("../images/icon-link.svg");}
+.buttonIcon.secondaryButton.facebook{background-image: url("../images/icon-facebook.svg");}
+.buttonIcon.secondaryButton.twitter{background-image: url("../images/icon-twitter.svg");}
+.buttonIcon.secondaryButton.done{background-image: url("../images/icon-done.svg");}
+
+.buttonIcon span{
+    display: none;
+}
+
+/* buttons end */
+
 /* container */
 
 .container {
@@ -78,12 +145,12 @@ a:hover{
 .titleScreen{
     color: #ffffff;
     background: #111111;
+    display: flex;
     justify-content: space-between;
+    flex-direction: column;
     z-index: 6;
     padding: 2rem 2rem 2rem 2rem;
-}
-.titleScreen .footerPart{
-    margin-top: 6rem;
+    min-height: 50vh;
 }
 .titleImage{
     width: 100%;
@@ -174,22 +241,24 @@ a:hover{
 .artworkDescription .museumInfo{
     font-size: 0.875rem;
 }
-.artworkDescription .relatedTags .buttonText{
+.artworkDescription .relatedTags .secondaryButton{
     font-size: 0.875rem;
     padding: 0.25rem 1rem;
     margin: 0.15rem 0.05rem;
 }
 .artworkDescription .generatedInfo{
     font-size: 0.875rem;
-    color: #00ff00;
+    color: #AB8B62;
     opacity: 0;
 }
 .artwork .boundBox{
-    border:2px solid #00ff00;
+    border:2px solid #ffffff;
     position:absolute;
     box-sizing: border-box;
     opacity: 0;
     transition: 0.25s 2.0s ease;
+    box-shadow: inset 0 0.1rem 0.25rem rgba(0,0,0,0.5), 0 0.1rem 0.25rem rgba(0,0,0,0.5);
+    border-radius: 0.25rem;
 }
 .artwork .boundbox:nth-child(1)  {transition: 0.25s 0.0s ease;}
 .artwork .boundbox:nth-child(2)  {transition: 0.25s 0.1s ease;}
@@ -222,9 +291,10 @@ a:hover{
 }
 .boundBox p{
     font-size: 0.875rem;
-    color: #00ff00;
+    color: #ffffff;
     font-weight: bold;
     margin: 0.25rem 0.5rem 0.25rem 0.5rem;
+    text-shadow: 0 0.1rem 0.25rem rgba(0,0,0,0.5);
 }
 
 /* gallery showcase end */
@@ -234,100 +304,17 @@ a:hover{
 .finalScreen{
     color: #ffffff;
     background: #111111;
+    display: flex;
     justify-content: space-between;
+    flex-direction: column;
     min-width: 75vw;
     flex-flow: column;
-    position: relative;
-}
-.finalScreen .footerPart{
-    margin-top: 6rem;
-}
-.finalScreen .partners{
-    margin: 6rem 0 0 0;
-}
-.finalScreen .authorInfo{
-    font-size: 0.875rem;
-}
-.finalScreen .logo{
-    background-repeat: no-repeat;
-    display: block;
-    height: 3rem;
-    margin: 1rem 2rem 0 0;
-}
-.finalScreen .logo.logoUmprum{
-    background-image: url("../images/logo-umprum.svg");
-    width: 14.43rem;
-}
-.finalScreen .logo.logoMsmt{
-    background-image: url("../images/logo-msmt.svg");
-    width: 4.38rem;
-}
-.finalScreen .logo.logoSng{
-    background-image: url("../images/logo-sng.svg");
-    width: 6.33rem;
-}
-.finalScreen .logo span{
-    display: none;
+    min-height: 50vh;
+    padding: 2rem 2rem 2rem 2rem;
+    z-index: 6;
 }
 
 /* final screen end */
-
-/* buttons */
-
-.buttonText{
-    text-decoration: none;
-    border: none;
-    color: #111111;
-    background-color: #cccccc;
-    text-align: center;
-    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
-    box-sizing: border-box;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    display: inline-block;
-}
-.buttonText:hover{
-    background: #ffffff;
-    color: #111111;
-}
-.buttonText:focus {
-    border: none;
-}
-.buttonOutline{
-    color: #111111;
-    background-color: transparent;
-    border: 1px solid #111111;
-    opacity: 0.5;
-}
-.buttonOutline:hover{
-    opacity: 1;
-}
-.buttonText.buttonOutline:focus {
-    border: 1px solid #111111;
-}
-.buttonIcon.buttonOutline{
-    text-decoration: none;
-    width: 3rem;
-    height: 3rem;
-    box-sizing: border-box;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    display: inline-block;
-    border: 1px solid #111111;
-    background-size: 75%;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-.buttonIcon.buttonOutline.link{background-image: url("../images/icon-link.svg");}
-.buttonIcon.buttonOutline.facebook{background-image: url("../images/icon-facebook.svg");}
-.buttonIcon.buttonOutline.twitter{background-image: url("../images/icon-twitter.svg");}
-.buttonIcon.buttonOutline.done{background-image: url("../images/icon-done.svg");}
-
-.buttonIcon span{
-    display: none;
-}
-
-/* buttons end */
 
 /* Main menu */
 
@@ -499,7 +486,7 @@ label{
     display: block;
     margin: 0.25rem 0 0 0;
 }
-.searchForm .buttonText{
+.searchForm .primaryButton{
     width: 100%;
 }
 .comparisonClassBox{
@@ -560,6 +547,35 @@ label{
 /* select 2 multiple choice end */
 
 /* form end */
+
+/* about project */
+
+.partners{
+    margin: 6rem 0 0 0;
+}
+.partners .logo{
+    background-repeat: no-repeat;
+    height: 3rem;
+    margin: 1rem 2rem 0 0;
+    display: inline-block;
+}
+.partners .logo.logoUmprum{
+    background-image: url("../images/logo-umprum.svg");
+    width: 14.43rem;
+}
+.partners .logo.logoMsmt{
+    background-image: url("../images/logo-msmt.svg");
+    width: 4.38rem;
+}
+.partners .logo.logoSng{
+    background-image: url("../images/logo-sng.svg");
+    width: 6.33rem;
+}
+.partners .logo span{
+    display: none;
+}
+
+/* about project end */
 
 /* browse exhibitions */
 

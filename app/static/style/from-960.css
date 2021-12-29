@@ -26,6 +26,12 @@ body{
 .titleScreen{
     min-width: 75vw;
     flex-flow: column;
+    justify-content: space-between;
+}
+.titleScreen:before{
+    content: ' ';
+    height: 2.5rem;
+    display: block;
 }
 .titleImage{
     width: auto;
@@ -140,8 +146,10 @@ body{
 
 /* Final screen */
 
-.finalScreen .logo{
-    display: inline-block;
+.finalScreen:before{
+    content: ' ';
+    height: 2.5rem;
+    display: block;
 }
 
 /* Final screen end */
@@ -166,7 +174,7 @@ body{
     width: 2rem;
     height: 2rem;
 }
-.sharingPanel .buttonText{
+.sharingPanel .secondaryButton{
     padding: 0.25rem 1rem;
 }
 .sharingPanel .textJunction{
@@ -174,6 +182,6 @@ body{
     margin: 0 0.5rem;
     opacity: 0.5;
 }
-.buttonIcon.buttonOutline.done.link{background-image: url("../images/icon-done.svg");}
+.buttonIcon.secondaryButton.done.link{background-image: url("../images/icon-done.svg");}
 
 /* sharing panel end */
