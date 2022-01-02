@@ -1,13 +1,250 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="mainSection titleScreen" id="exhibitionStart">
-    <div class="titlePart">
-        <h1>Clouds of motifs</h1>
-        <p class="subtitle flexItem">Central European Visual Art curated by Artificial Intelligence</p>
-    </div>
-    <div class="footerPart">
-        <a onclick="return openMenu(), openSearch();" class="primaryButton">Generate new exhibition</a>
-    </div>
-</section>
+<div class="container" id="container">
+
+    <section class="upperLine" id="upperLine">
+        <div class="upperSection galleryHall">
+            <h2>Over history, paintings travelled, changed owners and belonged  to a&nbsp;variety of&nbsp;collections</h2>
+            <div class="upperGallery">
+                <div class="upperGalleryStrip topStrip">
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-01.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-24.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-07.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-21.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-15.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-16.jpeg">
+                    </div>
+                </div>
+                <div class="upperGalleryStrip centerStrip">
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-19.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-12.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-17.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-23.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-25.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-32.jpeg">
+                    </div>
+                </div>
+                <div class="upperGalleryStrip bottomStrip">
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-14.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-30.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-13.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-29.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-05.jpeg">
+                    </div>
+                </div>
+            </div>
+        </div >
+        <div class="upperSection upperVision">
+            <div class="upperGallery galleryCollection">
+                <div class="upperGalleryStrip">
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-33.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-34.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-35.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-36.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-37.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-38.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-39.jpeg">
+                    </div>
+                    <div class="imageFrame">
+                        <img src="../static/images/intro/intro-pic-40.jpeg">
+                    </div>
+                </div>
+            </div>
+            <h2>Computer vision explored every motif in all the artworks</h2>
+            <div class="upperGallery galleryRecognition">
+
+                <!-- Eye Box -->
+
+                <div class="visionEyeBox">
+                    <p>AI ​​library for machine learning TensorFlow, the computer service Google Cloud Vision and custom trained neural networks were used for the automatic detection of the depicted iconographic motifs.</p>
+                    <div class="eyeBoxFrame">
+                        <div class="aniIcon aniIconEye"></div>
+                        <div class="aniIcon aniIconEye"></div>
+                    </div>
+                </div>
+                <div class="nextStep aniIcon aniIconArrow"></div>
+
+                <!-- Vision Frames - pictures with bound boxes -->
+
+                <div class="upperGalleryStrip">
+                    <div class="imageFrame visionFrame">
+                        <div class="boundBox" style="left: 30%; top:15%; width: 30%; height: 80%;"></div>
+                        <div class="boundBox" style="left: 8%; top:43%; width: 32%; height: 47%;"></div>
+                        <div class="boundBox" style="left: 50%; top:10%; width: 25%; height: 35%;"></div>
+                        <img src="../static/images/intro/intro-pic-41.jpeg">
+                    </div>
+                    <div class="imageFrame visionFrame">
+                        <div class="boundBox" style="left: 15%; top:15%; width: 50%; height: 80%;"></div>
+                        <div class="boundBox" style="left: 55%; top:70%; width: 45%; height: 28%;"></div>
+                        <img src="../static/images/intro/intro-pic-42.jpeg">
+                    </div>
+                    <div class="imageFrame visionFrame">
+                        <div class="boundBox" style="left: 10%; top:10%; width: 60%; height: 70%;"></div>
+                        <img src="../static/images/intro/intro-pic-43.jpeg">
+                    </div>
+                    <div class="imageFrame visionFrame">
+                        <div class="boundBox" style="left: 10%; top:30%; width: 55%; height: 60%;"></div>
+                        <div class="boundBox" style="left: 45%; top:5%; width: 50%; height: 60%;"></div>
+                        <img src="../static/images/intro/intro-pic-44.jpeg">
+                    </div>
+                    <div class="imageFrame visionFrame">
+                        <div class="boundBox" style="left: 5%; top:15%; width: 90%; height: 85%;"></div>
+                        <div class="boundBox" style="left: 33%; top:10%; width: 35%; height: 35%;"></div>
+                        <div class="boundBox" style="left: 45%; top:75%; width: 45%; height: 21%;"></div>
+                        <img src="../static/images/intro/intro-pic-45.jpeg">
+                    </div>
+                    <div class="imageFrame visionFrame">
+                        <div class="boundBox" style="left: 15%; top:30%; width: 75%; height: 60%;"></div>
+                        <div class="boundBox" style="left: 40%; top:20%; width: 25%; height: 50%;"></div>
+                        <img src="../static/images/intro/intro-pic-46.jpeg">
+                    </div>
+                    <div class="imageFrame visionFrame">
+                        <div class="boundBox" style="left: 25%; top:22%; width: 50%; height: 75%;"></div>
+                        <div class="boundBox" style="left: 55%; top:75%; width: 25%; height: 20%;"></div>
+                        <img src="../static/images/intro/intro-pic-47.jpeg">
+                    </div>
+                    <div class="imageFrame visionFrame">
+                        <div class="boundBox" style="left: 20%; top:2%; width: 45%; height: 95%;"></div>
+                        <img src="../static/images/intro/intro-pic-48.jpeg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mainSection titleScreen" id="exhibitionStart">
+        <div class="titlePart">
+            <h1>Digital Curator</h1>
+            <p class="subtitle flexItem">Motifs and Themes in Central European Fine Art explored by Computer Vision</p>
+        </div>
+        <div class="footerPart">
+            <a href="/app" class="secondaryButton darkMode mediumButton">Skip intro</a>
+        </div>
+    </section>
+
+    <!-- parallax with gallery view -->
+
+    <section class="mainSection parallaxContainer introGallery">
+        <div class="parallaxCover">
+            <div class="parallaxImage" id="introGallery"></div>
+        </div>
+    </section>
+
+    <!-- Central european info -->
+
+    <section class="mainSection landInfo">
+        <article>
+            <h2>Central Europe is a&nbsp;region with a&nbsp;shared cultural history</h2>
+            <p>In the past, state borders existed, but were often pervasive and constantly changing. For centuries, painters and visual artists have traveled freely, moved around and shared their artistic style, formal elements, genres, themes and motifs.</p>
+        </article>
+    </section>
+    <section class="mainSection parallaxContainer introMap">
+        <div class="parallaxCover">
+            <div class="parallaxImage" id="introMap"></div>
+        </div>
+    </section>
+
+
+    <!-- Museum info mobile is visible only on mobile devices -->
+
+    <section class="mainSection museumsInfoMobile">
+        <article>
+            <h2>Over history, paintings travelled, changed owners and belonged to a&nbsp;variety of&nbsp;collections</h2>
+            <p>Once related artworks are today divided in different collections, in hundreds of museums across several independent countries.</p>
+            <p>Digital curator collected {{"{:,}".format(galleriesSum['artworks count']).replace(',', ' ')}} classical artworks. Medieval and modern paintings, drawings and graphic prints create the big art-historical data that the Digital Curator works with. These data come from 140 museums in today’s Austria, Bavaria, the Czech Republic, and Slovakia.</p>
+            <p>Computer vision explored every motif in all the artworks - AI ​​library for machine learning TensorFlow, the computer service Google Cloud Vision and custom trained neural networks were used for the automatic detection of the depicted iconographic motifs.</p>
+        </article>
+    </section>
+
+    <!-- Museum list -->
+
+    <section class="mainSection museumsInfo">
+        <div class="introPart">
+            <h2>Once related artworks are today divided in different collections,  in hundreds of&nbsp;museums across several independent countries</h2>
+        </div>
+        <div class="museumsList">
+            {% for museum in museums %}
+                {% for key, value in museum.items() %}
+                    <div>{{ key }}</div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="museumJunction">
+            <div class="firstPart"></div>
+            <div class="secondPart">
+                <div class="aniIcon aniIconCloud"></div>
+            </div>
+        </div>
+        <div class="databaseInfo">
+            <article>
+            <h3>Digital curator collected {{"{:,}".format(galleriesSum['artworks count']).replace(',', ' ')}} classical artworks</h3>
+            <p>Medieval and modern paintings, drawings and graphic prints create the big art-historical data that the Digital Curator works with. These data come from {{galleriesSum['galleries count']}} museums in today’s Austria, Bavaria, Czech Republic, and Slovakia.</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Computer vision -->
+
+    <section class="mainSection visionInfo">
+        <div class="placeHolder"></div>
+    </section>
+
+    <!-- Call to action -->
+
+    <section class="mainSection callToAction">
+        <article>
+            <h2>Start exploring</h2>
+            <p>This application allows you to explore the art collections of&nbsp;Central European museums and search for artworks based on specific iconographic motifs. You can select a&nbsp;motif or combination of objects, and reveal the artworks across the centuries.</p>
+            <a onclick="return openMenu(), openSearch();" class="secondaryButton mediumButton">Select motifs</a>
+            <a href="/app" class="primaryButton mediumButton">Generate random exhibition</a>
+        </article>
+    </section>
+
+</div>
+
 
 {% endblock %}

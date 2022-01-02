@@ -1,17 +1,16 @@
-{% if searchedObjects is not defined %}
+{% if searchedObjects is not defined and intro is not defined %}
 <p class="errorMessage">No results match your selection.</p>
 <br><br>
 {% endif %}
-
 <h3>Generate an exhibition across the collections of {{galleriesSum['galleries count']}} art museums from Austria, Bavaria, Czech Republic and Slovakia</h3>
 <script>
     // selects with use Select2 and JQuery
     $(document).ready(function () {
-        $('#searchedClassSelect').select2({
+        $('.searchedClassSelect').select2({
             placeholder: "E.g. rose, castle or boy",
             allowClear: false
         });
-        $('#comparisonClassSelect').select2({
+        $('.comparisonClassSelect').select2({
             placeholder: "E.g. sunflower, tower or girl",
             allowClear: false
         });
@@ -30,7 +29,7 @@
         </div>
         <div class="fieldBox">
             {{ form.searchedClassSelect.label }}
-            {{ form.searchedClassSelect(class_="selectMultiple") }}
+            {{ form.searchedClassSelect(class_="selectMultiple searchedClassSelect") }}
             {% for error in form.searchedClassSelect.errors %}
             <span class="errorMessage">{{ error }}</span>
             {% endfor %}
@@ -52,18 +51,18 @@
             </div>
         </div>
         <div class="fieldBox">
-            <input type="checkbox" id="comparisonCheck" onclick="showComparisonSelect()">
+            <input type="checkbox" class="comparisonCheck" id="comparisonCheck" onclick="showComparisonSelect()">
             <label for="comparisonCheck">Compare with different artworks</label>
         </div>
         <div id="comparisonClassBox" class="fieldBox comparisonClassBox">
             {{ form.comparisonClassSelect.label }}
-            {{ form.comparisonClassSelect(class_="selectMultiple")}}
+            {{ form.comparisonClassSelect(class_="selectMultiple comparisonClassSelect")}}
             {% for error in form.comparisonClassSelect.errors %}
             <span class="errorMessage">{{ error }}</span>
             {% endfor %}
         </div>
         <div class="fieldBox">
-            {{ form.submit(class_="primaryButton") }}
+            {{ form.submit(class_="primaryButton mediumButton") }}
         </div>
     </form>
 </section>

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="all, follow" />
     
-    {% set styleVersion = 20 %}
+    {% set styleVersion = 22 %}
 
 	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v={{styleVersion}}">
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-480.css') }}?v={{styleVersion}}">
@@ -33,7 +33,13 @@
     <meta property="og:url" content="DigitalCurator.art" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ exName }}" />
-    <meta property="og:description" content="Digital Curator's exhibitiion displaying artworks with  was assembled automatically by AI computer vision." />
+
+    {% if artworksInPeriod is defined %}
+        <meta property="og:description" content="Digital Curator's exhibitiion displaying artworks with {{artworksInPeriod.artworksWithObject[0][0]}} was assembled automatically by AI computer vision." />
+    {% else %}
+        <meta property="og:description" content="Digital Curator allows you to explore the art collections of Central European museums and search for artworks based on specific iconographic motifs. You can select a motif or combination of objects, and reveal the artworks across the centuries." />
+    {% endif %}
+
     {% if titleImage is defined %}
         <meta property="og:image" content="{{titleImage._source.image_url}}" />
     {% endif %}
@@ -61,7 +67,6 @@
 </head>
 
 <body id="wrapper" class="wrapper jsWrapper" onload="checkErrors()">
-
     {% include "menu.html" %}
     {% block content %}{% endblock %}
 </body>

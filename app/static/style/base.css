@@ -11,6 +11,7 @@ html{
 body{
     margin: 4rem 0 0 0;
     background: #111111;
+    overflow-x: hidden;
 }
 h1, h2, h3{
     font-family: 'Playfair Display', serif;
@@ -44,48 +45,45 @@ p{
     font-size: 1rem;
 }
 a{
-    color: #ffffff;
+    color: #AB8B62;
     cursor: pointer;
 }
 a:hover{
-    color: #999999;
+    color: #AB8B62;
 }
 
 /* buttons */
 
-.primaryButton{
+.mediumButton{
     text-decoration: none;
-    border: none;
-    color: #111111;
-    background-color: #AB8B62;
     padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+    margin: 0.15rem 0.05rem;
     box-sizing: border-box;
     border-radius: 0.25rem;
     cursor: pointer;
     display: inline-block;
-    transition: 0.5s ease;
     text-align: center;
+}
+.primaryButton{
+    color: #111111;
+    background-color: #AB8B62;
     background-image: linear-gradient(to right, #AB8B62 0%, #eacda3 50%, #AB8B62 100%);
     background-size: 200% auto;
+    border: 1px solid #AB8B62;
+    transition: 0.5s ease;
 }
 .primaryButton:hover{
     background-position: right center;
     color: #111111;
 }
 .primaryButton:focus {
-    border: none;
+    border: 1px solid #eacda3;
 }
 .secondaryButton{
-    text-decoration: none;
     color: #111111;
-    box-sizing: border-box;
-    border-radius: 0.25rem;
-    background-color: transparent;
     border: 1px solid #111111;
     opacity: 0.5;
-    cursor: pointer;
-    display: inline-block;
-    padding: 0.75rem 1.5rem 0.75rem 1.5rem;
+    background-color: transparent;
 }
 .secondaryButton:hover{
     opacity: 1;
@@ -94,7 +92,11 @@ a:hover{
 .secondaryButton:focus {
     border: 1px solid #111111;
 }
-.buttonIcon.secondaryButton{
+.secondaryButton.darkMode{
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+.secondaryButton.buttonIcon{
     text-decoration: none;
     width: 3rem;
     height: 3rem;
@@ -107,12 +109,12 @@ a:hover{
     background-repeat: no-repeat;
     background-position: center;
 }
-.buttonIcon.secondaryButton.link{background-image: url("../images/icon-link.svg");}
-.buttonIcon.secondaryButton.facebook{background-image: url("../images/icon-facebook.svg");}
-.buttonIcon.secondaryButton.twitter{background-image: url("../images/icon-twitter.svg");}
-.buttonIcon.secondaryButton.done{background-image: url("../images/icon-done.svg");}
+.secondaryButton.buttonIcon.link{background-image: url("../images/icon-link.svg");}
+.secondaryButton.buttonIcon.facebook{background-image: url("../images/icon-facebook.svg");}
+.secondaryButton.buttonIcon.twitter{background-image: url("../images/icon-twitter.svg");}
+.secondaryButton.buttonIcon.done{background-image: url("../images/icon-done.svg");}
 
-.buttonIcon span{
+.secondaryButton.buttonIcon span{
     display: none;
 }
 
@@ -128,11 +130,13 @@ a:hover{
     overflow-y: auto;
     overflow-x: hidden;
     transition: filter 0.5s;
+    position: relative;
 }
 .mainSection {
     padding: 2rem 2rem 6rem 2rem;
     width: 100vw;
     box-sizing: border-box;
+    min-height: 50vh;
 }
 .blurred{
     filter: blur(8px);
@@ -150,7 +154,6 @@ a:hover{
     flex-direction: column;
     z-index: 6;
     padding: 2rem 2rem 2rem 2rem;
-    min-height: 50vh;
 }
 .titleImage{
     width: 100%;
@@ -251,7 +254,7 @@ a:hover{
     color: #AB8B62;
     opacity: 0;
 }
-.artwork .boundBox{
+.boundBox{
     border:2px solid #ffffff;
     position:absolute;
     box-sizing: border-box;
@@ -260,26 +263,26 @@ a:hover{
     box-shadow: inset 0 0.1rem 0.25rem rgba(0,0,0,0.5), 0 0.1rem 0.25rem rgba(0,0,0,0.5);
     border-radius: 0.25rem;
 }
-.artwork .boundbox:nth-child(1)  {transition: 0.25s 0.0s ease;}
-.artwork .boundbox:nth-child(2)  {transition: 0.25s 0.1s ease;}
-.artwork .boundbox:nth-child(3)  {transition: 0.25s 0.2s ease;}
-.artwork .boundbox:nth-child(4)  {transition: 0.25s 0.3s ease;}
-.artwork .boundbox:nth-child(5)  {transition: 0.25s 0.4s ease;}
-.artwork .boundbox:nth-child(6)  {transition: 0.25s 0.5s ease;}
-.artwork .boundbox:nth-child(7)  {transition: 0.25s 0.6s ease;}
-.artwork .boundbox:nth-child(8)  {transition: 0.25s 0.7s ease;}
-.artwork .boundbox:nth-child(9)  {transition: 0.25s 0.8s ease;}
-.artwork .boundbox:nth-child(10) {transition: 0.25s 0.9s ease;}
-.artwork .boundbox:nth-child(11) {transition: 0.25s 1.0s ease;}
-.artwork .boundbox:nth-child(12) {transition: 0.25s 1.1s ease;}
-.artwork .boundbox:nth-child(13) {transition: 0.25s 1.2s ease;}
-.artwork .boundbox:nth-child(14) {transition: 0.25s 1.3s ease;}
-.artwork .boundbox:nth-child(15) {transition: 0.25s 1.4s ease;}
-.artwork .boundbox:nth-child(16) {transition: 0.25s 1.5s ease;}
-.artwork .boundbox:nth-child(17) {transition: 0.25s 1.6s ease;}
-.artwork .boundbox:nth-child(18) {transition: 0.25s 1.7s ease;}
-.artwork .boundbox:nth-child(19) {transition: 0.25s 1.8s ease;}
-.artwork .boundbox:nth-child(20) {transition: 0.25s 1.9s ease;}
+.boundbox:nth-child(1)  {transition: 0.25s 0.0s ease;}
+.boundbox:nth-child(2)  {transition: 0.25s 0.1s ease;}
+.boundbox:nth-child(3)  {transition: 0.25s 0.2s ease;}
+.boundbox:nth-child(4)  {transition: 0.25s 0.3s ease;}
+.boundbox:nth-child(5)  {transition: 0.25s 0.4s ease;}
+.boundbox:nth-child(6)  {transition: 0.25s 0.5s ease;}
+.boundbox:nth-child(7)  {transition: 0.25s 0.6s ease;}
+.boundbox:nth-child(8)  {transition: 0.25s 0.7s ease;}
+.boundbox:nth-child(9)  {transition: 0.25s 0.8s ease;}
+.boundbox:nth-child(10) {transition: 0.25s 0.9s ease;}
+.boundbox:nth-child(11) {transition: 0.25s 1.0s ease;}
+.boundbox:nth-child(12) {transition: 0.25s 1.1s ease;}
+.boundbox:nth-child(13) {transition: 0.25s 1.2s ease;}
+.boundbox:nth-child(14) {transition: 0.25s 1.3s ease;}
+.boundbox:nth-child(15) {transition: 0.25s 1.4s ease;}
+.boundbox:nth-child(16) {transition: 0.25s 1.5s ease;}
+.boundbox:nth-child(17) {transition: 0.25s 1.6s ease;}
+.boundbox:nth-child(18) {transition: 0.25s 1.7s ease;}
+.boundbox:nth-child(19) {transition: 0.25s 1.8s ease;}
+.boundbox:nth-child(20) {transition: 0.25s 1.9s ease;}
 
 .artwork.focuseIn .boundBox,
 .artwork.focuseIn .generatedInfo{
@@ -345,22 +348,20 @@ a:hover{
     display: flex;
     justify-content: flex-start;
 }
-.menuFirstLevel{
-    border-bottom: 1px solid #fff;
-    background: #111111;
-    width: 100vw;
-    height: 4rem;
-    z-index: 20;
-    position: absolute;
-    box-sizing: border-box;
+.mainMenu a{
+    color: #aaaaaa;
 }
-.projectLogo{
+.mainMenu a:hover{
+    color: #ffffff;
+}
+.mainMenu .projectLogo{
     padding: 1.5rem 1.5rem 1.5rem 2rem;
     line-height: 1rem;
     height: 4rem;
     display: inline-block;
     box-sizing: border-box;
     text-decoration: none;
+    color: #ffffff;
 }
 .menuIcon{
     position: absolute;
@@ -395,6 +396,15 @@ a:hover{
 
 .menuIcon span{
     display: none;
+}
+.menuFirstLevel{
+    border-bottom: 1px solid #fff;
+    background: #111111;
+    width: 100vw;
+    height: 4rem;
+    z-index: 20;
+    position: absolute;
+    box-sizing: border-box;
 }
 .menuSecondLevel,
 .menuThirdLevel{
@@ -708,4 +718,60 @@ label{
 .sharingPopup .sharingLinks *{
     margin: 0 0.25rem;
 }
+
+/* intro */
+
+/* parallax */
+
+.mainSection.parallaxContainer{
+    padding: 0;
+    background-color: #AB8B62;
+}
+.mainSection.parallaxContainer.introGallery{background-color: #111111;}
+.mainSection.parallaxContainer.introMap{background-color: #ffffff;}
+
+.parallaxCover{
+    width: 100vw;
+    height: 100vw;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+.parallaxImage{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+#introGallery{background-image: url("../images/intro/hampisch-interior.jpg");}
+#introMap{background-image: url("../images/intro/ce-map.jpg");}
+
+/* parallax end */
+
+.mainSection.landInfo,
+.mainSection.museumsInfoMobile{
+    color: #ffffff;
+}
+.landInfo article
+.museumsInfoMobile article{
+    width: 100%;
+}
+.mainSection.callToAction{
+    color: #111111;
+    background-color: #ffffff;
+}
+.callToAction article{
+    width: 100%;
+}
+.upperLine,
+.mainSection.museumsInfo,
+.mainSection.visionInfo{
+    display: none;
+}
+
+/* intro end */
 

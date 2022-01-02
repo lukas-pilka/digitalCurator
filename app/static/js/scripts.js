@@ -1,7 +1,10 @@
-// sharing window
+// global variables
+
 let splash = document.getElementById("sharingPopup"); // Get a reference to the sharing window
 let container = document.getElementById("container");
 let mainMenu = document.getElementById("mainMenu");
+
+// sharing window
 
 function closeWindow() {
 	let element = document.getElementById("sharingPopup");
@@ -90,17 +93,13 @@ checkErrors()
 // Show select for object comparison
 
 function showComparisonSelect() {
-  // Get the checkbox
-  var checkBox = document.getElementById("comparisonCheck");
-  // Get the output text
-  var text = document.getElementById("comparisonClassBox");
-
-  // If the checkbox is checked, display the output text
-  if (checkBox.checked == true){
-    text.classList.add("opened");
-  } else {
-    text.classList.remove("opened");
-  }
+	// Get the output text
+	let comparisonBoxes = document.getElementsByClassName("comparisonClassBox");
+	// If the checkbox is checked, display the output text
+	let i;
+	for (i = 0; i < comparisonBoxes.length; i++) {
+		comparisonBoxes[i].classList.toggle("opened");
+	}
 }
 
 // Copy url
@@ -182,25 +181,62 @@ function copyUrl() {
 		}
 	// params: element, classes to add, distance from top, unit ('percent' or 'pixels')
 
-	if(container.innerWidth <= 960) {
+	if(container.offsetWidth <= 960) {
 		container.addEventListener('scroll', function () {
 			elementFromTop(document.querySelectorAll('.artwork'), 'focuseIn', 50, 'percent'); // as top of element hits top of viewport
-			elementFromTop(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent'); // as top of element hits top of viewport
+			elementFromTop(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent');
 		}, false);
 		container.addEventListener('resize', function () {
 			elementFromTop(document.querySelectorAll('.artwork'), 'focuseIn', 50, 'percent'); // as top of element hits top of viewport
-			elementFromTop(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent'); // as top of element hits top of viewport
+			elementFromTop(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent');
 		}, false);
-	}else{
+		console.log('hello')
+	}
+	else{
 		container.addEventListener('scroll', function () {
 			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseIn', 50, 'percent'); // as left of element hits left of viewport
-			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent'); // as left of element hits left of viewport
+			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent');
+			elementFromLeft(document.querySelectorAll('.visionFrame'), 'focuseIn', 45, 'percent');
+			elementFromLeft(document.querySelectorAll('.galleryRecognition'), 'focuseIn', 60, 'percent');
+			elementFromLeft(document.querySelectorAll('.galleryRecognition'), 'focuseOut', -60, 'percent');
 		}, false);
 		container.addEventListener('resize', function () {
 			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseIn', 50, 'percent'); // as left of element hits left of viewport
-			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent'); // as left of element hits left of viewport
+			elementFromLeft(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent');
+			elementFromLeft(document.querySelectorAll('.visionFrame'), 'focuseIn', 45, 'percent');
+			elementFromLeft(document.querySelectorAll('.galleryRecognition'), 'focuseIn', 60, 'percent');
+			elementFromLeft(document.querySelectorAll('.galleryRecognition'), 'focuseOut', -60, 'percent');
 		}, false);
 	}
-
 })();
+
+// parallax
+
+function parallax(elementId, shift, speed) {
+  if(document.body.clientWidth >= 960) {
+    let canvas = document.getElementById(elementId);
+    let XPos = shift - container.scrollLeft * speed;
+    canvas.style.left = 0 + XPos + "%";
+  }
+}
+container.addEventListener("scroll", function () {
+	parallax('introGallery',0, 0.015);
+	parallax('introMap',30,0.015);
+	parallax('upperLine',150,0.05);
+});
+
+// title screen animation
+
+const target = document.querySelector('.titlePart h1');
+	target.innerHTML = target.textContent
+		.replace(/\w+,|\w+|-|\./g, '<span data-glitch="$&">$&</span>');
+
+const target2 = document.querySelector('.titlePart .subtitle');
+target2.innerHTML = target2.textContent
+	.replace(/\w+,|\w+|-|\./g, '<span data-glitch="$&">$&</span>');
+
+
+
+
+
 

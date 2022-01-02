@@ -291,6 +291,28 @@ def getGalleriesSum():
     summary = {'galleries count': galleriesCount, 'artworks count': artworksCount, 'free artworks count': freeArtworksCount}
     return summary
 
+# GET MUSEUMS
+
+def getMuseums():
+    collectionsQuery = {
+        "size":0,
+        "aggs" : {
+            "total" : {
+                "terms" : {
+                    "field" : "gallery.keyword",
+                    "size": 1000
+                }
+            }
+        }
+    }
+    rawData = callElastic(collectionsQuery)['aggregations']
+    museumData = rawData['total']['buckets']
+    museumList = []
+    for museum in museumData:
+        museumList.append({museum['key']:museum['doc_count']})
+    return museumList
+
+
 # GET DETECTED OBJECT LIST
 
 def getDetectedObjectsList():

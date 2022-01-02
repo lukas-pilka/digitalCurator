@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% set chartLineColors = ['#111','#2a9d8f','#e9c46a','#f4a261','#e76f51'] %}
+{% set chartLineColors = ['#111','#AB8B62','#e9c46a','#f4a261','#e76f51'] %}
 {% if searchedObjects is defined %}
 
 <!-- sharing popup -->
@@ -13,14 +13,14 @@
                 <h3>Help Digital Curator and share your exhibition</h3>
                 <p>Are you interested in new ways of exploring art? Support the efforts of Digital Curator and share your exhibition.</p>
                 <div class="sharingLinks">
-                    <a onclick="copyUrl();" class="jsCopyLink buttonIcon secondaryButton link"><span>Link</span></a>
+                    <a onclick="copyUrl();" class="jsCopyLink buttonIcon secondaryButton mediumButton link"><span>Link</span></a>
                     <a href=""
                        onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-                       target="_blank" title="Share on Facebook" class="jsFbShare buttonIcon secondaryButton facebook"><span>Share on Facebook</span>
+                       target="_blank" title="Share on Facebook" class="jsFbShare buttonIcon mediumButton secondaryButton facebook"><span>Share on Facebook</span>
                     </a>
                     <a href=""
                        onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');return false;"
-                       target="_blank" title="Share on Twitter" class="jsTwShare buttonIcon secondaryButton twitter"><span>Share on Twitter</span>
+                       target="_blank" title="Share on Twitter" class="jsTwShare buttonIcon mediumButton secondaryButton twitter"><span>Share on Twitter</span>
                     </a>
                 </div>
             </div>
@@ -46,22 +46,23 @@
            target="_blank" title="Share on Twitter" class="jsTwShare buttonIcon secondaryButton twitter"><span>Share on Twitter</span>
         </a>
         <span class="textJunction">or</span>
-        <a onclick="return openMenu(), openSearch();" class="secondaryButton">Generate new exhibition</a>
+        <a href="/app" class="secondaryButton mediumButton">Generate random exhibition</a>
     </div>
 
     <section class="mainSection titleScreen" id="exhibitionStart">
         <div class="titlePart">
             <h1>{{ exName }}</h1>
             <p class="subtitle flexItem">
-                {{artworksInPeriod.artworksWithObject[0][1]|sum}} artworks from the years {{dateFrom}} - {{dateTo}} displaying {{artworksInPeriod.artworksWithObject[0][0]}}
+                {{"{:,}".format(artworksInPeriod.artworksWithObject[0][1]|sum).replace(',', ' ')}} artworks from the years {{dateFrom}} - {{dateTo}} displaying {{artworksInPeriod.artworksWithObject[0][0]}}
             {% if searchedObjects|length > 1 %}
                 & {{artworksInPeriod.artworksWithObject[1][1]|sum}} works with a {{artworksInPeriod.artworksWithObject[1][0]}}
             {% endif%}
-                 were assembled automatically by AI computer vision. The generated exhibition was selected from a collection of {{galleriesSum['artworks count']}} artworks from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, the Czech Republic, and Slovakia in {{ g.request_time() }}ec.
+                 were assembled automatically by AI computer vision. The generated exhibition was selected from a collection of {{"{:,}".format(galleriesSum['artworks count']).replace(',', ' ')}} artworks from {{galleriesSum['galleries count']}} museums in Austria, Bavaria, the Czech Republic, and Slovakia in {{ g.request_time() }}ec.
             </p>
         </div>
         <div class="footerPart">
-            <a onclick="return openMenu(), openSearch();" class="primaryButton">Generate new exhibition</a>
+            <a onclick="return openMenu(), openSearch();" class="secondaryButton mediumButton darkMode">Select motifs</a>
+            <a href="/app" class="primaryButton mediumButton">Generate random exhibition</a>
         </div>
     </section>
 
@@ -170,7 +171,7 @@
                         <!-- Related tags -->
                         <div class="relatedTags">
                         {% for tag in artwork.related_tags %}
-                            <a href="{{tag[1]}}" class="secondaryButton">{{tag[0]}}</a>
+                            <a href="{{tag[1]}}" class="secondaryButton mediumButton">{{tag[0]}}</a>
                         {% endfor%}
                         </div>
                     </div>
@@ -192,7 +193,8 @@
             <h1>Goodbye</h1>
         </div>
         <div class="footerPart">
-            <a onclick="return openMenu(), openSearch();" class="primaryButton">Generate new exhibition</a>
+            <a onclick="return openMenu(), openSearch();" class="secondaryButton mediumButton darkMode">Select motifs</a>
+            <a href="/app" class="primaryButton mediumButton">Generate random exhibition</a>
         </div>
     </div>
 

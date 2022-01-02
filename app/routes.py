@@ -2,6 +2,7 @@
 
 import config
 import engine
+import time
 
 # Flask
 
@@ -14,38 +15,71 @@ ext = Sitemap(app=app)
 from .forms import SearchForm
 app.config['SECRET_KEY'] = 'you-will-never-guess'
 
-import time
-@app.before_request
-def before_request():
-    g.request_start_time = time.time()
-    g.request_time = lambda: "%.5fs" % (time.time() - g.request_start_time)
+# After form submit it posts values into url attributes and redirect to start
+def formValidateOnSubmit(form):
+    if len(form.exhibitionName.data) > 0:
+        exName = form.exhibitionName.data
+    else:
+        exName = "Digital curator's choice"
+    exDisplayedObjects = form.searchedClassSelect.data  # Loads list of classes from select multiple choices
+    exComparisonObjects = form.comparisonClassSelect.data  # Loads list of classes from select multiple choices
+    exDateFrom = form.dateFrom.data  # Loads exDateFrom from select
+    exDateTo = form.dateTo.data  # Loads exDateTo from select
+    url = url_for('exhibition', exName=exName, exDisplayedObjects=exDisplayedObjects,
+                  exComparisonObjects=exComparisonObjects, exDateFrom=exDateFrom, exDateTo=exDateTo)
+    print('---------------------')
+    print(exDisplayedObjects)
+    print(url)
+    return url
 
-@app.route('/intro', methods=['GET', 'POST'])
-def intro():
-    form = SearchForm(dateTo=1900)  # Load SearForm from forms.py and set default value for dateTo SelectField
-    galleriesSum = engine.getGalleriesSum()
-    return render_template('intro.html',
-                           galleriesSum=galleriesSum,
-                           form=form,
-                           )
-
-
-# Returns exhibition
-@app.route('/', methods=['GET', 'POST'])
-def exhibition():
-    form = SearchForm(dateTo=1900) # Load SearForm from forms.py and set default value for dateTo SelectField
-    galleriesSum = engine.getGalleriesSum()
-
-    # Extends browse exhibitions by parsed url
-    browseExhibitions = []
+# Preparing exhibition showcase predefined exhibitions
+def preparedExhibitions():
+    preparedExhibitions = []
     for exhibition in config.depository:
         arguments = engine.createArguments(exhibition)
         url = str(url_for('exhibition', exName=arguments['exName'], exDisplayedObjects=arguments['exDisplayedObjects'],
                 exComparisonObjects=arguments['exComparisonObjects'], exDateFrom=arguments['exDateFrom'],
                 exDateTo=arguments['exDateTo']))
         exhibition['url'] = url
-        browseExhibitions.append(exhibition)
+        preparedExhibitions.append(exhibition)
+    return preparedExhibitions
 
+@app.before_request
+def before_request():
+    g.request_start_time = time.time()
+    g.request_time = lambda: "%.5fs" % (time.time() - g.request_start_time)
+
+@app.route('/', methods=['GET', 'POST'])
+def intro():
+    form = SearchForm(dateTo=1900)  # Load SearForm from forms.py and set default value for dateTo SelectField
+    galleriesSum = engine.getGalleriesSum()
+    museums = engine.getMuseums()
+    browseExhibitions = preparedExhibitions()
+    titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
+
+    # form submit calls function defined above
+    if form.validate_on_submit():
+        url = formValidateOnSubmit(form)
+        return redirect(url)
+
+    return render_template('intro.html',
+                           galleriesSum=galleriesSum,
+                           museums=museums,
+                           browseExhibitions=browseExhibitions,
+                           titleImage=titleImage,
+                           form=form,
+                           intro=True,
+                           )
+
+
+# Returns exhibition
+@app.route('/app', methods=['GET', 'POST'])
+def exhibition():
+    form = SearchForm(dateTo=1900) # Load SearForm from forms.py and set default value for dateTo SelectField
+    galleriesSum = engine.getGalleriesSum()
+
+    # Extends browse exhibitions by parsed url
+    browseExhibitions = preparedExhibitions()
     receivedArguments = request.args.to_dict(flat=False)
 
     # If it doesn't receive arguments it set arguments with default values of exhibition from config
@@ -83,20 +117,9 @@ def exhibition():
         except:
             pass
 
-    # After form submit it posts values into url attributes and redirect to start
+    # form submit calls function defined above
     if form.validate_on_submit():
-        if len(form.exhibitionName.data) > 0:
-            exName = form.exhibitionName.data
-        else:
-            exName = "Digital curator's choice"
-        exDisplayedObjects = form.searchedClassSelect.data  # Loads list of classes from select multiple choices
-        exComparisonObjects = form.comparisonClassSelect.data  # Loads list of classes from select multiple choices
-        exDateFrom = form.dateFrom.data  # Loads exDateFrom from select
-        exDateTo = form.dateTo.data  # Loads exDateTo from select
-        url = url_for('exhibition', exName=exName, exDisplayedObjects=exDisplayedObjects, exComparisonObjects=exComparisonObjects, exDateFrom=exDateFrom, exDateTo=exDateTo)
-        print('---------------------')
-        print(exDisplayedObjects)
-        print(url)
+        url = formValidateOnSubmit(form)
         return redirect(url)
 
     # Sending request to Elastic
