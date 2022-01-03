@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container" id="container">
+    <section class="mainSection titleScreen" id="exhibitionStart">
+        <div class="titlePart">
+            <h1>404</h1>
+            <p class="subtitle flexItem">Exhibition not found. Don't worry and generate it.</p>
+        </div>
+        <div class="footerPart">
+            <a onclick="return openMenu(), openSearch();" class="secondaryButton mediumButton darkMode">Select motifs</a>
+            <a href="/app" class="primaryButton mediumButton">Generate random exhibition</a>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

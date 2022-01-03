@@ -197,6 +197,25 @@ def exhibition():
                                simpleObjectList=simpleObjectList,
                                )
 
+# 404
+@app.errorhandler(404)
+def page_not_found(e):
+    form = SearchForm(dateTo=1900)  # Load SearForm from forms.py and set default value for dateTo SelectField
+    galleriesSum = engine.getGalleriesSum()
+    browseExhibitions = preparedExhibitions()
+
+    # form submit calls function defined above
+    if form.validate_on_submit():
+        url = formValidateOnSubmit(form)
+        return redirect(url)
+
+    return render_template('404.html',
+                           galleriesSum=galleriesSum,
+                           browseExhibitions=browseExhibitions,
+                           form=form,
+                           intro=True,
+                           ), 404
+
 # Flask Sitemap
 @ext.register_generator
 def index():
