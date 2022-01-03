@@ -545,7 +545,7 @@ body{
     height: 100%;
 }
 .mainSection.visionInfo{
-    background-image: url("../images/intro/files-pattern-left.svg");
+    background-image: url("../images/intro/files-pattern-left.png");
     background-repeat: repeat-y;
     background-position: center left;
     background-size: 600px;
@@ -559,25 +559,7 @@ body{
 
 @media not all and (min-resolution:.001dpcm) {
     @media {
-        #introGallery,
         #introMap{
-            left: 0 !important;
-        }
-        .landInfo{
-            padding-left: 148vw;
-        }
-        .mainSection.visionInfo .placeHolder{
-            width: 280vw;
-        }
-        .museumsList{
-            animation: none;
-            top:-3500px;
-        }
-        .upperLine {
-            left: 120vw !important;
-        }
-        .galleryCollection{
-            padding-left: 240vw;
         }
     }
 }

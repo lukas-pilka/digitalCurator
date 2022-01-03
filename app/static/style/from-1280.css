@@ -10,30 +10,13 @@ html{
     padding-left:90vw;
 }
 .galleryCollection{
-    padding-left: 410vw;
+    padding-left: 360vw;
 }
 .mainSection.visionInfo{
     background-size: 750px;
 }
 .mainSection.visionInfo .placeHolder{
     width: 160vw;
-}
-
-/* intro safari conditions */
-
-@media not all and (min-resolution:.001dpcm) {
-    @media {
-
-        .landInfo{
-            padding-left: 148vw;
-        }
-        .mainSection.visionInfo .placeHolder{
-            width: 280vw;
-        }
-        .galleryCollection{
-            padding-left: 230vw;
-        }
-    }
 }
 
 /* intro firefox conditions */

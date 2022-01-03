@@ -25,19 +25,6 @@ h2{
     padding-left: 420vw;
 }
 
-/* intro safari conditions */
-
-@media not all and (min-resolution:.001dpcm) {
-    @media {
-        .landInfo{
-            padding-left: 148vw;
-        }
-        .galleryCollection{
-            padding-left: 220vw;
-        }
-    }
-}
-
 /* intro firefox conditions */
 
 @-moz-document url-prefix() {
