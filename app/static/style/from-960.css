@@ -12,9 +12,18 @@ body{
 .container {
     height: 100%;
     display: flex;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
 }
+.progressBar {
+  position: fixed;
+  bottom: 0;
+  width: 0%;
+  height: 5px;
+  background: #AB8B62;
+  z-index: 100;
+}
+
 .mainSection {
     height: 100%;
     display: flex;

@@ -11,6 +11,18 @@ container.addEventListener('wheel', (ev) => {
   container.scrollLeft += (ev.deltaY + ev.deltaX);
 });
 
+// scroll progress
+
+container.addEventListener('scroll', handleScroll);
+
+function handleScroll() {
+    let winScroll = container.scrollLeft || container.documentElement.scrollLeft;
+    let width = container.scrollWidth - container.clientWidth;
+    let scrolled = (winScroll / width) * 100;
+
+    document.getElementById("progressBar").style.width = scrolled + "%";
+}
+
 // sharing window
 
 function closeWindow() {
@@ -240,7 +252,7 @@ const target = document.querySelector('.titlePart h1');
 
 const target2 = document.querySelector('.titlePart .subtitle');
 target2.innerHTML = target2.textContent
-	.replace(/\w+,|\w+|-|\./g, '<span data-glitch="$&">$&</span>');
+	.replace(/\w+,|\w+|-|&|\./g, '<span data-glitch="$&">$&</span>');
 
 
 
