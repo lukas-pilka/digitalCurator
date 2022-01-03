@@ -4,6 +4,13 @@ let splash = document.getElementById("sharingPopup"); // Get a reference to the 
 let container = document.getElementById("container");
 let mainMenu = document.getElementById("mainMenu");
 
+// horizontal scrolling
+
+container.addEventListener('wheel', (ev) => {
+  ev.preventDefault();  // stop scrolling in another direction
+  container.scrollLeft += (ev.deltaY + ev.deltaX);
+});
+
 // sharing window
 
 function closeWindow() {
