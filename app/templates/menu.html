@@ -9,6 +9,7 @@
         <a onclick="return openSearch();" class="menuLink">Select motifs</a>
         <a onclick="return openShowcase();" class="menuLink">Browse exhibitions</a>
         <a onclick="return openAbout();" class="menuLink">About project</a>
+        <a onclick="return openJoinUs();" class="menuLink">Join us</a>
     </section>
     <section class="menuThirdLevel" id="jsSearchWindow" >
         <div class="windowBackRow">
@@ -33,6 +34,14 @@
         </div>
         <div class="windowContent">
             {% include "aboutProject.html" %}
+        </div>
+    </section>
+    <section class="menuThirdLevel" id="jsJoinUsWindow">
+        <div class="windowBackRow">
+            <a onclick="openJoinUs()" class="menuIcon back"><span>Close</span></a>
+        </div>
+        <div class="windowContent">
+            {% include "joinUs.html" %}
         </div>
     </section>
 </nav>

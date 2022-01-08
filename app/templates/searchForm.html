@@ -21,13 +21,6 @@
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <div class="fieldBox">
-            {{ form.exhibitionName.label }}
-            {{ form.exhibitionName(class_="Proceed")}}
-            {% for error in form.exhibitionName.errors %}
-            <span class="errorMessage">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div class="fieldBox">
             {{ form.searchedClassSelect.label }}
             {{ form.searchedClassSelect(class_="selectMultiple searchedClassSelect") }}
             {% for error in form.searchedClassSelect.errors %}
@@ -51,15 +44,24 @@
             </div>
         </div>
         <div class="fieldBox">
-            <input type="checkbox" class="comparisonCheck" id="comparisonCheck" onclick="showComparisonSelect()">
-            <label for="comparisonCheck">Compare with different artworks</label>
+            <input type="checkbox" class="advancedOptions" id="advancedOptions" onclick="showAdvancedOptions()">
+            <label for="advancedOptions">Show advanced options</label>
         </div>
-        <div id="comparisonClassBox" class="fieldBox comparisonClassBox">
-            {{ form.comparisonClassSelect.label }}
-            {{ form.comparisonClassSelect(class_="selectMultiple comparisonClassSelect")}}
-            {% for error in form.comparisonClassSelect.errors %}
-            <span class="errorMessage">{{ error }}</span>
-            {% endfor %}
+        <div class="advancedOptions">
+            <div class="fieldBox">
+                {{ form.exhibitionName.label }}
+                {{ form.exhibitionName(class_="Proceed")}}
+                {% for error in form.exhibitionName.errors %}
+                <span class="errorMessage">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div id="comparisonClassBox" class="fieldBox comparisonClassBox">
+                {{ form.comparisonClassSelect.label }}
+                {{ form.comparisonClassSelect(class_="selectMultiple comparisonClassSelect")}}
+                {% for error in form.comparisonClassSelect.errors %}
+                <span class="errorMessage">{{ error }}</span>
+                {% endfor %}
+            </div>
         </div>
         <div class="fieldBox">
             {{ form.submit(class_="primaryButton mediumButton") }}

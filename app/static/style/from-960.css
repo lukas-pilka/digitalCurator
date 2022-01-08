@@ -195,9 +195,6 @@ body{
     display: flex;
     height: 75%;
 }
-.galleryIntro .detailInformation{
-    min-width: 25vw;
-}
 .artworkDescription{
     margin: 0 5rem 0 1rem;
     width: 12rem;

@@ -95,12 +95,12 @@
     <section class="mainSection galleryIntro">
         <div class="introPart introTitle ">
             <h2>Data & History</h2>
-            <p class="subtitle">
-            {{ searchedObjects[0]}}
+            <p>The histogram shows the quotient of images with
+                {{ searchedObjects[0]}}
             {% if searchedObjects|length > 1%}
                 & {{ searchedObjects[1]}}
-            {% endif%} frequency over the ages
-            </p>
+            {% endif%}
+                 in relation to the total number of images in the database.</p>
         </div>
         <div class="introPart chart">
             <canvas id="line-chart" width="800" height="450"></canvas>
@@ -113,9 +113,6 @@
             {% endfor %}
             </p>
         </div>
-        <article class="introPart detailInformation">
-            <p>The histogram shows the quotient of images on which the searched motif was detected in relation to the total number of images in the database.</p>
-        </article>
     </section>
 
     <!-- Galleries -->
@@ -194,7 +191,8 @@
     <!-- final screen -->
     <div class="mainSection finalScreen">
         <div class="titlePart">
-            <h1>Goodbye</h1>
+            <h1>Join us</h1>
+            <p class="subtitle">Help the digital curator make art collections more accessible and inspiring for everyone. Find out how you can <a onclick="return openMenu(), openJoinUs();">get involved</a>.</p>
         </div>
         <div class="footerPart">
             <a onclick="return openMenu(), openSearch();" class="secondaryButton mediumButton darkMode">Select motifs</a>

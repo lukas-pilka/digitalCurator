@@ -50,7 +50,7 @@ a{
     cursor: pointer;
 }
 a:hover{
-    color: #AB8B62;
+    color: #eacda3;
 }
 
 /* buttons */
@@ -184,11 +184,6 @@ a:hover{
 }
 .introTitle{
     min-width: 50vw;
-}
-.detailInformation{
-    min-width: 55vw;
-    max-height: 100%;
-    overflow-y: auto;
 }
 .chartLegend{
     text-align: center;
@@ -349,12 +344,6 @@ a:hover{
     display: flex;
     justify-content: flex-start;
 }
-.mainMenu a{
-    color: #aaaaaa;
-}
-.mainMenu a:hover{
-    color: #ffffff;
-}
 .mainMenu .projectLogo{
     padding: 1.5rem 1.5rem 1.5rem 2rem;
     line-height: 1rem;
@@ -500,14 +489,14 @@ label{
 .searchForm .primaryButton{
     width: 100%;
 }
-.comparisonClassBox{
+.advancedOptions{
     max-height: 0;
     transition: max-height 1s ease;
     overflow: hidden;
     margin: 0;
 }
-.comparisonClassBox.opened{
-    max-height: 6rem;
+.advancedOptions.opened{
+    max-height: 14rem;
 }
 
 /* select 2 multiple choice */
@@ -581,6 +570,10 @@ label{
 .partners .logo.logoSng{
     background-image: url("../images/logo-sng.svg");
     width: 6.33rem;
+}
+.partners .logo.logoBlueGhost{
+    background-image: url("../images/logo-blueghost.svg");
+    width: 12rem;
 }
 .partners .logo span{
     display: none;

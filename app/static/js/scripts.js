@@ -95,24 +95,24 @@ function openMenu() {
   element5.classList.remove("opened");
   let element6 = document.getElementById("jsAboutWindow");
   element6.classList.remove("opened");
+  let element7 = document.getElementById("jsJoinUsWindow");
+  element7.classList.remove("opened");
 }
 function openSearch() {
   let element = document.getElementById("jsSearchWindow");
   element.classList.toggle("opened");
-  let element2 = document.getElementById("jsMenuWindow");
-  element2.classList.toggle("opened");
 }
 function openShowcase() {
   let element = document.getElementById("jsShowcase");
   element.classList.toggle("opened");
-  let element2 = document.getElementById("jsMenuWindow");
-  element2.classList.toggle("opened");
 }
 function openAbout() {
   let element = document.getElementById("jsAboutWindow");
   element.classList.toggle("opened");
-  let element2 = document.getElementById("jsMenuWindow");
-  element2.classList.toggle("opened");
+}
+function openJoinUs() {
+  let element = document.getElementById("jsJoinUsWindow");
+  element.classList.toggle("opened");
 }
 
 // Open popup window with search forms if contains error messages
@@ -128,9 +128,9 @@ checkErrors()
 
 // Show select for object comparison
 
-function showComparisonSelect() {
+function showAdvancedOptions() {
 	// Get the output text
-	let comparisonBoxes = document.getElementsByClassName("comparisonClassBox");
+	let comparisonBoxes = document.getElementsByClassName("advancedOptions");
 	// If the checkbox is checked, display the output text
 	let i;
 	for (i = 0; i < comparisonBoxes.length; i++) {
@@ -265,11 +265,11 @@ container.addEventListener("scroll", function () {
 
 const target = document.querySelector('.titlePart h1');
 	target.innerHTML = target.textContent
-		.replace(/\w+,|\w+|-|\./g, '<span data-glitch="$&">$&</span>');
+		.replace(/\w+,|\w+|-|'|\./g, '<span data-glitch="$&">$&</span>');
 
 const target2 = document.querySelector('.titlePart .subtitle');
 target2.innerHTML = target2.textContent
-	.replace(/\w+,|\w+|-|&|\./g, '<span data-glitch="$&">$&</span>');
+	.replace(/\w+,|\w+|-|&|'|\./g, '<span data-glitch="$&">$&</span>');
 
 
 
