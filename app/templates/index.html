@@ -61,8 +61,14 @@
             </p>
         </div>
         <div class="footerPart">
-            <a onclick="return openMenu(), openSearch();" class="secondaryButton mediumButton darkMode">Select motifs</a>
-            <a href="/app" class="primaryButton mediumButton">Generate random exhibition</a>
+            <div class="titleControls">
+                <a onclick="return openMenu(), openSearch();" class="secondaryButton mediumButton darkMode">Select motifs</a>
+                <a href="/app" class="primaryButton mediumButton">Generate random exhibition</a>
+            </div>
+            <div class="scrollInfo">
+                <div class="aniIconScroll aniIcon"></div>
+                <div class="aniIconArrowWhite aniIcon"></div>
+            </div>
         </div>
     </section>
 
@@ -111,7 +117,6 @@
             <p>The histogram shows the quotient of images on which the searched motif was detected in relation to the total number of images in the database.</p>
         </article>
     </section>
-
 
     <!-- Galleries -->
     <!-- unpacking collections -->
@@ -185,7 +190,6 @@
 
     </section>
     {% endfor %}
-
 
     <!-- final screen -->
     <div class="mainSection finalScreen">

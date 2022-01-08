@@ -4,11 +4,28 @@ let splash = document.getElementById("sharingPopup"); // Get a reference to the 
 let container = document.getElementById("container");
 let mainMenu = document.getElementById("mainMenu");
 
-// horizontal scrolling
+// horizontal scrolling with wheel
 
 container.addEventListener('wheel', (ev) => {
-  ev.preventDefault();  // stop scrolling in another direction
-  container.scrollLeft += (ev.deltaY + ev.deltaX);
+	ev.preventDefault();  // stop scrolling in another direction
+	// console.log(ev.deltaY);
+	container.scrollLeft += (ev.deltaY + ev.deltaX);
+	// console.log('Wheel Move: '+ container.scrollLeft);
+});
+
+// horizontal scrolling with arrow keys
+
+document.addEventListener('keydown', function(event) {
+	if (event.code == 'ArrowRight') {
+		container.style.scrollBehavior = 'smooth';
+		container.scrollLeft += 500;
+		container.style.scrollBehavior = null;
+  	}
+  	if (event.code == 'ArrowLeft') {
+  		container.style.scrollBehavior = 'smooth';
+    	container.scrollLeft -= 500;
+    	container.style.scrollBehavior = null;
+  	}
 });
 
 // scroll progress

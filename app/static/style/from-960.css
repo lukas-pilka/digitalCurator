@@ -10,10 +10,20 @@ body{
     display: flex;
 }
 .container {
-    height: 100%;
+    height: 100vh;
+    max-height: 100%;
     display: flex;
     overflow-x: hidden;
     overflow-y: hidden;
+}
+/* touchscreens */
+@media (hover: none) and (pointer: coarse) {
+    .container {
+        overflow-x: auto;
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
 }
 .progressBar {
   position: fixed;
@@ -31,7 +41,7 @@ body{
 .mainSection {
     width: auto;
     padding: 3rem 3rem 3rem 3rem;
-    height: 100vh;
+    height: 100%;
 }
 .titleScreen{
     min-width: 75vw;
@@ -113,8 +123,6 @@ body{
 .titlePart span:nth-child(69){animation-delay: 6.8s;}
 .titlePart span:nth-child(70){animation-delay: 6.9s;}
 
-
-
 @keyframes text-focus-in {
   0% {
     -webkit-filter: blur(12px);
@@ -133,6 +141,18 @@ body{
     height: 2.5rem;
     display: block;
 }
+.titleScreen .footerPart{
+    display: flex;
+    justify-content: space-between;
+}
+.titleScreen .footerPart .scrollInfo{
+    display: flex;
+}
+.titleScreen .footerPart .aniIcon{
+    opacity: 0.5;
+    width: 3rem;
+    height: 3rem;
+}
 .titleImage{
     width: auto;
 }
@@ -146,7 +166,7 @@ body{
     width: auto;
 }
 .artwork.titleImage{
-    height: 100vh;
+    height: 100%;
 }
 .introPart{
     display: flex;
@@ -194,7 +214,7 @@ body{
 
 .mainMenu{
     width: auto;
-    height: 100vh;
+    height: 100%;
     display: block;
 }
 .menuFirstLevel{
@@ -356,15 +376,23 @@ body{
     width: 6rem;
 }
 .aniIconCloud{
-    background-image: url("../images/intro/ani-icon-cloud.gif");
+    background-image: url("../images/ani-icon-cloud.gif");
     background-color: #ffffff;
 }
 .aniIconEye{
-    background-image: url("../images/intro/ani-icon-eye.gif");
+    background-image: url("../images/ani-icon-eye.gif");
     background-color: #111111;
 }
 .aniIconArrow{
-    background-image: url("../images/intro/ani-icon-arrow.svg");
+    background-image: url("../images/ani-icon-arrow.svg");
+    background-color: #111111;
+}
+.aniIconArrowWhite{
+    background-image: url("../images/ani-icon-arrow-white.svg");
+    background-color: #111111;
+}
+.aniIconScroll{
+    background-image: url("../images/ani-icon-scroll.gif");
     background-color: #111111;
 }
 .mainSection.callToAction{
@@ -387,7 +415,7 @@ body{
 
 .upperLine{
     position: absolute;
-    height: 100vh;
+    height: 100%;
     z-index: 7;
     color: #ffffff;
     display: flex;
@@ -481,7 +509,7 @@ body{
     opacity: 1;
 }
 .galleryRecognition .visionEyeBox{
-    height: 100vh;
+    height: 100%;
     opacity: 0;
     position: fixed;
     left: 35vw;
@@ -491,6 +519,12 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+/* visionEyeBox crates problems when scrolling on touchscreen */
+@media (hover: none) and (pointer: coarse) {
+    .galleryRecognition .visionEyeBox{
+        display: none;
+    }
 }
 .galleryRecognition .visionEyeBox p{
     position: absolute;
