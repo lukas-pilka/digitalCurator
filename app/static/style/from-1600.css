@@ -7,7 +7,7 @@
     padding-left:75vw;
 }
 .galleryCollection{
-    padding-left: 420vw;
+    padding-left: 440vw;
 }
 .mainSection.visionInfo{
     background-size: 900px;
@@ -17,6 +17,6 @@
 
 @-moz-document url-prefix() {
     .galleryCollection {
-        padding-left: 420vw;
+        padding-left: 440vw;
     }
 }

@@ -319,7 +319,7 @@ body{
     padding-left:100vw;
 }
 .landInfo article{
-    width: 30vw;
+    width: 40vw;
 }
 .mainSection.museumsInfo{
     display: flex;
@@ -402,7 +402,7 @@ body{
     z-index: 7;
 }
 .callToAction article{
-    width: 50vw;
+    width: 40vw;
 }
 .mainSection.visionInfo{
     display: flex;
@@ -530,7 +530,7 @@ body{
     position: absolute;
     top:3rem;
     margin: 0;
-    width: 150%;
+    width: 200%;
     z-index: 1;
 }
 .galleryRecognition.focuseIn .visionEyeBox{
@@ -570,7 +570,7 @@ body{
     transform: rotate(180deg);
 }
 .databaseInfo article{
-    width: 30vw;
+    width: 40vw;
     color: #AB8B62;
     margin-left: 3rem;
     display: flex;
