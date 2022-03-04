@@ -5,6 +5,8 @@ import connector
 
 from requests_html import HTMLSession
 import urllib.request
+
+
 session = HTMLSession()
 
 

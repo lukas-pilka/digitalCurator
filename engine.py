@@ -32,11 +32,7 @@ def exhibitionPropertiesQuery(dateFrom, dateTo):
     return [
         {
             "bool": {
-                "should": [
-                    {"match_phrase": {"work_type": "graphic"}},
-                    {"match_phrase": {"work_type": "painting"}},
-                    {"match_phrase": {"work_type": "drawing"}}
-                ]
+                "should": config.supportedWorkTypes
             }
         },
         {
