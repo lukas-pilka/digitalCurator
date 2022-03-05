@@ -24,11 +24,7 @@ query = {
         },
         {
           "bool": {
-            "should": [
-              {"term": {"work_type": "graphic"}},
-              {"term": {"work_type": "painting"}},
-              {"term": {"work_type": "drawing"}}
-            ]
+            "should": config.supportedWorkTypes
           }
         },
         {

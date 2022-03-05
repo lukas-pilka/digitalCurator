@@ -36,27 +36,27 @@ def getTypesFromElastic():
 
 # work_type
 workTypeSubstitutes = [
-    {'painting':['akryl','painting2','maliarstvo','malba','Tafelbild (Flügelretabel)','maliarstvo insitné','tempera','Gemälde','obraz','Tafelbild','maliarstvo ľudové','enkaustika','Malerei']},
-    {'oil painting':['olej']},
-    {'watercolor painting':['Gouache','akvarel','akvarel koláž tuš','akvarel tempera','kvaš','Aquarell']},
-    {'drawing':['kresba', 'Zeichnung','fix','Konturzeichnung','Skizzenbuch']},
-    {'charcoal drawing':['uhel','rudka hnědá','rudka podkresba tužkou','sépie lavírovaná','rudka','coal drawing','Schwarze Kreide']},
-    {'pencil drawing':['pastelka barevná','tužka','pastelka modrá','tužka černá','crayon','Bleistift']},
+    {'painting':['Pinsel','Deckfarben','Deckfarbe','Pinsel in Grau, grau laviert, über Graphitstift.','akryl','painting2','maliarstvo','malba','Tafelbild (Flügelretabel)','maliarstvo insitné','tempera','Gemälde','obraz','Tafelbild','maliarstvo ľudové','enkaustika','Malerei']},
+    {'oil painting':['olej','Öl auf Papier']},
+    {'watercolor painting':['Bister','Gouache','akvarel','akvarel koláž tuš','akvarel tempera','kvaš','Aquarell']},
+    {'drawing':['Bleigriffel','kresba', 'Zeichnung','fix','Konturzeichnung','Skizzenbuch']},
+    {'charcoal drawing':['Kohle','uhel','rudka hnědá','rudka podkresba tužkou','sépie lavírovaná','rudka','coal drawing','Schwarze Kreide']},
+    {'pencil drawing':['Graphitstift','Pastell','Bleistiftzeichnung','pastelka barevná','tužka','pastelka modrá','tužka černá','crayon','Bleistift']},
     {'pastel drawing':['pastel']},
-    {'chalk drawing':['Kreide','křída','křída barevná','křída barevná nesprašná','křídy barevné','Rötel']},
-    {'ink drawing':['Tusche, Feder','Feder, Tusche, laviert','perokresba','tuš','pero šedohnědě - podkresba tužkou','rudka tuš běloba','lavírovaná tuš tempera','lavírovaná sépií tuš bistrem','kresba perem tuš','inkoust','perokresba lavírovaná']},
+    {'chalk drawing':['Graphit','Steinkreide','Kreide','křída','křída barevná','křída barevná nesprašná','křídy barevné','Rötel']},
+    {'ink drawing':['Feder in Grau, laviert','Feder, aquarelliert','Feder, laviert','Feder in Braun, laviert','Feder in Schwarz','Feder in Schwarz, aquarelliert','Feder','Feder in Braun','Tusche, Feder','Feder, Tusche, laviert','perokresba','tuš','pero šedohnědě - podkresba tužkou','rudka tuš běloba','lavírovaná tuš tempera','lavírovaná sépií tuš bistrem','kresba perem tuš','inkoust','perokresba lavírovaná']},
     {'graphic print':['světlotisk','slepotisk','Poster','galvanografie','tisk materiálový, kolorovaný','kamenoryt, barevný','linořez, barevný','linoryt, kolorovaný','tisk materiálový, barevný','sítotisk','linořez','tisk','tisk materiálový','linoryt','linoryt, barevný','Grafik','akvatinta','serigrafie','ofset autorský','serigrafie barevná','monotyp','suchá jehla','tisk z plochy (ofset)','grafika','Grafika','Druck','počítačová grafika','rytina','mezzotinta','heliogravura','mezzotinta (II. stav)','mezzotinta (I. stav)']},
     {'lithography':['litografie']},
-    {'etching':['měkký kryt (vernis mou)','lept','lept (II. stav)','lept (I. stav)','lept - mědiryt','lept - akvatinta','lept a mědiryt','lept, suchá jehla']},
+    {'etching':['Radierung, stark übermalt','Radierung, laviert','měkký kryt (vernis mou)','lept','lept (II. stav)','lept (I. stav)','lept - mědiryt','lept - akvatinta','lept a mědiryt','lept, suchá jehla']},
     {'copper engraving':['mědiryt','mědiryt a lept','mědiryt - lept']},
     {'steel engraving':['oceloryt']},
     {'woodcut':['dřevoryt','xylografie','dřevořez']},
     {'book':['bibliofília a staré tlače']},
     {'new media':['intermédiá']},
-    {'architecture':['architektúra']},
+    {'architecture':['architektúra','Architekturmodell']},
     {'photography':['daguerrotypie','zinkografie','digitální fotografie','fotografia','Fotografie','fotografie','Fotomontage','fotografie kontaktní černobílá','Fotokopie','Film','fotografie černobílá','dokumentárna fotografia','fotografie černobílá zvětšenina','Farbfoto','Fotogramm','fotografie digitální barevná pozitiv']},
     {'applied art':['úžitkové umenie','umelecké remeslo','kov','drevo']},
-    {'sculpture':['plastika','skulptura','sochárstvo','Büste','sochárstvo insitné','Münze','Relieftondo','Reiterstatuette','Liegestatuette','Skulptur','Plastik','Sitzstatue','perforace reliéf','Brunnenfigur','Denkmalmodell']},
+    {'sculpture':['Skulpturengruppe (5-figurig)','plastika','skulptura','sochárstvo','Büste','sochárstvo insitné','Münze','Relieftondo','Reiterstatuette','Liegestatuette','Skulptur','Plastik','Sitzstatue','perforace reliéf','Brunnenfigur','Denkmalmodell']},
     {'other':['sépie','perforace','jiná technika, klišé','jiná technika','koláž','mosaika','asambláž','interpretácia','alchymáž','kombinovaná technika','Glasbild']}
 ]
 

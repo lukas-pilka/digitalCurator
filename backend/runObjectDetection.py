@@ -37,11 +37,7 @@ query = {
         },
         {
           "bool": {
-            "should": [
-              {"term": {"work_type": "graphic"}},
-              {"term": {"work_type": "painting"}},
-              {"term": {"work_type": "drawing"}}
-            ]
+            "should": config.supportedWorkTypes
           }
         }
       ]
@@ -135,7 +131,7 @@ if googleApiSwitch == 'y':
     print('Connecting to GOOGLE VISION API')
 
     from google.cloud import automl
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="../../keys/tfcurator-c227c8fe0180.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="../"+config.googleCredentialsKey
     project_id = "tfcurator"
     model_id = "IOD6455569217230995456"
 

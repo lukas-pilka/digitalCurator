@@ -9,28 +9,34 @@ import json
 # CONNECTION TO ELASTIC SEARCH
 def load10kFromElastic(afterId):
     query = {
-        "size":350,
+        "size":10000,
         "query": {
         "bool": {
             "must": [
                 {
                     "range": {
                         "date_earliest": {
-                            "gte": 1775,
-                            "lt": 1800
+                            "gte": 1400,
+                            "lt": 2000
                         }
                     }
                 },
                 {
-                    "match_phrase": {"detected_objects.object": "Person"}
+                    "nested": {
+                        "path": "detected_objects",
+                        "query": {
+                            "bool": {
+                                "must": [
+                                    {"match": {"detected_objects.object": "Angel"}},
+                                    {"range": {"detected_objects.score": {"gt": 0.75}}}
+                                ]
+                            }
+                        }
+                    }
                 },
                 {
                     "bool": {
-                        "should": [
-                            {"term": {"work_type": "graphic"}},
-                            {"term": {"work_type": "painting"}},
-                            {"term": {"work_type": "drawing"}}
-                        ]
+                        "should": config.supportedWorkTypes
                     }
                 }
             ]
@@ -49,6 +55,7 @@ def load10kFromElastic(afterId):
     artworks = dataDict['hits']['hits']
     for artwork in artworks:
         elasticIdsList.append(artwork['_id'])
+    print(len(artworks))
 
 def loadAllFromElastic():
     for request in range(1):
@@ -62,8 +69,8 @@ def loadAllFromElastic():
 # CONNECTING TO BUCKET
 def download_blob(source_blob_name, destination_file_name):
 
-    storage_client = storage.Client.from_service_account_json('../../keys/tfcurator-c227c8fe0180.json')
-    bucket = storage_client.bucket('tfcurator-artworks')
+    storageClient = storage.Client.from_service_account_json('../'+config.googleCredentialsKey)
+    bucket = storageClient.bucket('tfcurator-artworks')
     blob = bucket.blob(source_blob_name)
     blob.download_to_filename(destination_file_name)
 
@@ -78,7 +85,7 @@ loadAllFromElastic()
 counter = 0
 for id in elasticIdsList:
     sourceFileName = 'artworks-all/'+id+'.jpg'
-    destinationFileName = 'before1800/'+id+'.jpg'
+    destinationFileName = 'angels/'+id+'.jpg'
     download_blob(sourceFileName,destinationFileName)
     counter += 1
     print(counter)
