@@ -8,7 +8,7 @@ import json
 
 
 # CONNECTING TO BUCKET
-cred = credentials.Certificate("../../keys/tfcurator-c227c8fe0180.json")
+cred = credentials.Certificate("../"+config.googleCredentialsKey)
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'tfcurator-artworks'
 })

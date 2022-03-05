@@ -1,10 +1,16 @@
 # SETUP FOR GOOGLE STORAGE
 
 import firebase_admin
+import config
 from firebase_admin import credentials
 from firebase_admin import storage
 
-cred = credentials.Certificate("/Users/lukas/PycharmProjects/keys/tfcurator-c227c8fe0180.json")
+try:
+
+    cred = credentials.Certificate(config.googleCredentialsKey)
+except:
+    cred = credentials.Certificate('../'+config.googleCredentialsKey)
+
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'tfcurator-artworks'
 })
