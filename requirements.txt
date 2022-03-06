@@ -2,12 +2,18 @@ tf-hub-nightly==0.9.0.dev202007310005
 tfds-nightly==3.2.1.dev202007300105
 tensorflow==2.3.0
 matplotlib==3.3.0
-Flask==1.1.2
+Flask==2.0.3
 numpy==1.16.0
 absl-py==0.9.0
 WTForms==2.3.3
-requests==2.24.0
+requests==2.27.1
 Flask-WTF==0.14.3
 flask-sitemap==0.3.0
+selenium==4.1.0
+webdriver-manager==3.5.3
+requests-html==0.10.0
+
+
+
 
 
