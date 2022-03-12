@@ -9,6 +9,7 @@ from requests_html import HTMLSession
 import time
 from datetime import datetime
 import urllib.request
+from backend.clearDate import setDateRange
 
 
 def getArtworkData(pageUrl):
@@ -88,6 +89,8 @@ def getArtworkData(pageUrl):
             dating = recordView[datingStart:datingEnd]
             artworkData['dating'] = dating
 
+        artworkData = setDateRange(artworkData) # If dating can be decoded, it extends input dict by adding date_earliest and date_latest
+
         # WORK TYPE
         workTypeStart = recordView.find('\nTechnik\n')
         if workTypeStart > -1:
@@ -144,7 +147,7 @@ def getArtworkData(pageUrl):
             print(artworkData)
             return artworkData
         else:
-            print('Nothing here')
+            print('No image here :(')
 
     except Exception as e:
         print('An error occured')
