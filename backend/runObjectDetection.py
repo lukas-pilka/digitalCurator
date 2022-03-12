@@ -14,7 +14,6 @@ from datetime import datetime
 print(tfObjectDetection(Image.open('temp/WU-SVK-GMB-C-411.jpg')))
 print(tfObjectDetection(Image.open('temp/WU-SVK-GMB-C-4260.jpg')))
 print(tfObjectDetection(Image.open('temp/WU-CZE-4RG-O0090.jpg')))
-print(tfObjectDetection(Image.open('temp/WU-CZE-4RG-K1320.jpg')))
 '''
 
 
