@@ -19,46 +19,37 @@ def setDateRange(artwork):
                 artwork['dating'] = 'unknown'
 
         # replaces specific values
-        wordPairs = [
-            ['15. Jahrhundert (?)', [1400, 1500]],
-            ['16. Jahrhundert', [1500, 1600]],
-            ['16. století', [1500, 1600]],
-            ['16. Jh.', [1500, 1600]],
-            ['Mitte 16. Jahrhundert', [1540,1560]],
-            ['2. Hälfte 16. Jahrhundert',[1550,1600]],
-            ['17. století', [1600, 1700]],
-            ['17. Jhdt.', [1600, 1700]],
-            ['17. Jh.', [1600, 1700]],
-            ['17. Jahrhundert', [1600, 1700]],
-            ['1. Hälfte 17. Jahrhundert', [1600, 1650]],
-            ['2. Hälfte 17. Jahrhundert', [1650, 1700]],
-            ['Mitte 17. Jahrhundert',[1640,1660]],
-            ['Ende 17. Jh.', [1680, 1700]],
-            ['18. století', [1700, 1800]],
-            ['18. Jh.', [1700, 1800]],
-            ['18. Jahrhundert', [1700, 1800]],
-            ['pol. 18. stol',[1740,1760]],
-            ['1740 - 1745?',[1740,1745]],
-            ['2. pol. 18. stol',[1750,1800]],
-            ['2. Hälfte 18. Jahrhundert', [1750, 1800]],
-            ['2. Hälfte 18., Beginn 19. Jahrhundert', [1750, 1810]],
-            ['Ende 18., Beginn 19. Jahrhundert', [1790,1810]],
-            ['19. století', [1800, 1900]],
-            ['19. Jahrhundert', [1800, 1900]],
-            ['Anfang 19. Jahrhundert', [1800,1810]],
-            ['1. Hälfte 19. Jahrhundert', [1800,1850]],
-            ['2. Hälfte 19. Jahrhundert', [1850, 1900]],
-            ['90. léta 19. století', [1890, 1900]],
-            ['Prelom 18. a 19. storočia', [1790, 1810]],
-            ['20. století', [1900, 2000]]
+        ageDescriptions = [
+            [[1400, 1500],['15. Jahrhundert (?)']],
+            [[1500, 1600],['16. Jahrhundert','16. století','16. Jh.']],
+            [[1540, 1560],['Mitte 16. Jahrhundert']],
+            [[1550, 1600],['2. Hälfte 16. Jahrhundert',"2. H. 16. Jh."]],
+            [[1600, 1700],['17. století','17. Jhdt.','17. Jh.','17. Jahrhundert']],
+            [[1600, 1620],["Anfang 17. Jahrhundert"]],
+            [[1600, 1650],['1. Hälfte 17. Jahrhundert',"1. pol. 17. stol.","1. H. 17. Jh."]],
+            [[1640, 1660],['Mitte 17. Jahrhundert',"pol. 17. stol.","Mitte 16. Jh."]],
+            [[1650, 1660],["1650er Jahre"]],
+            [[1650, 1700],['2. Hälfte 17. Jahrhundert',"2. H. 17. Jh."]],
+            [[1680, 1700],['Ende 17. Jh.',"Ende 17. Jhdt."]],
+            [[1700, 1800],['18. století','18. Jh.', '18. Jahrhundert', '18. jahrhundert']],
+            [[1740, 1760],['pol. 18. stol',"Mitte 18. Jahrhundert","pol. 18. stol."]],
+            [[1750, 1800],['2. pol. 18. stol','2. Hälfte 18. Jahrhundert']],
+            [[1790, 1800],["1790er Jahre"]],
+            [[1790, 1810],['Prelom 18. a 19. storočia']],
+            [[1800, 1900],['19. století','19. Jahrhundert']],
+            [[1800, 1820],['Anfang 19. Jahrhundert']],
+            [[1800, 1825],["1. čtvrt. 19. stol."]],
+            [[1800, 1850],['1. Hälfte 19. Jahrhundert']],
+            [[1850, 1900],['2. Hälfte 19. Jahrhundert']],
+            [[1890, 1900],['90. léta 19. století']],
+            [[1900, 2000],['20. století']],
+            [[1930, 1940],["1930-er Jahre"]]
         ]
-        for wordPair in wordPairs:
-            try:
-                if artwork['_source']['dating'] == wordPair[0]:
-                    artwork['_source']['date_earliest'] = wordPair[1][0]
-                    artwork['_source']['date_latest'] = wordPair[1][1]
-            except:
-                pass
+        for age in ageDescriptions:
+            for description in age[1]:
+                if artwork['dating'] == description:
+                    artwork['date_earliest'] = age[0][0]
+                    artwork['date_latest'] = age[0][1]
 
         # if harmful words in dating, script tries to cut it
         harmfulPrepositions = ['kolem ', 'po ', 'okolo ','cca ', 'od ', 'do ', 'asi ', 'mezi ', 'pred ','kol. ' , 'Kolem ', 'gegen ', 'um ','Um ', 'vor ', 'po roce ', 'před ', 'před rokem ', 'kolem roku ', 'nach ', 'wohl ', 'wohl vor ', 'zwischen ', 'around ', 'before ', 'about ', 'dated ', 'ca. ', 'Ca. ', 'after ', 'circa ','active ','c. ', 'y after ']  # add words for cut string after them (including space)
