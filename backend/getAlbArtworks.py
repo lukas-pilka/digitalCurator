@@ -151,8 +151,8 @@ def getArtworkData(pageUrl):
 
     except Exception as e:
         print('An error occured')
-        print(e)
-        time.sleep(5)
+        # print(e)
+        time.sleep(3)
 
     driver.quit()
 
@@ -160,22 +160,37 @@ def getArtworkData(pageUrl):
 def scrapAlb():
 
     # SETTING INPUTS
-
+    startYear = int(input('Insert first year for scrapping: ') or 1900)
     startUrlNumber = int(input('Insert first ID for scrapping: ') or 1)
-    endUrlNumber = int(input('Insert last ID for scrapping: ') or 10)
+    endUrlNumber = int(input('Insert last ID for scrapping: ') or 10000)
     webUrl = 'https://sammlungenonline.albertina.at'
+    failedSeries = 0
+    failedSeriesLimit = 100
 
     # STARTING LOOP
 
     while startUrlNumber < endUrlNumber:
         startUrlNumber += 1
-        pageUrl = webUrl + '/?query=search=/record/objectnumbersearch=%5B' + str(startUrlNumber) + '%5D&showtype=record'
+        pageUrl = webUrl + '/?query=search=/record/objectnumbersearch=%5B' + str(startYear) + '/' + str(startUrlNumber) + '%5D&showtype=record'
         print('Searching at: ' + str(pageUrl) + ' ...')
         artwork = getArtworkData(pageUrl)
+
+        # CHECK IF THERE ARE TOO MANY FAILED ATTEMPTS IN A ROW
+
+        if artwork == None:
+            failedSeries += 1
+            print('Failed attempt, ' + str(failedSeries) + ' in row')
+            if failedSeries > failedSeriesLimit: # If too many failed attempts, it skip to next year
+                startYear += 1
+                failedSeries = 0
+                startUrlNumber = 0
+                print( 'Failed series limit reached, skip to next year: ' + str(startYear))
+
 
         # IF ARTWORK CONTAINS IMAGE IT CALLS FUNCTIONS FOR WRITING TO THE FIRESTORE AND SAVING IMAGE TO THE STORAGE
 
         if not artwork == None and 'image_id' in artwork:
+            failedSeries = 0
             connector.uploadToStorage('artworks-all/' + artwork['image_id'], 'temp/' + artwork['image_id']) # saving image to google storage
             os.remove('temp/' + artwork['image_id']) # deleting temporary image from local
             dcId = artwork['id'] # Taking id from dic. WritetoElastic sends id separately
