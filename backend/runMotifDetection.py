@@ -46,7 +46,7 @@ query = {
 }
 
 payload = {'size': 10000}
-rawData = requests.get('https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks2/_search', auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
+rawData = requests.get('https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks3/_search', auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
 rawData.encoding = 'utf-8'
 dataDict = json.loads(rawData.text)
 artworks = dataDict['hits']['hits']
@@ -231,7 +231,7 @@ for artwork in artworks:
             documentData['doc']["iconography_motifs_updated"] = now
 
         print('Detected motifs at '+ imageUrl +' :' + str(documentData))
-        # writeToElastic(artwork['_id'], documentData) # Writing to Digital Curator Elastic Search DB
+        writeToElastic(artwork['_id'], documentData) # Writing to Digital Curator Elastic Search DB
         os.remove(imageFileName) # Removing image
     except:
         print('An error occurred')
