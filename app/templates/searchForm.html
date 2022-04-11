@@ -44,8 +44,8 @@
             </div>
         </div>
         <div class="fieldBox">
-            <input type="checkbox" class="advancedOptions" id="advancedOptions" onclick="showAdvancedOptions()">
-            <label for="advancedOptions">Show advanced options</label>
+            {{ form.comparisonActivationCheck(onchange="showAdvancedOptions()") }}
+            <label for="comparisonActivationCheck">Show advanced options</label>
         </div>
         <div class="advancedOptions">
             <div class="fieldBox">

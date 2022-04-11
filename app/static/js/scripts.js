@@ -126,17 +126,26 @@ function checkErrors() {
 }
 checkErrors()
 
-// Show select for object comparison
+// Show advanced options in search form
 
-function showAdvancedOptions() {
-	// Get the output text
+	// Get the checkbox
+	let checked = document.getElementById('comparisonActivationCheck').checked
+
+	// Get the advanced options box
 	let comparisonBoxes = document.getElementsByClassName("advancedOptions");
-	// If the checkbox is checked, display the output text
-	let i;
-	for (i = 0; i < comparisonBoxes.length; i++) {
-		comparisonBoxes[i].classList.toggle("opened");
+
+	if (checked){
+		console.log('yes')
+		showAdvancedOptions()
 	}
-}
+
+	function showAdvancedOptions() {
+		// If the checkbox is checked, display the output text
+		let i;
+		for (i = 0; i < comparisonBoxes.length; i++) {
+			comparisonBoxes[i].classList.toggle("opened");
+		}
+	}
 
 // Copy url
 
@@ -226,7 +235,6 @@ function copyUrl() {
 			elementFromTop(document.querySelectorAll('.artwork'), 'focuseIn', 50, 'percent'); // as top of element hits top of viewport
 			elementFromTop(document.querySelectorAll('.artwork'), 'focuseOut', 30, 'percent');
 		}, false);
-		console.log('hello')
 	}
 	else{
 		container.addEventListener('scroll', function () {

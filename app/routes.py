@@ -7,13 +7,25 @@ import time
 # Flask
 
 from app import app
-from flask import render_template, g, flash, url_for, redirect, request
+from flask import render_template, g, url_for, redirect, request
 from flask_sitemap import Sitemap
 ext = Sitemap(app=app)
 
 # Forms
 from .forms import SearchForm
 app.config['SECRET_KEY'] = 'you-will-never-guess'
+
+# Loads SearchForm from forms.py, pre-fills fields from arguments and sets default values
+def buildSearchForm(receivedArguments={}):
+    form = SearchForm(
+        comparisonActivationCheck='True' if 'exComparisonObjects' in receivedArguments.keys() or 'exName' in receivedArguments.keys() else False,
+        searchedClassSelect=tuple(receivedArguments['exDisplayedObjects']) if 'exDisplayedObjects' in receivedArguments.keys() else None,
+        comparisonClassSelect=tuple(receivedArguments['exComparisonObjects']) if 'exComparisonObjects' in receivedArguments.keys() else None,
+        exhibitionName=receivedArguments['exName'][0] if 'exName' in receivedArguments.keys() else None,
+        dateFrom=receivedArguments['exDateFrom'][0] if 'exDateFrom' in receivedArguments.keys() else 1300,
+        dateTo=receivedArguments['exDateTo'][0] if 'exDateTo' in receivedArguments.keys() else 2020,
+    )
+    return form
 
 # After form submit it posts values into url attributes and redirect to start
 def formValidateOnSubmit(form):
@@ -51,7 +63,7 @@ def before_request():
 
 @app.route('/', methods=['GET', 'POST'])
 def intro():
-    form = SearchForm(dateTo=1900)  # Load SearForm from forms.py and set default value for dateTo SelectField
+    form = buildSearchForm()
     galleriesSum = engine.getGalleriesSum()
     museums = engine.getMuseums()
     browseExhibitions = preparedExhibitions()
@@ -75,12 +87,14 @@ def intro():
 # Returns exhibition
 @app.route('/app', methods=['GET', 'POST'])
 def exhibition():
-    form = SearchForm(dateTo=1900) # Load SearForm from forms.py and set default value for dateTo SelectField
     galleriesSum = engine.getGalleriesSum()
 
     # Extends browse exhibitions by parsed url
     browseExhibitions = preparedExhibitions()
     receivedArguments = request.args.to_dict(flat=False)
+
+    # Loads SearchForm from forms.py, pre-fills fields from arguments and sets default values
+    form = buildSearchForm(receivedArguments)
 
     # If it doesn't receive arguments it set arguments with default values of exhibition from config
     if 'exDisplayedObjects' not in receivedArguments: # Condition is based on presence of Displayed objects (not on presence of arguments because different arguments can exist)
@@ -98,11 +112,9 @@ def exhibition():
         exDateTo = int(exParams['exDateTo'][0])
         set1Name = engine.prepareName(sum(exDisplayedObjects, []))
         simpleObjectList = []  # Preparing simple list for decisions on displaying bound boxes (string compliance is required)
-        print(exDisplayedObjects)
         for objectSet in exDisplayedObjects:
             for selectedObject in objectSet:
                 simpleObjectList.append(selectedObject)
-        print(simpleObjectList)
         exhibitionsList = [{set1Name: [displayedObject for displayedObject in exDisplayedObjects]}]
 
         # tests whether data comparison objects exists in arguments
@@ -200,7 +212,7 @@ def exhibition():
 # 404
 @app.errorhandler(404)
 def page_not_found(e):
-    form = SearchForm(dateTo=1900)  # Load SearForm from forms.py and set default value for dateTo SelectField
+    form = buildSearchForm()
     galleriesSum = engine.getGalleriesSum()
     browseExhibitions = preparedExhibitions()
 
