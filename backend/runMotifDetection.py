@@ -62,22 +62,19 @@ query = {
   }
 }
 payload = {'size': 10000}
-print('Connecting to Elastic Search...')
-rawData = requests.get('https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks3/_search', auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
-rawData.encoding = 'utf-8'
-dataDict = json.loads(rawData.text)
-artworks = dataDict['hits']['hits']
-
-# Printing count of artworks in Elastic without detected objects
-if len(artworks) >= 10000:
-    print('More than 10 000 artworks for motif detection.')
-else:
-    print(str(len(artworks)) + ' artworks for motif detection.')
-
-
-
 
 # TENSOR FLOW API
+
+if resnetApiSwitch == 'y':
+    print('Connecting to Tensor Flow Resnet V2 API...')
+
+    # Imports for running inference on the TF-Hub module.
+    import tensorflow as tf
+    import tensorflow_hub as hub
+
+    # Apply module
+    module_handle = "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1" #@param ["https://tfhub.dev/google/openimages_v4/ssd/mobilenet_v2/1", "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1"]
+    detector = hub.load(module_handle).signatures['default']
 
 def resnetMotifsDetection(imageFile):
     # For downloading the image.
@@ -128,18 +125,16 @@ def resnetMotifsDetection(imageFile):
     print(resnetDetectedMotifs)
     return resnetDetectedMotifs
 
-if resnetApiSwitch == 'y':
-    print('Connecting to Tensor Flow Resnet V2 API...')
-
-    # Imports for running inference on the TF-Hub module.
-    import tensorflow as tf
-    import tensorflow_hub as hub
-
-    # Apply module
-    module_handle = "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1" #@param ["https://tfhub.dev/google/openimages_v4/ssd/mobilenet_v2/1", "https://tfhub.dev/google/faster_rcnn/openimages_v4/inception_resnet_v2/1"]
-    detector = hub.load(module_handle).signatures['default']
 
 # GOOGLE VISION ICONOGRAPHY
+
+if iconographyApiSwitch == 'y':
+    print('Connecting to Google Vision Iconography API')
+
+    from google.cloud import automl
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="../"+config.googleCredentialsKey
+    project_id = "tfcurator"
+    model_id = "IOD6098856858854883328"
 
 def iconographyMotifsDetection(imageFile):
     start_time = time.time()
@@ -192,69 +187,90 @@ def iconographyMotifsDetection(imageFile):
     print(iconographyDetectedMotifs)
     return iconographyDetectedMotifs
 
-if iconographyApiSwitch == 'y':
-    print('Connecting to Google Vision Iconography API')
 
-    from google.cloud import automl
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="../"+config.googleCredentialsKey
-    project_id = "tfcurator"
-    model_id = "IOD6098856858854883328"
 
-# ITERATING THROUGH ARTWORK LIST
-counter = 0
-for artwork in artworks:
-    print('artwork '+ str(counter))
-    now = datetime.now()
-    now = now.strftime("%Y-%m-%dT%H:%M:%SZ") # preparing time in elastic format
-    print(now)
+# RUN DETECTION FUNCTION DEFINITION
 
-    try:
-        imageUrl = 'https://storage.googleapis.com/tfcurator-artworks/artworks-all/'+artwork['_id']+'.jpg' # Creating img url from artwork id
-        imageFileName = 'temp/'+artwork['_id']+'.jpg' # Creating image file name from artwork id
-        urllib.request.urlretrieve(imageUrl, imageFileName) # Downloading image from url and saving to file name
-        pilImage = Image.open(imageFileName)  # Converting to PIL image file
-        print(imageUrl)
+def runDetection():
+    counter = 0
 
-        # load current detected motifs or create new
-        if 'detected_motifs' in artwork['_source']:
-            detectedMotifs = artwork['_source']['detected_motifs']
-        else:
-            detectedMotifs = []
+    # Downloading artworks from Elastic with a query prepared above
+    print('Connecting to Elastic Search...')
+    rawData = requests.get('https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks3/_search',auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
+    rawData.encoding = 'utf-8'
+    dataDict = json.loads(rawData.text)
+    artworks = dataDict['hits']['hits']
 
-        # call TF Resnet and Google Iconography API by user selection in inputs
-        if resnetApiSwitch == 'y':
-            # It removes detected motifs with Resnet V2 detector which have been detected in the past
-            detectedMotifs = [motif for motif in detectedMotifs if motif['detector'] != 'Resnet V2']
-            # It calls detector and it adds newly detected motifs
-            detectedMotifs += resnetMotifsDetection(pilImage)
-        if iconographyApiSwitch == 'y':
-            # It removes detected motifs with Iconography detector which have been detected in the past
-            detectedMotifs = [motif for motif in detectedMotifs if motif['detector'] != 'Iconography']
-            # It calls detector and it adds newly detected motifs
-            detectedMotifs += iconographyMotifsDetection(imageFileName)
+    # Printing count of artworks in Elastic without detected objects
+    if len(artworks) >= 10000:
+        print('More than 10 000 artworks for motif detection.')
+    else:
+        print(str(len(artworks)) + ' artworks for motif detection.')
 
-        # Preparing json for upload and calling Tensor Flow Resnet object detection
+    # Iterating threw artworks list and calling motifs detectors
+    for artwork in artworks:
+        print('artwork '+ str(counter))
+        now = datetime.now()
+        now = now.strftime("%Y-%m-%dT%H:%M:%SZ") # preparing time in elastic format
+        print(now)
 
-        documentData = {
-            "doc": {
-                "detected_motifs": detectedMotifs
-            },
-            "doc_as_upsert": True
-        }
-        if resnetApiSwitch == 'y':
-            documentData['doc']["resnet_v2_motifs_updated"] = now
-        if iconographyApiSwitch == 'y':
-            documentData['doc']["iconography_motifs_updated"] = now
+        try:
+            imageUrl = 'https://storage.googleapis.com/tfcurator-artworks/artworks-all/'+artwork['_id']+'.jpg' # Creating img url from artwork id
+            imageFileName = 'temp/'+artwork['_id']+'.jpg' # Creating image file name from artwork id
+            urllib.request.urlretrieve(imageUrl, imageFileName) # Downloading image from url and saving to file name
+            pilImage = Image.open(imageFileName)  # Converting to PIL image file
+            print(imageUrl)
 
-        print('Detected motifs at '+ imageUrl +' :' + str(documentData))
-        writeToElastic(artwork['_id'], documentData) # Writing to Digital Curator Elastic Search DB
-        os.remove(imageFileName) # Removing image
-    except Exception as e:
-        print("type error: " + str(e))
-        pass
+            # load current detected motifs or create new
+            if 'detected_motifs' in artwork['_source']:
+                detectedMotifs = artwork['_source']['detected_motifs']
+            else:
+                detectedMotifs = []
 
-    counter += 1
-    print('----------')
+            # call TF Resnet and Google Iconography API by user selection in inputs
+            if resnetApiSwitch == 'y':
+                # It removes detected motifs with Resnet V2 detector which have been detected in the past
+                detectedMotifs = [motif for motif in detectedMotifs if motif['detector'] != 'Resnet V2']
+                # It calls detector and it adds newly detected motifs
+                detectedMotifs += resnetMotifsDetection(pilImage)
+            if iconographyApiSwitch == 'y':
+                # It removes detected motifs with Iconography detector which have been detected in the past
+                detectedMotifs = [motif for motif in detectedMotifs if motif['detector'] != 'Iconography']
+                # It calls detector and it adds newly detected motifs
+                detectedMotifs += iconographyMotifsDetection(imageFileName)
+
+            # Preparing json for upload and calling Tensor Flow Resnet object detection
+
+            documentData = {
+                "doc": {
+                    "detected_motifs": detectedMotifs
+                },
+                "doc_as_upsert": True
+            }
+            if resnetApiSwitch == 'y':
+                documentData['doc']["resnet_v2_motifs_updated"] = now
+            if iconographyApiSwitch == 'y':
+                documentData['doc']["iconography_motifs_updated"] = now
+
+            print('Detected motifs at '+ imageUrl +' :' + str(documentData))
+            writeToElastic(artwork['_id'], documentData) # Writing to Digital Curator Elastic Search DB
+            os.remove(imageFileName) # Removing image
+        except Exception as e:
+            print("type error: " + str(e))
+            pass
+
+        counter += 1
+        print('----------')
+    return len(artworks)
+
+# CALLING RUN DETECTION
+
+# Each round should detect and write motifs for 10 000 artworks
+for i in range(50):
+    notDetectedArtworks = runDetection()
+    if notDetectedArtworks > 100:
+        break
+
 
 
 
