@@ -5,47 +5,64 @@ import requests
 from requests.auth import HTTPBasicAuth
 import urllib.request
 import os
+import time
 from PIL import Image
 from datetime import datetime
 
 
-'''
-# TEST MOTIF DETECTION ON LOCAL IMAGES
-print(resnetMotifsDetection(Image.open('temp/WU-SVK-GMB-C-411.jpg')))
-print(resnetMotifsDetection(Image.open('temp/WU-SVK-GMB-C-4260.jpg')))
-print(resnetMotifsDetection(Image.open('temp/WU-CZE-4RG-O0090.jpg')))
-'''
+# PREPARING QUERY TO ELASTICSEARCH
 
+queryConditions = [
 
-# CONNECTION TO ELASTIC SEARCH
-lastTimeSwitch = input('Set time threshold in format "2023-01-01T23:59:00Z". All artworks with an older update time will be selected:') or '2023-01-01T23:59:00Z'
-print('Connecting to Elastic Search...')
-
-# Query returning artworks without detected motifs or with an older date of updating
-query = {
-  "query": {
-    "bool": {
-      "must": [
-        {
-          "bool": {
-            "should": [
-                {"bool": {"must_not": {"exists": {"field": "detected_motifs"}}}},
-                {"range": {"resnet_v2_motifs_updated": {"lte": lastTimeSwitch}}},
-                {"range": {"iconography_motifs_updated": {"lte": lastTimeSwitch}}}
-            ]
-          }
-        },
         {
           "bool": {
             "should": config.supportedWorkTypes
           }
         }
       ]
+
+
+# SET PART OF QUERY CONDITION WITH RULES FOR RESNET V2 API
+resnetApiSwitch = input('Use Tensor Flow Resnet V2 detection? y/n:')
+if resnetApiSwitch =='y':
+    resnetTimeTreshold = input('Set time threshold for Resnet V2 in format "2023-01-01T23:59:00Z". All artworks with an older update time will be selected:') or '2000-01-01T23:59:00Z'
+    queryConditions.append(
+        {
+          "bool": {
+            "should": [
+                {"bool": {"must_not": {"exists": {"field": "resnet_v2_motifs_updated"}}}},
+                {"range": {"resnet_v2_motifs_updated": {"lte": resnetTimeTreshold}}},
+            ]
+          }
+        },
+    )
+
+# SET PART OF QUERY CONDITION WITH RULES FOR GOOGLE ICONOGRAPHY API
+iconographyApiSwitch = input('Use Google Vision Iconography detection? y/n:')
+if iconographyApiSwitch == 'y':
+    iconographyTimeTreshold = input('Set time threshold for Google Iconography in format "2023-01-01T23:59:00Z". All artworks with an older update time will be selected:') or '2000-01-01T23:59:00Z'
+    queryConditions.append(
+        {
+            "bool": {
+                "should": [
+                    {"bool": {"must_not": {"exists": {"field": "iconography_motifs_updated"}}}},
+                    {"range": {"iconography_motifs_updated": {"lte": iconographyTimeTreshold}}}
+                ]
+            }
+        },
+    )
+
+
+# COMPLETING QUERY
+query = {
+  "query": {
+    "bool": {
+      "must": queryConditions
     }
   }
 }
-
 payload = {'size': 10000}
+print('Connecting to Elastic Search...')
 rawData = requests.get('https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks3/_search', auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
 rawData.encoding = 'utf-8'
 dataDict = json.loads(rawData.text)
@@ -62,16 +79,11 @@ else:
 
 # TENSOR FLOW API
 
-resnetApiSwitch = input('Use Tensor Flow Resnet V2 detection? y/n:')
-
 def resnetMotifsDetection(imageFile):
     # For downloading the image.
     import tempfile
     from PIL import Image
     from PIL import ImageOps
-
-    # For measuring the inference time.
-    import time
 
     # Download and resize image
 
@@ -128,9 +140,9 @@ if resnetApiSwitch == 'y':
     detector = hub.load(module_handle).signatures['default']
 
 # GOOGLE VISION ICONOGRAPHY
-iconographyApiSwitch = input('Use Google Vision Iconography detection? y/n:')
 
 def iconographyMotifsDetection(imageFile):
+    start_time = time.time()
     file_path = imageFile
     prediction_client = automl.PredictionServiceClient()
 
@@ -147,7 +159,7 @@ def iconographyMotifsDetection(imageFile):
     # params is additional domain-specific parameters.
     # score_threshold is used to filter the result
     # https://cloud.google.com/automl/docs/reference/rpc/google.cloud.automl.v1#predictrequest
-    params = {"score_threshold": "0.1"}
+    params = {"score_threshold": "0.25"}
 
     request = automl.PredictRequest(name=model_full_id, payload=payload, params=params)
     response = prediction_client.predict(request=request)
@@ -171,6 +183,7 @@ def iconographyMotifsDetection(imageFile):
                                         'detector': 'Iconography',
                                         })
         print("Found %d motifs." % len(detectedMotifs))
+        end_time = time.time()
         print("Inference time: ", end_time - start_time)
         return detectedMotifs
 
@@ -185,10 +198,9 @@ if iconographyApiSwitch == 'y':
     from google.cloud import automl
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="../"+config.googleCredentialsKey
     project_id = "tfcurator"
-    model_id = "IOD6455569217230995456"
+    model_id = "IOD6098856858854883328"
 
 # ITERATING THROUGH ARTWORK LIST
-appendSwitch = input('Append or overwrite current motifs? a = append, o = overwrite:')
 counter = 0
 for artwork in artworks:
     print('artwork '+ str(counter))
@@ -203,18 +215,22 @@ for artwork in artworks:
         pilImage = Image.open(imageFileName)  # Converting to PIL image file
         print(imageUrl)
 
-        # load current detected motifs or overwrite it (by user selection in appendSwitch)
-
-        if 'detected_motifs' in artwork['_source'].keys() and appendSwitch == 'a':
+        # load current detected motifs or create new
+        if 'detected_motifs' in artwork['_source']:
             detectedMotifs = artwork['_source']['detected_motifs']
         else:
             detectedMotifs = []
 
-        # call TF and Google API by user selection in inputs
-
+        # call TF Resnet and Google Iconography API by user selection in inputs
         if resnetApiSwitch == 'y':
+            # It removes detected motifs with Resnet V2 detector which have been detected in the past
+            detectedMotifs = [motif for motif in detectedMotifs if motif['detector'] != 'Resnet V2']
+            # It calls detector and it adds newly detected motifs
             detectedMotifs += resnetMotifsDetection(pilImage)
         if iconographyApiSwitch == 'y':
+            # It removes detected motifs with Iconography detector which have been detected in the past
+            detectedMotifs = [motif for motif in detectedMotifs if motif['detector'] != 'Iconography']
+            # It calls detector and it adds newly detected motifs
             detectedMotifs += iconographyMotifsDetection(imageFileName)
 
         # Preparing json for upload and calling Tensor Flow Resnet object detection
@@ -233,8 +249,8 @@ for artwork in artworks:
         print('Detected motifs at '+ imageUrl +' :' + str(documentData))
         writeToElastic(artwork['_id'], documentData) # Writing to Digital Curator Elastic Search DB
         os.remove(imageFileName) # Removing image
-    except:
-        print('An error occurred')
+    except Exception as e:
+        print("type error: " + str(e))
         pass
 
     counter += 1
