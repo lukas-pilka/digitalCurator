@@ -126,27 +126,6 @@ function checkErrors() {
 }
 checkErrors()
 
-// Show advanced options in search form
-
-	// Get the checkbox
-	let checked = document.getElementById('comparisonActivationCheck').checked
-
-	// Get the advanced options box
-	let comparisonBoxes = document.getElementsByClassName("advancedOptions");
-
-	if (checked){
-		console.log('yes')
-		showAdvancedOptions()
-	}
-
-	function showAdvancedOptions() {
-		// If the checkbox is checked, display the output text
-		let i;
-		for (i = 0; i < comparisonBoxes.length; i++) {
-			comparisonBoxes[i].classList.toggle("opened");
-		}
-	}
-
 // Copy url
 
 function copyUrl() {

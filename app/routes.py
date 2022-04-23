@@ -17,10 +17,17 @@ app.config['SECRET_KEY'] = 'you-will-never-guess'
 
 # Loads SearchForm from forms.py, pre-fills fields from arguments and sets default values
 def buildSearchForm(receivedArguments={}):
+
+    # The structure of the arguments can be different depending on whether it is a user query or an exhibition defined in config. This unifies it into a single level list.
+    parsedArguments = []
+    if 'exDisplayedObjects' in receivedArguments.keys():
+        for motifsString in receivedArguments['exDisplayedObjects']:
+            motifsList = motifsString.strip('][').split(', ')
+            for motif in motifsList:
+                parsedArguments.append(motif.strip("''"))
+
     form = SearchForm(
-        comparisonActivationCheck='True' if 'exComparisonObjects' in receivedArguments.keys() or 'exName' in receivedArguments.keys() else False,
-        searchedClassSelect=tuple(receivedArguments['exDisplayedObjects']) if 'exDisplayedObjects' in receivedArguments.keys() else None,
-        comparisonClassSelect=tuple(receivedArguments['exComparisonObjects']) if 'exComparisonObjects' in receivedArguments.keys() else None,
+        searchedClassSelect=tuple(parsedArguments) if len(parsedArguments) > 0 else None,
         exhibitionName=receivedArguments['exName'][0] if 'exName' in receivedArguments.keys() else None,
         dateFrom=receivedArguments['exDateFrom'][0] if 'exDateFrom' in receivedArguments.keys() else 1300,
         dateTo=receivedArguments['exDateTo'][0] if 'exDateTo' in receivedArguments.keys() else 2020,
@@ -39,9 +46,6 @@ def formValidateOnSubmit(form):
     exDateTo = form.dateTo.data  # Loads exDateTo from select
     url = url_for('exhibition', exName=exName, exDisplayedObjects=exDisplayedObjects,
                   exComparisonObjects=exComparisonObjects, exDateFrom=exDateFrom, exDateTo=exDateTo)
-    print('---------------------')
-    print(exDisplayedObjects)
-    print(url)
     return url
 
 # Preparing exhibition showcase predefined exhibitions
@@ -155,7 +159,6 @@ def exhibition():
             alreadyUsedTags = []
             limitCounter = 0
             for detectedObject in artwork['_source']['detected_motifs']:
-                print(detectedObject['object'] + ' ' + str(detectedObject['boundBox']))
                 if detectedObject['object'] not in alreadyUsedTags and detectedObject['object'] not in config.classesBlackList:
                     tagSetName = 'Image of the ' + str(detectedObject['object'])
                     arguments = {'exName': tagSetName, 'exDateFrom': dateFrom, 'exDateTo': dateTo,

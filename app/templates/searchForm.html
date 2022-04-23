@@ -44,17 +44,13 @@
             </div>
         </div>
         <div class="fieldBox">
-            {{ form.comparisonActivationCheck(onchange="showAdvancedOptions()") }}
-            <label for="comparisonActivationCheck">Show advanced options</label>
-        </div>
-        <div class="advancedOptions">
-            <div class="fieldBox">
                 {{ form.exhibitionName.label }}
                 {{ form.exhibitionName(class_="Proceed")}}
                 {% for error in form.exhibitionName.errors %}
                 <span class="errorMessage">{{ error }}</span>
                 {% endfor %}
             </div>
+            <!--
             <div id="comparisonClassBox" class="fieldBox comparisonClassBox">
                 {{ form.comparisonClassSelect.label }}
                 {{ form.comparisonClassSelect(class_="selectMultiple comparisonClassSelect")}}
@@ -62,7 +58,7 @@
                 <span class="errorMessage">{{ error }}</span>
                 {% endfor %}
             </div>
-        </div>
+            -->
         <div class="fieldBox">
             {{ form.submit(class_="primaryButton mediumButton") }}
         </div>
