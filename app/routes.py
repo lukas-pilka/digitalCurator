@@ -149,13 +149,13 @@ def exhibition():
             # Sort original list of detected objects by their score
             def sortByScore(detectedObject):
                 return detectedObject['score']
-            artwork['_source']['detected_objects'].sort(key=sortByScore, reverse=True)
+            artwork['_source']['detected_motifs'].sort(key=sortByScore, reverse=True)
 
             relatedTags = []
             alreadyUsedTags = []
             limitCounter = 0
-            for detectedObject in artwork['_source']['detected_objects']:
-                #print(detectedObject['object'] +' ' + str(detectedObject['score']))
+            for detectedObject in artwork['_source']['detected_motifs']:
+                print(detectedObject['object'] + ' ' + str(detectedObject['boundBox']))
                 if detectedObject['object'] not in alreadyUsedTags and detectedObject['object'] not in config.classesBlackList:
                     tagSetName = 'Image of the ' + str(detectedObject['object'])
                     arguments = {'exName': tagSetName, 'exDateFrom': dateFrom, 'exDateTo': dateTo,

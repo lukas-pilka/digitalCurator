@@ -37,6 +37,6 @@ def writeToElastic(documentId, documentData):
 
     payload = ''
     data = requests.post(
-        'https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks3/_update/' + documentId,
+        'https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks_alias/_update/' + documentId,
         auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=documentData)
     print('Successfully posted to the Elastic Search database!')

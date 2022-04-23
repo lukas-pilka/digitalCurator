@@ -78,7 +78,7 @@
         <div class="imageContainer">
             <img src="{{titleImage._source.image_url}}">
             <div class="boundBoxes">
-                {% for detectedObject in titleImage._source.detected_objects %}
+                {% for detectedObject in titleImage._source.detected_motifs %}
                     {% for selectedObject in simpleObjectList %}
                         {% if selectedObject == detectedObject['object'] %}
                             <div class="boundBox" style="left:{{ detectedObject.boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
@@ -142,7 +142,7 @@
                         <div class="boundBoxes">
 
                             <!-- unpacking boundboxes-->
-                            {% for detectedObject in artwork._source.detected_objects %}
+                            {% for detectedObject in artwork._source.detected_motifs %}
                                 {% for selectedObject in simpleObjectList %}
                                     {% if selectedObject == detectedObject['object'] %}
                                         <div class="boundBox" style="left:{{ detectedObject .boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">

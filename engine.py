@@ -9,7 +9,7 @@ import config
 def callElastic(query):
     payload = ""
     rawData = requests.get(
-        'https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks/_search',
+        'https://66f07727639d4755971f5173fb60e420.europe-west3.gcp.cloud.es.io:9243/artworks_alias/_search',
         auth=HTTPBasicAuth(config.userDcElastic, config.passDcElastic), params=payload, json=query)
     rawData.encoding = 'utf-8'
     dataDict = json.loads(rawData.text)
@@ -59,12 +59,12 @@ def prepareExhibitionKeywordQuery(exhibition):
             keywordsQuery.append(
                 {
                     "nested": {
-                        "path": "detected_objects",
+                        "path": "detected_motifs",
                         "query": {
                             "bool": {
                                 "must": [
-                                    {"match": {"detected_objects.object": keyword}},
-                                    {"range": {"detected_objects.score": {"gt": config.scoreThreshold}}}
+                                    {"match": {"detected_motifs.object": keyword}},
+                                    {"range": {"detected_motifs.score": {"gt": config.scoreThreshold}}}
                                 ]
                             }
                         }
@@ -116,9 +116,9 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
             "_source": {
                 "includes": [
                     "_id",
-                    "detected_objects.object",
-                    "detected_objects.score",
-                    "detected_objects.boundBox",
+                    "detected_motifs.object",
+                    "detected_motifs.score",
+                    "detected_motifs.boundBox",
                     "title",
                     "author",
                     "gallery",
@@ -144,7 +144,7 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
             artwork['_source']['image_url'] = imageUrl
 
             # rounds object score
-            for object in artwork['_source']['detected_objects']:
+            for object in artwork['_source']['detected_motifs']:
                 object['score'] = round(object['score'], 2)
 
             # selects searched object with highest score on image and saves it to topElementaryObjectScoreSum (It's useful for sorting)
@@ -156,14 +156,14 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
                 for elementaryObject in elementaryObjects:
 
                     topElementaryObjectScore = 0
-                    for detectedObject in artwork['_source']['detected_objects']:
+                    for detectedObject in artwork['_source']['detected_motifs']:
                         if elementaryObject == detectedObject['object'] and detectedObject['score'] >= topElementaryObjectScore: # If it searched elementaryObject and if is higher than topElementaryObjectScore
                             topElementaryObjectScore = detectedObject['score']
 
                     searchedObjectsScore.append(topElementaryObjectScore)
                     #print(elementaryObject, topElementaryObjectScore)
 
-            artwork['_source']['searched_object'] = exhibitionName
+            artwork['_source']['searched_motif'] = exhibitionName
             artwork['_source']['average_score'] = round(sum(searchedObjectsScore) / len(searchedObjectsScore), 2) # get percents
             expandedArtworks.append(artwork)
 
@@ -320,19 +320,19 @@ def getDetectedObjectsList():
             }
         },
         "aggs": {
-            "detected_objects_list": {
+            "detected_motifs_list": {
                 "nested": {
-                    "path": "detected_objects"
+                    "path": "detected_motifs"
                 },
                 "aggs": {
-                    "object_categories": {
+                    "motif_categories": {
                         "filter": {
-                            "range": {"detected_objects.score": {"gt": config.scoreThreshold}}
+                            "range": {"detected_motifs.score": {"gt": config.scoreThreshold}}
                         },
                         "aggs": {
                             "filtered_by_threshold":{
                                 "terms": {
-                                    "field": "detected_objects.object.keyword",
+                                    "field": "detected_motifs.object.keyword",
                                     "size": 10000
                                 },
                                 "aggs": {
@@ -347,7 +347,7 @@ def getDetectedObjectsList():
             }
         }
     }
-    detectedObjectClassesList = callElastic(collectionsQuery)['aggregations']['detected_objects_list']['object_categories']['filtered_by_threshold']['buckets']
+    detectedObjectClassesList = callElastic(collectionsQuery)['aggregations']['detected_motifs_list']['motif_categories']['filtered_by_threshold']['buckets']
     tuplesClassesList = []
     for objectClass in detectedObjectClassesList:
         if objectClass['key'] not in config.classesBlackList:
