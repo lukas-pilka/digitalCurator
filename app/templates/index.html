@@ -159,7 +159,11 @@
                         <p class="museumInfo">
                             <strong>{{ artwork._source.title }}</strong> <br>
                             {% if artwork._source.author is defined %}
-                                {{ artwork._source.author[0] }}<br>
+                                {% if artwork._source.author is string %}
+                                    {{ artwork._source.author }}<br>
+                                {% else %}
+                                    {{ artwork._source.author[0] }}<br>
+                                {% endif %}
                             {% endif %}
                             {% if artwork._source.date_earliest == artwork._source.date_latest %}
                                 {{ artwork._source.date_earliest }}

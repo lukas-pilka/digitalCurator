@@ -249,7 +249,6 @@ a:hover{
 .artworkDescription .generatedInfo{
     font-size: 0.875rem;
     color: #AB8B62;
-    opacity: 0;
 }
 .boundBox{
     border:2px solid #ffffff;
@@ -281,12 +280,10 @@ a:hover{
 .boundbox:nth-child(19) {transition: 0.25s 1.8s ease;}
 .boundbox:nth-child(20) {transition: 0.25s 1.9s ease;}
 
-.artwork.focuseIn .boundBox,
-.artwork.focuseIn .generatedInfo{
+.artwork.focuseIn .boundBox{
     opacity: 1;
 }
-.artwork.focuseIn.focuseOut .boundBox,
-.artwork.focuseIn.focuseOut .generatedInfo{
+.artwork.focuseIn.focuseOut .boundBox{
     opacity: 0;
 }
 .boundBox p{
