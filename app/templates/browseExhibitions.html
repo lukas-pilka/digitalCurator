@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container" id="container">
+    <section class="mainSection browseExhibition">
+        <div class="introPart introTitle">
+            <h1>Browse generated exhibitions</h1>
+        </div>
+        <div class="exhibitionList">
+            {% for exhibition in browseExhibitions %}
+                    <a href="{{exhibition.url}}" class="exhibitionPreview">
+                        <div class="previewImage" style="background-image:url({{exhibition.coverImage}})"></div>
+                        <div class="previewInfo">
+                            <h4>{{exhibition['name']}}</h4>
+                            <span>{{ exhibition['dateFrom'] }} - {{ exhibition['dateTo']}}<span>
+                        </div>
+                    </a>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+{% endblock %}

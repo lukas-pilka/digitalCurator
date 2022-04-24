@@ -33,6 +33,7 @@ h3,
     margin: 0 0 1.125rem 0;
     font-size: 1.125rem;
     line-height: 1.5;
+    max-width: 50rem;
     font-family: 'Playfair Display', serif;
 }
 h4
@@ -325,14 +326,14 @@ a:hover{
     height: 100vh;
     z-index: 5;
     background-color: #111111;
-    opacity: 0.5;
-    visibility: visible;
+    opacity: 0;
     transition: opacity 0.5s, visibility 0.5s;
     display: block;
-}
-.hidden.menuCover{
-    opacity: 0;
     visibility: hidden;
+}
+.menuCover.opened{
+    opacity: 0.5;
+    visibility: visible;
 }
 .mainMenu{
     position: fixed;
@@ -353,11 +354,6 @@ a:hover{
     text-decoration: none;
     color: #ffffff;
 }
-.menuIcon{
-    position: absolute;
-    top:0;
-    right: 0;
-}
 .menuLink{
     padding: 1.5rem 2rem;
     line-height: 1rem;
@@ -376,13 +372,32 @@ a:hover{
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 1.5rem 1.5rem;
-    background-color: #111111;
-    display: block;
     box-sizing: border-box;
+    display: none;
 }
-.menuIcon.menu{background-image: url("../images/icon-menu-white.svg");}
-.menuIcon.menu.opened{background-image: url("../images/icon-close-white.svg");}
+.menuIcon.openMenu,
+.menuIcon.closeMenu{
+    position: absolute;
+    top:0;
+    right: 4rem;
+}
+.menuIcon.openSearch,
+.menuIcon.closeSearch{
+    position: absolute;
+    top:0;
+    right: 0;
+}
+.menuIcon.openMenu{background-image: url("../images/icon-menu-white.svg");}
+.menuIcon.closeMenu{background-image: url("../images/icon-close-white.svg");}
+.menuIcon.openSearch{background-image: url("../images/icon-search-white.svg");}
+.menuIcon.closeSearch{background-image: url("../images/icon-close-white.svg");}
 .menuIcon.back{background-image: url("../images/icon-arrow-white.svg");}
+
+.menuIcon.visible{
+    display: block;
+}
+
+
 
 .menuIcon span{
     display: none;
@@ -699,12 +714,15 @@ label{
 
 /* browse exhibitions */
 
+.browseExhibition{
+    color: #ffffff;
+}
 .exhibitionList{
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
-    margin-top:9rem;
 }
 .exhibitionPreview{
     position: relative;
@@ -744,6 +762,14 @@ label{
 }
 
 /* browse exhibitions end */
+
+/* info page */
+
+.infoPage{
+    color: #ffffff;
+}
+
+/* info page end */
 
 /* sharing panel start */
 

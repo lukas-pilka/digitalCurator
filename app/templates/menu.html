@@ -1,47 +1,26 @@
 
-<a onclick="return openMenu();" class="menuCover hidden" id="menuCover"></a>
+<!-- background menu cover -->
+<a onclick="return closeMenu(), closeSearch();" class="menuCover" id="menuCover"></a>
+
+<!-- main menu -->
 <nav class="mainMenu" id="mainMenu">
     <section class="menuFirstLevel">
         <a href="/" class="projectLogo">DigitalCurator.art</a>
-        <a onclick="return openMenu();" class="menuIcon menu jsMenuIcon" id="jsMenuIcon"><span>Menu</span></a>
+        <a onclick="openMenu();" class="menuIcon openMenu jsMenuIcon visible" id="jsOpenMenu"><span>Menu</span></a>
+        <a onclick="closeMenu();" class="menuIcon closeMenu jsMenuIcon" id="jsCloseMenu"><span>Menu</span></a>
+        <a onclick="openSearch();" class="menuIcon openSearch jsSearchIcon visible" id="jsOpenSearch"><span>Menu</span></a>
+        <a onclick="closeSearch();" class="menuIcon closeSearch jsSearchIcon" id="jsCloseSearch"><span>Menu</span></a>
     </section>
     <section class="menuSecondLevel" id="menuSecondLevel">
-        <a onclick="return openSearch();" class="menuLink">Select motifs</a>
-        <a onclick="return openShowcase();" class="menuLink">Browse exhibitions</a>
-        <a onclick="return openAbout();" class="menuLink">About project</a>
-        <a onclick="return openJoinUs();" class="menuLink">Join us</a>
+        <a href="/" class="menuLink">Entrance</a>
+        <a href="/browseexhibitions" class="menuLink">Browse exhibitions</a>
+        <a href="/aboutproject" class="menuLink">About project</a>
+        <a href="/joinus" class="menuLink">Join us</a>
     </section>
     <section class="menuThirdLevel" id="jsSearchWindow" >
-        <div class="windowBackRow">
-            <a onclick="openSearch()" class="menuIcon back"><span>Close</span></a>
-        </div>
         <div class="windowContent">
             {% block message %}{% endblock %}
             {% include "searchForm.html" %}
-        </div>
-    </section>
-    <section class="menuThirdLevel" id="jsShowcase">
-        <div class="windowBackRow">
-            <a onclick="openShowcase()" class="menuIcon back"><span>Close</span></a>
-        </div>
-        <div class="windowContent">
-            {% include "showcase.html" %}
-        </div>
-    </section>
-    <section class="menuThirdLevel" id="jsAboutWindow">
-        <div class="windowBackRow">
-            <a onclick="openAbout()" class="menuIcon back"><span>Close</span></a>
-        </div>
-        <div class="windowContent">
-            {% include "aboutProject.html" %}
-        </div>
-    </section>
-    <section class="menuThirdLevel" id="jsJoinUsWindow">
-        <div class="windowBackRow">
-            <a onclick="openJoinUs()" class="menuIcon back"><span>Close</span></a>
-        </div>
-        <div class="windowContent">
-            {% include "joinUs.html" %}
         </div>
     </section>
 </nav>

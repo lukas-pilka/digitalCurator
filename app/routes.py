@@ -212,6 +212,75 @@ def exhibition():
                                simpleObjectList=simpleObjectList,
                                )
 
+# Browse exhibitions
+@app.route('/browseexhibitions', methods=['GET', 'POST'])
+def browseExhibitions():
+    form = buildSearchForm()
+    galleriesSum = engine.getGalleriesSum()
+    museums = engine.getMuseums()
+    browseExhibitions = preparedExhibitions()
+    titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
+
+    # form submit calls function defined above
+    if form.validate_on_submit():
+        url = formValidateOnSubmit(form)
+        return redirect(url)
+
+    return render_template('browseExhibitions.html',
+                           galleriesSum=galleriesSum,
+                           museums=museums,
+                           browseExhibitions=browseExhibitions,
+                           titleImage=titleImage,
+                           form=form,
+                           intro=True,
+                           )
+
+# About project
+@app.route('/aboutproject', methods=['GET', 'POST'])
+def aboutProject():
+    form = buildSearchForm()
+    galleriesSum = engine.getGalleriesSum()
+    museums = engine.getMuseums()
+    browseExhibitions = preparedExhibitions()
+    titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
+
+    # form submit calls function defined above
+    if form.validate_on_submit():
+        url = formValidateOnSubmit(form)
+        return redirect(url)
+
+    return render_template('aboutProject.html',
+                           galleriesSum=galleriesSum,
+                           museums=museums,
+                           browseExhibitions=browseExhibitions,
+                           titleImage=titleImage,
+                           form=form,
+                           intro=True,
+                           )
+
+# Join us
+@app.route('/joinus', methods=['GET', 'POST'])
+def joinUs():
+    form = buildSearchForm()
+    galleriesSum = engine.getGalleriesSum()
+    museums = engine.getMuseums()
+    browseExhibitions = preparedExhibitions()
+    titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
+
+    # form submit calls function defined above
+    if form.validate_on_submit():
+        url = formValidateOnSubmit(form)
+        return redirect(url)
+
+    return render_template('joinUs.html',
+                           galleriesSum=galleriesSum,
+                           museums=museums,
+                           browseExhibitions=browseExhibitions,
+                           titleImage=titleImage,
+                           form=form,
+                           intro=True,
+                           )
+
 # 404
 @app.errorhandler(404)
 def page_not_found(e):

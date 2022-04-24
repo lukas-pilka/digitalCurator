@@ -1,14 +1,25 @@
-<h1>Join us</h1>
-<p class="subtitle">Digital Curator is a non-profit project that aims to make art collections more accessible and inspiring for everyone.</p>
-<p><strong>Museums and collectors</strong></p>
-<p>Do you want to share your digitized collection through Digital Curator? <br><a href="mailto:hello.lukas.pilka@gmail.com?subject=Digital Curator support">Get in touch!</a></p>
-<br>
-<p><strong>Developers and designers</strong></p>
-<p>The Digital Curator backlog is full of ideas and suggestions that we need help with. Do you want to contribute to the development of this open source application? <br><a href="mailto:hello.lukas.pilka@gmail.com?subject=Digital Curator support">Get in touch!</a></p>
-<br>
-<p><strong>Art lovers</strong></p>
-<p>From data preparation to dealing with institutions. There's a lot of work around Digital Curator that doesn't require any special technical skills. <br><a href="mailto:hello.lukas.pilka@gmail.com?subject=Digital Curator support">Get in touch!</a></p>
-<br>
-<p><strong>Patrons</strong></p>
-<p>Financial contributions will help us with the development of the app, the creation of the artwork database, and the operation of the technical infrastructure. Can you support us? <br><a href="mailto:hello.lukas.pilka@gmail.com?subject=Digital Curator support">Get in touch!</a></p>
-<br>
+{% extends "base.html" %}
+{% block content %}
+
+<section class="mainSection infoPage">
+    <h1>Join us</h1>
+    <p class="subtitle">Digital Curator is a non-profit project that aims to make art collections more accessible and inspiring for everyone.</p>
+    <div class="joinUsArgument">
+        <p><strong>Museums and collectors</strong></p>
+        <p>Do you want to share your digitized collection through Digital Curator? <br><a href="mailto:hello.lukas.pilka@gmail.com?subject=Digital Curator support">Get in touch!</a></p>
+    </div>
+    <div class="joinUsArgument">
+        <p><strong>Developers and designers</strong></p>
+        <p>The Digital Curator backlog is full of ideas and suggestions that we need help with. Do you want to contribute to the development of this open source application? <br><a href="mailto:hello.lukas.pilka@gmail.com?subject=Digital Curator support">Get in touch!</a></p>
+    </div>
+    <div class="joinUsArgument">
+        <p><strong>Art lovers</strong></p>
+    <p>From data preparation to dealing with institutions. There's a lot of work around Digital Curator that doesn't require any special technical skills. <br><a href="mailto:hello.lukas.pilka@gmail.com?subject=Digital Curator support">Get in touch!</a></p>
+    </div>
+    <div class="joinUsArgument">
+        <p><strong>Patrons</strong></p>
+        <p>Financial contributions will help us with the development of the app, the creation of the artwork database, and the operation of the technical infrastructure. Can you support us? <br><a href="mailto:hello.lukas.pilka@gmail.com?subject=Digital Curator support">Get in touch!</a></p>
+    </div>
+</section>
+
+{% endblock %}

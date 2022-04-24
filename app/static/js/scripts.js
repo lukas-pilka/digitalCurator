@@ -78,41 +78,61 @@ window.onload = function() {
 	}
 }
 
-// menu window
+// menu & search window
 
-function openMenu() {
-  let element = document.getElementById("menuSecondLevel");
-  element.classList.toggle("opened");
-  let element2 = document.getElementById("container");
-  element2.classList.toggle("blurred");
-  let menuClosingField = document.getElementById("menuCover");
-  menuClosingField.classList.toggle("hidden");
-  let element3 = document.getElementById("jsMenuIcon");
-  element3.classList.toggle("opened");
-  let element4 = document.getElementById("jsSearchWindow");
-  element4.classList.remove("opened");
-  let element5 = document.getElementById("jsShowcase");
-  element5.classList.remove("opened");
-  let element6 = document.getElementById("jsAboutWindow");
-  element6.classList.remove("opened");
-  let element7 = document.getElementById("jsJoinUsWindow");
-  element7.classList.remove("opened");
+function openBackgroundCover() {
+	let element1 = document.getElementById("menuCover");
+	element1.classList.add("opened");
+	let element2 = document.getElementById("container");
+	if(element2 !== null) {
+		element2.classList.add("blurred");
+	}
+}
+function closeBackgroundCover() {
+	let element1 = document.getElementById("menuCover");
+	element1.classList.remove("opened");
+	let element2 = document.getElementById("container");
+	if(element2 !== null) {
+		element2.classList.remove("blurred");
+	}
+}
+function closeMenu() {
+	closeBackgroundCover()
+	let element5 = document.getElementById("menuSecondLevel");
+	element5.classList.remove("opened");
+	let element2 = document.getElementById("jsCloseMenu");
+	element2.classList.remove("visible");
+	let element3 = document.getElementById("jsOpenMenu");
+	element3.classList.add("visible");
+}
+function closeSearch() {
+	closeBackgroundCover()
+	let element1 = document.getElementById("jsSearchWindow");
+	element1.classList.remove("opened");
+	let element2 = document.getElementById("jsCloseSearch");
+	element2.classList.remove("visible");
+	let element3 = document.getElementById("jsOpenSearch");
+	element3.classList.add("visible");
 }
 function openSearch() {
-  let element = document.getElementById("jsSearchWindow");
-  element.classList.toggle("opened");
+	closeMenu();
+	openBackgroundCover()
+	let element1 = document.getElementById("jsSearchWindow");
+	element1.classList.add("opened");
+	let element2 = document.getElementById("jsCloseSearch");
+	element2.classList.add("visible");
+	let element3 = document.getElementById("jsOpenSearch");
+	element3.classList.remove("visible");
 }
-function openShowcase() {
-  let element = document.getElementById("jsShowcase");
-  element.classList.toggle("opened");
-}
-function openAbout() {
-  let element = document.getElementById("jsAboutWindow");
-  element.classList.toggle("opened");
-}
-function openJoinUs() {
-  let element = document.getElementById("jsJoinUsWindow");
-  element.classList.toggle("opened");
+function openMenu() {
+	closeSearch();
+	openBackgroundCover()
+	let element1 = document.getElementById("menuSecondLevel");
+	element1.classList.toggle("opened");
+	let element2 = document.getElementById("jsCloseMenu");
+	element2.classList.add("visible");
+	let element3 = document.getElementById("jsOpenMenu");
+	element3.classList.remove("visible");
 }
 
 // Open popup window with search forms if contains error messages
