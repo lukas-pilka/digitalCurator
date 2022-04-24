@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="all, follow" />
     
-    {% set styleVersion = 24 %}
+    {% set styleVersion = 25 %}
 
 	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v={{styleVersion}}">
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-480.css') }}?v={{styleVersion}}">
@@ -28,6 +28,9 @@
     <!-- Select 2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+    <!-- Range Slider -->
+    <script src="{{ url_for('static', filename='js/rangeSlider.js') }}?v={{styleVersion}}" defer></script>
 
     <!-- OG Tags -->
     <meta property="og:url" content="DigitalCurator.art" />

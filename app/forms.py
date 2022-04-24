@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, SubmitField, SelectMultipleField, StringField, BooleanField, FormField
+from wtforms import SelectField, SubmitField, SelectMultipleField, StringField, IntegerField
 from wtforms.validators import DataRequired
 import engine
 
@@ -11,6 +11,6 @@ class SearchForm(FlaskForm):
                                               )
     comparisonClassSelect = SelectMultipleField('Displayed motifs for comparison (Use this option to plot a graph comparing the frequency of motifs across history.)',
                                                 choices=engine.getDetectedObjectsList())
-    dateFrom = SelectField('From', choices=[(1300, '1300'), (1400, '1400'), (1500, '1500'), (1600, '1600'),(1700, '1700'), (1800, '1800'), (1900, '1900'), (2000, '2000')])
-    dateTo = SelectField('To', coerce=int, choices=[(1400, '1400'),(1500, '1500'), (1600, '1600'), (1700, '1700'), (1800, '1800'),(1900, '1900'), (2000, '2000'),(2020, 'Today')])
+    dateFrom = IntegerField('From')
+    dateTo = IntegerField('To')
     submit = SubmitField('Explore ' + str(engine.getGalleriesSum()['artworks count']) + ' artworks')

@@ -27,38 +27,57 @@
             <span class="errorMessage">{{ error }}</span>
             {% endfor %}
         </div>
-        <div class="fieldBox halved">
-            <div class="halfField">
-                {{ form.dateFrom.label }}
-                {{ form.dateFrom }}
-                {% for error in form.dateFrom.errors %}
-                <span class="errorMessage">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <div class="halfField">
-                {{ form.dateTo.label }}
-                {{ form.dateTo }}
-                {% for error in form.dateTo.errors %}
-                <span class="errorMessage">{{ error }}</span>
-                {% endfor %}
+
+
+
+
+
+        <div class="fieldBox">
+            <label class="row slider-labels sliderLabel">
+                <div class="col-xs-6 caption">
+                    Period: </span><span id="slider-range-value1"></span> - <span id="slider-range-value2"></span> AD
+                </div>
+            </label>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="slider-range"></div>
+                </div>
             </div>
         </div>
+
+
+        <div class="fieldBox hiddenInput">
+            {{ form.dateFrom.label }}
+            {{ form.dateFrom }}
+            {% for error in form.dateFrom.errors %}
+            <span class="errorMessage">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="fieldBox hiddenInput">
+            {{ form.dateTo.label }}
+            {{ form.dateTo }}
+            {% for error in form.dateTo.errors %}
+            <span class="errorMessage">{{ error }}</span>
+            {% endfor %}
+        </div>
+
         <div class="fieldBox">
-                {{ form.exhibitionName.label }}
-                {{ form.exhibitionName(class_="Proceed")}}
-                {% for error in form.exhibitionName.errors %}
-                <span class="errorMessage">{{ error }}</span>
-                {% endfor %}
-            </div>
-            <!--
-            <div id="comparisonClassBox" class="fieldBox comparisonClassBox">
-                {{ form.comparisonClassSelect.label }}
-                {{ form.comparisonClassSelect(class_="selectMultiple comparisonClassSelect")}}
-                {% for error in form.comparisonClassSelect.errors %}
-                <span class="errorMessage">{{ error }}</span>
-                {% endfor %}
-            </div>
-            -->
+            {{ form.exhibitionName.label }}
+            {{ form.exhibitionName(class_="Proceed")}}
+            {% for error in form.exhibitionName.errors %}
+            <span class="errorMessage">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <!--
+        <div id="comparisonClassBox" class="fieldBox comparisonClassBox">
+            {{ form.comparisonClassSelect.label }}
+            {{ form.comparisonClassSelect(class_="selectMultiple comparisonClassSelect")}}
+            {% for error in form.comparisonClassSelect.errors %}
+            <span class="errorMessage">{{ error }}</span>
+            {% endfor %}
+        </div>
+        -->
         <div class="fieldBox">
             {{ form.submit(class_="primaryButton mediumButton") }}
         </div>
