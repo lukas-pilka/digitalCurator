@@ -22,14 +22,15 @@ Lukas Pilka, 2019-2022
 - **date_latest**: The youngest possible year of creation of the work (E.g.: 1506)
 - **dating**: Unstructured description of the time of creation of the work (E.g.: Beginning of the 16th century)
 - **description**: Curatorial description of the work
-- **detected_objects**: Motifs detected by computer vision
+- **detected_motifs**: Motifs detected by computer vision
   - **boundBox**: Coordinates defining the boundaries of the motif (E.g.: [0.42,0.58,0.97,0.94])
+  - **detector**: Used computer vision model (E.g.: "Resnet V2", "Iconography")
   - **object**: Type of the motif (E.g.: Woman)
   - **score**: Degree of certainty (E.g.: 0.95)
-- **detected_objects_updated**: When the computer vision recognition was performed (E.g.: "2020-05-22 19:12:34")
 - **gallery**: Name of the museum (E.g.: National gallery in Prague)
 - **gallery_url** Url of the artwork in museum's online collection (E.g.: http://sbirky.ngprague.cz/dielo/CZE:NG.O_1552)
 - **has_image** Digital reproduction is available (E.g.: true / false)
+- **iconography_motifs_updated**: When the computer vision recognition Google Cloud Vision Iconography was performed (E.g.: "2020-05-22 19:12:34")
 - **image_id** File name (E.g: "NGP-O1552.jpg")
 - **is_free** Is it possible to publish reproduction online (E.g.: true / false)
 - **licence** Type of open licence (E.g.: Creative Commons Zero)
@@ -37,6 +38,7 @@ Lukas Pilka, 2019-2022
 - **medium** Type of material (E.g.: Wood, paper, bronze etc.)
 - **original_id** Inventory number of the museum (E.g.: O 1552)
 - **place** Geographical location where the artwork was created (E.g.: Venice)
+- **resnet_v2_motifs_updated**: When the computer vision TF Resnet V2 was performed (E.g.: "2020-05-22 19:12:34")
 - **style** Title of the artwork (E.g.: Feast of the Rosary)
 - **topic** Art genre (E.g.: Portrait, Landscape painting etc.)
 - **updated_at** When the database record was updated for last time (E.g.: "2021-05-22 09:32:41")
