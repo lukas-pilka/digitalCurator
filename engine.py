@@ -3,6 +3,7 @@ from requests.auth import HTTPBasicAuth
 from random import randrange
 import json
 import config
+from flask import url_for
 
 # CONNECTION TO ELASTIC SEARCH
 
@@ -308,7 +309,6 @@ def getMuseums():
         museumList.append({museum['key']:museum['doc_count']})
     return museumList
 
-
 # GET DETECTED OBJECT LIST
 
 def getDetectedObjectsList():
@@ -402,6 +402,18 @@ def createArguments(exhibition):
     else:
         arguments['exComparisonObjects'] = None
     return arguments
+
+# PREPARES PREDEFINED EXHIBITIONS FOR BROWSE EXHIBITIONS SECTIONS
+def preparedExhibitions():
+    preparedExhibitions = []
+    for exhibition in config.depository:
+        arguments = createArguments(exhibition)
+        url = str(url_for('exhibition', exName=arguments['exName'], exDisplayedObjects=arguments['exDisplayedObjects'],
+                exComparisonObjects=arguments['exComparisonObjects'], exDateFrom=arguments['exDateFrom'],
+                exDateTo=arguments['exDateTo']))
+        exhibition['url'] = url
+        preparedExhibitions.append(exhibition)
+    return preparedExhibitions
 
 #print(getDetectedObjectsList())
 #getArtworksByObject([{'Tree, Plant and Castle': [['Tree', 'Plant'], ['Castle']]}], 1500,1900)

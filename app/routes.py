@@ -48,18 +48,6 @@ def formValidateOnSubmit(form):
                   exComparisonObjects=exComparisonObjects, exDateFrom=exDateFrom, exDateTo=exDateTo)
     return url
 
-# Preparing exhibition showcase predefined exhibitions
-def preparedExhibitions():
-    preparedExhibitions = []
-    for exhibition in config.depository:
-        arguments = engine.createArguments(exhibition)
-        url = str(url_for('exhibition', exName=arguments['exName'], exDisplayedObjects=arguments['exDisplayedObjects'],
-                exComparisonObjects=arguments['exComparisonObjects'], exDateFrom=arguments['exDateFrom'],
-                exDateTo=arguments['exDateTo']))
-        exhibition['url'] = url
-        preparedExhibitions.append(exhibition)
-    return preparedExhibitions
-
 @app.before_request
 def before_request():
     g.request_start_time = time.time()
@@ -68,9 +56,6 @@ def before_request():
 @app.route('/', methods=['GET', 'POST'])
 def intro():
     form = buildSearchForm()
-    galleriesSum = engine.getGalleriesSum()
-    museums = engine.getMuseums()
-    browseExhibitions = preparedExhibitions()
     titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
 
     # form submit calls function defined above
@@ -79,25 +64,19 @@ def intro():
         return redirect(url)
 
     return render_template('intro.html',
-                           galleriesSum=galleriesSum,
-                           museums=museums,
-                           browseExhibitions=browseExhibitions,
+                           galleriesSum=engine.getGalleriesSum(),
+                           museums=engine.getMuseums(),
                            titleImage=titleImage,
-                           form=form,
-                           intro=True,
+                           form=form
                            )
 
 
 # Returns exhibition
 @app.route('/app', methods=['GET', 'POST'])
 def exhibition():
-    galleriesSum = engine.getGalleriesSum()
-
-    # Extends browse exhibitions by parsed url
-    browseExhibitions = preparedExhibitions()
-    receivedArguments = request.args.to_dict(flat=False)
 
     # Loads SearchForm from forms.py, pre-fills fields from arguments and sets default values
+    receivedArguments = request.args.to_dict(flat=False)
     form = buildSearchForm(receivedArguments)
 
     # If it doesn't receive arguments it set arguments with default values of exhibition from config
@@ -185,9 +164,9 @@ def exhibition():
     if len(artworksSorted[0]) == 0:
         return render_template('index.html',
                                exName=exName,
-                               galleriesSum=galleriesSum,
+                               galleriesSum=engine.getGalleriesSum(),
                                artworksInPeriod=artworksInPeriod,
-                               browseExhibitions=browseExhibitions,
+                               galleryResultPage=True,
                                form=form,
                                )
 
@@ -202,10 +181,10 @@ def exhibition():
                                exName=exName,
                                artworksForWeb=collectionsByPeriods,
                                searchedObjects=collectionTitles,
-                               galleriesSum=galleriesSum,
+                               galleriesSum=engine.getGalleriesSum(),
                                artworksInPeriod=artworksInPeriod,
-                               browseExhibitions=browseExhibitions,
                                titleImage=titleImage,
+                               galleryResultPage=True,
                                form=form,
                                dateFrom = exDateFrom,
                                dateTo=exDateTo,
@@ -216,9 +195,7 @@ def exhibition():
 @app.route('/browseexhibitions', methods=['GET', 'POST'])
 def browseExhibitions():
     form = buildSearchForm()
-    galleriesSum = engine.getGalleriesSum()
     museums = engine.getMuseums()
-    browseExhibitions = preparedExhibitions()
     titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
 
     # form submit calls function defined above
@@ -227,21 +204,17 @@ def browseExhibitions():
         return redirect(url)
 
     return render_template('browseExhibitions.html',
-                           galleriesSum=galleriesSum,
+                           galleriesSum=engine.getGalleriesSum(),
                            museums=museums,
-                           browseExhibitions=browseExhibitions,
+                           browseExhibitions=engine.preparedExhibitions(),
                            titleImage=titleImage,
-                           form=form,
-                           intro=True,
+                           form=form
                            )
 
 # About project
 @app.route('/aboutproject', methods=['GET', 'POST'])
 def aboutProject():
     form = buildSearchForm()
-    galleriesSum = engine.getGalleriesSum()
-    museums = engine.getMuseums()
-    browseExhibitions = preparedExhibitions()
     titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
 
     # form submit calls function defined above
@@ -250,21 +223,15 @@ def aboutProject():
         return redirect(url)
 
     return render_template('aboutProject.html',
-                           galleriesSum=galleriesSum,
-                           museums=museums,
-                           browseExhibitions=browseExhibitions,
+                           galleriesSum=engine.getGalleriesSum(),
                            titleImage=titleImage,
-                           form=form,
-                           intro=True,
+                           form=form
                            )
 
 # Join us
 @app.route('/joinus', methods=['GET', 'POST'])
 def joinUs():
     form = buildSearchForm()
-    galleriesSum = engine.getGalleriesSum()
-    museums = engine.getMuseums()
-    browseExhibitions = preparedExhibitions()
     titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
 
     # form submit calls function defined above
@@ -273,20 +240,15 @@ def joinUs():
         return redirect(url)
 
     return render_template('joinUs.html',
-                           galleriesSum=galleriesSum,
-                           museums=museums,
-                           browseExhibitions=browseExhibitions,
+                           galleriesSum=engine.getGalleriesSum(),
                            titleImage=titleImage,
-                           form=form,
-                           intro=True,
+                           form=form
                            )
 
 # 404
 @app.errorhandler(404)
 def page_not_found(e):
     form = buildSearchForm()
-    galleriesSum = engine.getGalleriesSum()
-    browseExhibitions = preparedExhibitions()
 
     # form submit calls function defined above
     if form.validate_on_submit():
@@ -294,10 +256,8 @@ def page_not_found(e):
         return redirect(url)
 
     return render_template('404.html',
-                           galleriesSum=galleriesSum,
-                           browseExhibitions=browseExhibitions,
-                           form=form,
-                           intro=True,
+                           galleriesSum=engine.getGalleriesSum(),
+                           form=form
                            ), 404
 
 # Flask Sitemap
