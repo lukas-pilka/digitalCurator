@@ -32,3 +32,14 @@ h2{
         padding-left: 380vw;
     }
 }
+
+/* artwork detail */
+
+.artworkDetail h1{
+    font-size: 3.375rem;
+}
+.artworkDetail .artworkDescription{
+    min-width: 35vw;
+}
+
+/* artwork detail end */

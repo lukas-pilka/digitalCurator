@@ -219,11 +219,6 @@ a:hover{
     width: 100%;
     box-sizing: border-box;
 }
-.artwork.titleImage{
-}
-.artwork:first-child{
-    margin-left: 6rem;
-}
 .imageContainer{
     position: relative;
     width: 100%;
@@ -295,6 +290,17 @@ a:hover{
 }
 
 /* gallery showcase end */
+
+/* artwork detail */
+
+.container.artworkDetailContainer{
+    background: #ffffff;
+}
+.artworkDetail{
+    background: #ffffff;
+}
+
+/* artwork detail end */
 
 /* final screen */
 

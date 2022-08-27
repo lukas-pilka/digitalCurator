@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container artworkDetailContainer" id="container">
+    <section class="titleImage artwork">
+        <div class="imageContainer">
+            <img src="{{ artwork._source.image_url }}">
+        </div>
+    </section>
+    <section class="mainSection artworkDetail">
+        <div class="artworkDescription">
+            <div class="topPart">
+                <h1>{{artwork._source.title}}</h1>
+                <p class="museumInfo">
+                    {% if artwork._source.author %}
+                            {{ artwork._source.author }}<br>
+                    {% endif %}
+                    {% if artwork._source.date_earliest == artwork._source.date_latest %}
+                        {{ artwork._source.date_earliest }}
+                    {% else %}
+                        between {{ artwork._source.date_earliest }}&nbsp;and&nbsp;{{ artwork._source.date_latest }}
+                    {% endif %}
+                    <br>
+                    {{ artwork._source.gallery }}<br>
+                </p>
+                {% if artwork._source.description %}
+                    <p class="museumInfo">Original description: {{artwork._source.description}}</p>
+                {% endif %}
+            </div>
+
+            <!-- Related tags -->
+            <div class="relatedTags">
+                {% for tag in artwork.related_tags %}
+                    <a href="{{tag[1]}}" class="secondaryButton mediumButton">{{tag[0]}}</a>
+                {% endfor%}
+            </div>
+        </div>
+
+    </section>
+</div>
+
+{% endblock %}

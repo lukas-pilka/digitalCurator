@@ -289,6 +289,17 @@ body{
 
 /* Main menu end */
 
+/* artwork detail */
+
+.artworkDetail .artworkDescription{
+    min-width: 50vw;
+}
+.artworkDetail h1{
+    font-size: 2.25rem;
+}
+
+/* artwork detail end */
+
 /* Final screen */
 
 .finalScreen:before{

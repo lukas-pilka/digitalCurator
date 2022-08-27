@@ -1,10 +1,9 @@
 <html lang="en">
 <head>
-    <title>Digital Curator</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="all, follow" />
     
-    {% set styleVersion = 25 %}
+    {% set styleVersion = 26 %}
 
 	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style/base.css') }}?v={{styleVersion}}">
     <link rel="stylesheet" type="text/css" media="screen and (min-width: 480px)" href="{{ url_for('static', filename='style/from-480.css') }}?v={{styleVersion}}">
@@ -32,19 +31,31 @@
     <!-- Range Slider -->
     <script src="{{ url_for('static', filename='js/rangeSlider.js') }}?v={{styleVersion}}" defer></script>
 
-    <!-- OG Tags -->
+    <!-- Title, description & OG Tags -->
     <meta property="og:url" content="DigitalCurator.art" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="{{ exName }}" />
+    <meta name="author" content="Lukas Pilka | hello.lukas.pilka@gmail.com">
 
-    {% if artworksInPeriod is defined %}
-        <meta property="og:description" content="Digital Curator's exhibitiion displaying artworks with {{artworksInPeriod.artworksWithObject[0][0]}} was assembled automatically by AI computer vision." />
+    {% if pageTitle %}
+        <title>{{pageTitle}} | Digital Curator</title>
+        <meta property="og:title" content="{{pageTitle}}" />
     {% else %}
-        <meta property="og:description" content="Digital Curator allows you to explore the art collections of Central European museums and search for artworks based on specific iconographic motifs. You can select a motif or combination of objects, and reveal the artworks across the centuries." />
+        <title>Digital Curator</title>
+        <meta property="og:title" content="Digital Curator" />
     {% endif %}
 
-    {% if titleImage is defined %}
+    {% if pageDescription %}
+        <meta property="og:description" content="{{pageDescription}}" />
+        <meta name="description" content="{{pageDescription}}">
+    {% else %}
+        <meta property="og:description" content="Digital Curator allows you to explore the art collections of Central European museums and search for artworks based on specific iconographic motifs. You can select a motif or combination of objects, and reveal the artworks across the centuries." />
+        <meta name="description" content="{{pageDescription}}">
+    {% endif %}
+
+    {% if titleImage %}
         <meta property="og:image" content="{{titleImage._source.image_url}}" />
+    {% else %}
+        <meta property="og:image" content="{{ url_for('static', filename='images/intro/hampisch-interior.jpg') }}" />
     {% endif %}
 
     <!-- Global site tag (gtag.js) - Google Analytics -->

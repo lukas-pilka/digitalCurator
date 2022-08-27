@@ -6,7 +6,6 @@ import config
 from flask import url_for
 
 # CONNECTION TO ELASTIC SEARCH
-
 def callElastic(query):
     payload = ""
     rawData = requests.get(
@@ -17,7 +16,6 @@ def callElastic(query):
     return (dataDict)
 
 # GET RANDOM OBJECT TYPES
-
 def getRandomObjectTypes():
     comparisonSets = config.depository
     randomSetIndex = randrange(len(config.depository))
@@ -26,9 +24,60 @@ def getRandomObjectTypes():
     else:
         return comparisonSets[randomSetIndex]
 
+# GET ARTWORK AUTHOR
+# converts possibly list of authors into joined string
+def getArtworkAuthor(artwork):
+    if 'author' not in artwork['_source'].keys():
+        return 'Anonym'
+    elif type(artwork['_source']['author']) == list:
+        return ', '.join(artwork['_source']['author'])
+    else:
+        return artwork['_source']['author']
+
+# GET RELATED TAGS
+# Links to exhibitions that include motives from the artwork
+def getRelatedTags(artwork):
+    # Set range for related artwork created date
+    dateFrom = 1300
+    dateTo = 1900
+
+    # Sort original list of detected objects by their score
+
+    def sortByScore(detectedObject):
+        return detectedObject['score']
+
+    try:
+        artwork['_source']['detected_motifs'].sort(key=sortByScore, reverse=True)
+
+        relatedTags = []
+        alreadyUsedTags = []
+        limitCounter = 0
+        for detectedObject in artwork['_source']['detected_motifs']:
+            if detectedObject['object'] not in alreadyUsedTags and detectedObject['object'] not in config.classesBlackList:
+                tagSetName = 'Image of the ' + str(detectedObject['object'])
+                arguments = {'exName': tagSetName, 'exDateFrom': dateFrom, 'exDateTo': dateTo,
+                             'exDisplayedObjects': detectedObject['object'], 'exComparisonObjects': None}
+                url = str(
+                    url_for('exhibition', exName=arguments['exName'],
+                            exDisplayedObjects=arguments['exDisplayedObjects'],
+                            exComparisonObjects=arguments['exComparisonObjects'],
+                            exDateFrom=arguments['exDateFrom'],
+                            exDateTo=arguments['exDateTo']))
+                objectLink = (detectedObject['object'], url)
+                relatedTags.append(objectLink)
+                alreadyUsedTags.append(detectedObject['object'])
+                limitCounter += 1
+            if limitCounter == config.relatedTagsLimit:  # when the limit is reached it will stop
+                break
+
+        # Preparing url for similar artworks link
+        artwork['related_tags'] = relatedTags  # ads url to original artwork dict
+
+    except:
+        pass
+
 # PREPARING EXHIBITION QUERY
 # Common properties for getArtworksByObject and getPeriodData
-
 def exhibitionPropertiesQuery(dateFrom, dateTo):
     return [
         {
@@ -76,7 +125,6 @@ def prepareExhibitionKeywordQuery(exhibition):
     return exhibitionKeywordsQuery
 
 # GET ARTWORKS BY OBJECT
-
 def getArtworksByObject(exhibitionList, dateFrom, dateTo):
 
     # preparing interval
@@ -139,10 +187,8 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
         expandedArtworks = []
 
         for artwork in artworks:
-            # generates image url
-            imageUrl = 'https://storage.googleapis.com/tfcurator-artworks/artworks-all/' + artwork[
-                '_id'] + '.jpg'  # Creating img url from artwork id
-            artwork['_source']['image_url'] = imageUrl
+            artwork['_source']['image_url'] = 'https://storage.googleapis.com/tfcurator-artworks/artworks-all/' + artwork['_id'] + '.jpg'  # Creating img url from artwork id
+            artwork['_source']['author'] = getArtworkAuthor(artwork)
 
             # rounds object score
             for object in artwork['_source']['detected_motifs']:
@@ -150,7 +196,6 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
 
             # selects searched object with highest score on image and saves it to topElementaryObjectScoreSum (It's useful for sorting)
             searchedObjectsScore = [] # saves highest probability achieved for each object
-            #print('---next artwork---')
             exhibitionName = list(exhibition.keys())[0]
             for elementaryObjects in exhibition[exhibitionName]:
 
@@ -162,7 +207,6 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
                             topElementaryObjectScore = detectedObject['score']
 
                     searchedObjectsScore.append(topElementaryObjectScore)
-                    #print(elementaryObject, topElementaryObjectScore)
 
             artwork['_source']['searched_motif'] = exhibitionName
             artwork['_source']['average_score'] = round(sum(searchedObjectsScore) / len(searchedObjectsScore), 2) # get percents
@@ -175,7 +219,6 @@ def getArtworksByObject(exhibitionList, dateFrom, dateTo):
     return allListsResult
 
 # PREPARE INTERVAL
-
 def prepareInterval(dateFrom, dateTo):
     rawInterval = (dateTo - dateFrom) / 7
     if rawInterval > 100:
@@ -191,7 +234,6 @@ def prepareInterval(dateFrom, dateTo):
     return interval
 
 # AGGREGATIONS BY PERIODS
-
 def getPeriodData(exhibitionsList, dateFrom, dateTo):
 
     # preparing interval
@@ -260,7 +302,6 @@ def getPeriodData(exhibitionsList, dateFrom, dateTo):
     return artworksInPeriod
 
 # GET COLLECTION SUM
-
 def getGalleriesSum():
     collectionsQuery = {
         "size": 0,
@@ -289,7 +330,6 @@ def getGalleriesSum():
     return summary
 
 # GET MUSEUMS
-
 def getMuseums():
     collectionsQuery = {
         "size":0,
@@ -310,7 +350,6 @@ def getMuseums():
     return museumList
 
 # GET DETECTED OBJECT LIST
-
 def getDetectedObjectsList():
     collectionsQuery = {
         "size": 0,
@@ -415,6 +454,29 @@ def preparedExhibitions():
         preparedExhibitions.append(exhibition)
     return preparedExhibitions
 
+# GET ARTWORK BY ID
+def getArtworkById(artworkId):
+    artworkQuery = {
+        "query": {
+            "match_phrase": {
+                "_id": artworkId
+            }
+        }
+    }
+    rawData = callElastic(artworkQuery)
+    print('tady:')
+    print(rawData['hits']['hits'][0])
+    if rawData['hits']['hits'][0] is not None:
+        artwork = rawData['hits']['hits'][0]
+        artwork['_source']['author'] = getArtworkAuthor(artwork)
+        artwork['_source']['image_url'] = 'https://storage.googleapis.com/tfcurator-artworks/artworks-all/' + artwork['_id'] + '.jpg'  # Creating img url from artwork id
+    else:
+        artwork = False
+    return artwork
+
+
+
+# print(getArtworkById("KMV-2587"))
 #print(getDetectedObjectsList())
 #getArtworksByObject([{'Tree, Plant and Castle': [['Tree', 'Plant'], ['Castle']]}], 1500,1900)
 #getPeriodData([{'Angel': [['Angel']]}], 1000, 2000)

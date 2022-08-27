@@ -76,18 +76,20 @@
     <section class="titleImage artwork">
 
         <div class="imageContainer">
-            <img src="{{titleImage._source.image_url}}">
-            <div class="boundBoxes">
-                {% for detectedObject in titleImage._source.detected_motifs %}
-                    {% for selectedObject in simpleObjectList %}
-                        {% if selectedObject == detectedObject['object'] %}
-                            <div class="boundBox" style="left:{{ detectedObject.boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
-                                <p>{{ detectedObject['object'] }}&nbsp;{{ 100*detectedObject['score']}}%</p>
-                            </div>
-                        {% endif%}
+            <a href="{{ url_for('artworkDetail', artworkId=titleImage._id)}}">
+                <img src="{{titleImage._source.image_url}}">
+                <div class="boundBoxes">
+                    {% for detectedObject in titleImage._source.detected_motifs %}
+                        {% for selectedObject in simpleObjectList %}
+                            {% if selectedObject == detectedObject['object'] %}
+                                <div class="boundBox" style="left:{{ detectedObject.boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
+                                    <p>{{ detectedObject['object'] }}&nbsp;{{ 100*detectedObject['score']}}%</p>
+                                </div>
+                            {% endif%}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            </div>
+                </div>
+            </a>
         </div>
     </section>
 
@@ -138,32 +140,30 @@
                 {% for artwork in artworks %}
                 <div class="artwork">
                     <div class="imageContainer">
-                        <img src="{{ artwork._source.image_url }}">
-                        <div class="boundBoxes">
+                        <a href="{{ url_for('artworkDetail', artworkId=artwork._id)}}">
+                            <img src="{{ artwork._source.image_url }}">
+                            <div class="boundBoxes">
 
-                            <!-- unpacking boundboxes-->
-                            {% for detectedObject in artwork._source.detected_motifs %}
-                                {% for selectedObject in simpleObjectList %}
-                                    {% if selectedObject == detectedObject['object'] %}
-                                        <div class="boundBox" style="left:{{ detectedObject .boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
-                                            <p>{{ detectedObject.object }}&nbsp;{{ 100*detectedObject.score }}%</p>
-                                        </div>
-                                    {% endif%}
+                                <!-- unpacking boundboxes-->
+                                {% for detectedObject in artwork._source.detected_motifs %}
+                                    {% for selectedObject in simpleObjectList %}
+                                        {% if selectedObject == detectedObject['object'] %}
+                                            <div class="boundBox" style="left:{{ detectedObject .boundBox[1]*100 }}%; top: {{ detectedObject.boundBox[0]*100 }}%; width:{{ detectedObject.boundBox[3]*100 - detectedObject.boundBox[1]*100}}%; height: {{ detectedObject.boundBox[2]*100 - detectedObject.boundBox[0]*100}}%;">
+                                                <p>{{ detectedObject.object }}&nbsp;{{ 100*detectedObject.score }}%</p>
+                                            </div>
+                                        {% endif%}
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
 
-                        </div>
+                            </div>
+                        </a>
                     </div>
 
                     <div class="artworkDescription">
                         <p class="museumInfo">
                             <strong>{{ artwork._source.title }}</strong> <br>
-                            {% if artwork._source.author is defined %}
-                                {% if artwork._source.author is string %}
-                                    {{ artwork._source.author }}<br>
-                                {% else %}
-                                    {{ artwork._source.author[0] }}<br>
-                                {% endif %}
+                            {% if artwork._source.author %}
+                                {{ artwork._source.author }}<br>
                             {% endif %}
                             {% if artwork._source.date_earliest == artwork._source.date_latest %}
                                 {{ artwork._source.date_earliest }}

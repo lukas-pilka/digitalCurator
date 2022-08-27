@@ -56,7 +56,6 @@ def before_request():
 @app.route('/', methods=['GET', 'POST'])
 def intro():
     form = buildSearchForm()
-    titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
 
     # form submit calls function defined above
     if form.validate_on_submit():
@@ -66,10 +65,8 @@ def intro():
     return render_template('intro.html',
                            galleriesSum=engine.getGalleriesSum(),
                            museums=engine.getMuseums(),
-                           titleImage=titleImage,
                            form=form
                            )
-
 
 # Returns exhibition
 @app.route('/app', methods=['GET', 'POST'])
@@ -124,41 +121,7 @@ def exhibition():
     # Preparing links for related tags
     for artworkSet in artworksSorted:
         for artwork in artworkSet:
-
-            # Set range for related artwork created date
-            dateFrom = 1300
-            dateTo = 1900
-
-            # Sort original list of detected objects by their score
-            def sortByScore(detectedObject):
-                return detectedObject['score']
-            artwork['_source']['detected_motifs'].sort(key=sortByScore, reverse=True)
-
-            relatedTags = []
-            alreadyUsedTags = []
-            limitCounter = 0
-            for detectedObject in artwork['_source']['detected_motifs']:
-                if detectedObject['object'] not in alreadyUsedTags and detectedObject['object'] not in config.classesBlackList:
-                    tagSetName = 'Image of the ' + str(detectedObject['object'])
-                    arguments = {'exName': tagSetName, 'exDateFrom': dateFrom, 'exDateTo': dateTo,
-                                 'exDisplayedObjects':detectedObject['object'], 'exComparisonObjects': None}
-                    url = str(
-                        url_for('exhibition', exName=arguments['exName'],
-                                exDisplayedObjects=arguments['exDisplayedObjects'],
-                                exComparisonObjects=arguments['exComparisonObjects'],
-                                exDateFrom=arguments['exDateFrom'],
-                                exDateTo=arguments['exDateTo']))
-                    objectLink = (detectedObject['object'],url)
-                    relatedTags.append(objectLink)
-                    alreadyUsedTags.append(detectedObject['object'])
-                    limitCounter += 1
-                if limitCounter == config.relatedTagsLimit: # when the limit is reached it will stop
-                    break
-
-            # Preparing url for similar artworks link
-
-            artwork['related_tags'] = relatedTags # ads url to original artwork dict
-
+            engine.getRelatedTags(artwork)
 
     # Check for zero results
     if len(artworksSorted[0]) == 0:
@@ -174,11 +137,14 @@ def exhibition():
         titleImage = artworksSorted[0][0]
         collectionsByPeriods = engine.sortCollectionByPeriods(artworksInPeriod, artworksSorted)
         collectionTitles = []  # Clearing because dicts between searched objects
+        pageDescription = f"Digital Curator's exhibition displaying artworks with {artworksInPeriod['artworksWithObject'][0][0]} was assembled automatically by AI computer vision."
 
         for collection in exhibitionsList:
             collectionTitles.append(list(collection.keys())[0])
         return render_template('index.html',
                                exName=exName,
+                               pageTitle=exName,
+                               metaDescription=pageDescription,
                                artworksForWeb=collectionsByPeriods,
                                searchedObjects=collectionTitles,
                                galleriesSum=engine.getGalleriesSum(),
@@ -196,7 +162,6 @@ def exhibition():
 def browseExhibitions():
     form = buildSearchForm()
     museums = engine.getMuseums()
-    titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
 
     # form submit calls function defined above
     if form.validate_on_submit():
@@ -207,7 +172,6 @@ def browseExhibitions():
                            galleriesSum=engine.getGalleriesSum(),
                            museums=museums,
                            browseExhibitions=engine.preparedExhibitions(),
-                           titleImage=titleImage,
                            form=form
                            )
 
@@ -215,7 +179,6 @@ def browseExhibitions():
 @app.route('/aboutproject', methods=['GET', 'POST'])
 def aboutProject():
     form = buildSearchForm()
-    titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
 
     # form submit calls function defined above
     if form.validate_on_submit():
@@ -224,7 +187,6 @@ def aboutProject():
 
     return render_template('aboutProject.html',
                            galleriesSum=engine.getGalleriesSum(),
-                           titleImage=titleImage,
                            form=form
                            )
 
@@ -232,7 +194,6 @@ def aboutProject():
 @app.route('/joinus', methods=['GET', 'POST'])
 def joinUs():
     form = buildSearchForm()
-    titleImage = {'_source': {'image_url': url_for('static', filename='images/intro/hampisch-interior.jpg')}}
 
     # form submit calls function defined above
     if form.validate_on_submit():
@@ -241,8 +202,39 @@ def joinUs():
 
     return render_template('joinUs.html',
                            galleriesSum=engine.getGalleriesSum(),
-                           titleImage=titleImage,
                            form=form
+                           )
+
+# Artwork detail
+@app.route('/artwork/<artworkId>', methods=['GET', 'POST'])
+def artworkDetail(artworkId):
+    form = buildSearchForm()
+    artwork = engine.getArtworkById(artworkId)
+    relatedTags = engine.getRelatedTags(artwork)
+    print(artwork)
+
+    if 'description' in artwork['_source'].keys():
+        pageDescription = artwork['_source']['description']
+    else:
+        pageDescription = f"{artwork['_source']['title']} by {artwork['_source']['author']}: Digitized artwork explored by computer vision."
+
+    # form submit calls function defined above
+    if form.validate_on_submit():
+        url = formValidateOnSubmit(form)
+        return redirect(url)
+
+    # artworkId doesnt exist in database
+    if engine.getArtworkById(artworkId) == False:
+        return redirect('/page_not_found')
+
+    return render_template('artworkDetail.html',
+                           pageTitle=f"{artwork['_source']['author']} | {artwork['_source']['title']}",
+                           pageDescription = pageDescription,
+                           galleriesSum=engine.getGalleriesSum(),
+                           form=form,
+                           artwork=artwork,
+                           titleImage=artwork,
+                           relatedTags=relatedTags
                            )
 
 # 404
