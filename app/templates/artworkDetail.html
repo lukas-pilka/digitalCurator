@@ -4,7 +4,7 @@
 <div class="container artworkDetailContainer" id="container">
     <section class="titleImage artwork">
         <div class="imageContainer">
-            <img src="{{ artwork._source.image_url }}">
+            <img src="{{ artwork._source.image_url }}" alt="{{pageTitle}} | Displayed motifs: {% for tag in artwork.related_tags %}{{tag[0]}}, {% endfor%}">
         </div>
     </section>
     <section class="mainSection artworkDetail">

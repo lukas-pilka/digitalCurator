@@ -141,7 +141,7 @@
                 <div class="artwork">
                     <div class="imageContainer">
                         <a href="{{ url_for('artworkDetail', artworkId=artwork._id)}}">
-                            <img src="{{ artwork._source.image_url }}">
+                            <img src="{{ artwork._source.image_url }}" alt="{{ artwork._source.author }} | {{ artwork._source.title }} | Displayed motifs: {% for tag in artwork.related_tags %}{{tag[0]}}, {% endfor%}">
                             <div class="boundBoxes">
 
                                 <!-- unpacking boundboxes-->
