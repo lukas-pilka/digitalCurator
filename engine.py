@@ -474,7 +474,44 @@ def getArtworkById(artworkId):
         artwork = False
     return artwork
 
+# GET ALL IDS
+# Returns list of all artwork's IDs, Using for sitemap
+def get10kIds(afterId):
+    query = {
+        "size": 10000,
+        "query": {
+            "match_all": {}
+        },
+        "_source": {
+            "includes": [
+                "_id"
+            ]
+        },
+        "search_after": [afterId],
+        "sort": [
+            {"_id": "asc"}
+        ]
+    }
+    rawData = callElastic(query)
+    artworks = rawData['hits']['hits']
+    idsList = []
+    for artwork in artworks:
+        idsList.append(artwork['_id'])
+    print(idsList)
+    return idsList
 
+def getAllIds():
+    idsList = []
+    for request in range(1000):
+        if len(idsList) >= 1:
+            TenThousandIds = get10kIds(idsList[-1])
+            idsList.extend(TenThousandIds)
+            if len(TenThousandIds) <= 1:
+                break
+        else:
+            TenThousandIds = get10kIds('')
+            idsList.extend(TenThousandIds)
+    return idsList
 
 # print(getArtworkById("KMV-2587"))
 #print(getDetectedObjectsList())

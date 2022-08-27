@@ -3,6 +3,7 @@
 import config
 import engine
 import time
+from datetime import datetime
 
 # Flask
 
@@ -255,7 +256,15 @@ def page_not_found(e):
 # Flask Sitemap
 @ext.register_generator
 def index():
-    yield 'exhibition', {}
+    yield 'intro', {}, datetime.now().date(), 'monthly', 1.0
+    yield 'exhibition', {}, datetime.now().date(), 'monthly', 1.0
+    yield 'browseExhibitions', {}, datetime.now().date(), 'monthly', 0.7
+    yield 'aboutProject', {}, datetime.now().date(), 'monthly', 0.7
+    yield 'joinUs', {}, datetime.now().date(), 'monthly', 0.7
+
+    for id in engine.getAllIds():
+        yield 'artworkDetail',{'artworkId':id}, datetime.now().date(), 'yearly', 0.5
+
 
 
 
